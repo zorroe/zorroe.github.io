@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Mock.js | Zorroe</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://zorroe.github.io/favicon.ico?v=1675922185517">
+<link rel="stylesheet" href="https://zorroe.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="
+Mock.js
+
+前言
+Mock.js
+基本使用
+Vue中引入mockjs
+
+新建index.ts文件
+引入index.ts
+编写返回的列表数据
+查
+增
+删
+改
+
+
+代码地址
+
+
+
+
+Mock.js
+前言
+在前端开发的时候，往往都需要都需..." />
+    <meta name="keywords" content="mock,vue3,typescript" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://zorroe.github.io">
+        <img src="https://zorroe.github.io/images/avatar.png?v=1675922185517" class="site-logo">
+        <h1 class="site-title">Zorroe</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://zorroe.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Mock.js</h2>
+            <div class="post-date">2023-01-30</div>
+            
+            <div class="post-content" v-pre>
+              <p><ul class="markdownIt-TOC">
+<li><a href="#mockjs">Mock.js</a>
+<ul>
+<li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#mockjs-2">Mock.js</a></li>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8">基本使用</a></li>
+<li><a href="#vue%E4%B8%AD%E5%BC%95%E5%85%A5mockjs">Vue中引入mockjs</a>
+<ul>
+<li><a href="#%E6%96%B0%E5%BB%BAindexts%E6%96%87%E4%BB%B6">新建<code>index.ts</code>文件</a></li>
+<li><a href="#%E5%BC%95%E5%85%A5indexts">引入<code>index.ts</code></a></li>
+<li><a href="#%E7%BC%96%E5%86%99%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E8%A1%A8%E6%95%B0%E6%8D%AE">编写返回的列表数据</a></li>
+<li><a href="#%E6%9F%A5">查</a></li>
+<li><a href="#%E5%A2%9E">增</a></li>
+<li><a href="#%E5%88%A0">删</a></li>
+<li><a href="#%E6%94%B9">改</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%9C%B0%E5%9D%80">代码地址</a></li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="mockjs">Mock.js</h1>
+<h2 id="前言">前言</h2>
+<p>在前端开发的时候，往往都需要都需要后端提供接口数据来进行相应页面的开发。但这个时候就需要后端先行开发，之后前端才进行开发，从而可能会影响开发效率。</p>
+<p>那前端能不能独立进行开发呢？答案是可以的。接下来就有请我们今天的主角，<strong>Mock.js</strong>。</p>
+<h2 id="mockjs-2">Mock.js</h2>
+<ul>
+<li>是一款模拟数据生成器</li>
+<li>生成随机数据，拦截Ajax请求</li>
+<li>Mock.js这个工具完全可以通过我们设置的规则，来提供数据，从而解决前端不能独立开发的问题</li>
+<li>对接后端接口的时候，也不需要修改既有代码</li>
+</ul>
+<h2 id="基本使用">基本使用</h2>
+<ol>
+<li>
+<p>生成随机字符串</p>
+<pre><code class="language-js">var Mock = require('mockjs')
+
+const data = Mock.mock({
+    'title': '@ctitle(1,10)', // 生成中文标题，长度为1-10个字符
+    'words|1-10': '@cword()', // 生成中文字符串，长度为1-10个字符
+})
+
+console.log(data)
+
+// { title: '据再达场价是回', words: '利才质件' }
+</code></pre>
+</li>
+<li>
+<p>生成图片</p>
+<pre><code class="language-js">const img = Mock.mock({
+    img_url: &quot;@image('100x100', '#fff', '#000', 'png','坤坤')&quot;,
+})
+
+console.log(img)
+
+// { img_url: 'http://dummyimage.com/100x100/fff/000.png&amp;text=坤坤' }
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/15/e48847e997a0045e6cdb2928af359167-image-20230115200041897-012651.png" alt="image-20230115200041897" loading="lazy"></figure>
+</li>
+<li>
+<p>生成日期</p>
+<pre><code class="language-js">const date = Mock.mock({
+    date: '@date(&quot;yyyy-MM-dd HH:mm:ss&quot;)',
+})
+
+console.log(date)
+
+// { date: '1995-01-18 14:11:26' }
+</code></pre>
+</li>
+<li>
+<p>生成json</p>
+<pre><code class="language-js">const list = Mock.mock({
+    list: [
+        {
+            id: '@increment(1)',
+            name: '@cname(2,4)',
+            age: '@integer(18,30)',
+            'gender|1': ['男', '女'],
+        },
+    ],
+})
+
+console.log(list.list)
+
+// [ { id: 1, name: '卢丽', age: 28, gender: '男' } ]
+</code></pre>
+</li>
+<li>
+<p>生成json列表</p>
+<pre><code class="language-js">const list = Mock.mock({
+    'list|5': [
+        {
+            id: '@increment(1)',     // 自增类型
+            name: '@cname(2,4)',     // 中文姓名
+            age: '@integer(18,30)',  // 整数
+            'gender|1': ['男', '女'],// 枚举
+        },
+    ],
+})
+
+console.log(list.list)
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/15/d38d9dd12f04078aa06707c114730c68-image-20230115200449709-79a783.png" alt="image-20230115200449709" loading="lazy"></figure>
+</li>
+</ol>
+<h2 id="vue中引入mockjs">Vue中引入mockjs</h2>
+<pre><code class="language-shell">npm install mockjs
+</code></pre>
+<h3 id="新建indexts文件">新建<code>index.ts</code>文件</h3>
+<figure data-type="image" tabindex="3"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/15/b3578d327fa59b1914e59df114bb48d1-image-20230115202645600-302d74.png" alt="image-20230115202645600" loading="lazy"></figure>
+<h3 id="引入indexts">引入<code>index.ts</code></h3>
+<figure data-type="image" tabindex="4"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/15/08dbef7f991f947a114a33c18a33c14a-image-20230115202846600-b07576.png" alt="image-20230115202846600" loading="lazy"></figure>
+<h3 id="编写返回的列表数据">编写返回的列表数据</h3>
+<pre><code class="language-typescript">// mock/index.ts
+const list = Mock.mock({
+    'list|5': [
+        {
+            id: '@increment(1)',
+            title: '@title(2,4)',
+            img_url: `@image('100x100', '#fff', '#000', 'png','坤坤')`,
+            add_time: '@date(&quot;yyyy-MM-dd HH:mm:ss&quot;)',
+        },
+    ],
+})
+</code></pre>
+<h3 id="查">查</h3>
+<pre><code class="language-typescript">// mock/index.ts
+Mock.mock('/api/get/news', 'get', () =&gt; {
+    return {
+        code: 200,
+        msg: 'success',
+        data: list.list,
+        total: list.list.length,
+    }
+})
+</code></pre>
+<pre><code class="language-typescript">// App.vue
+const getTableData = () =&gt; {
+  axios.get('/api/get/news').then(res =&gt; {
+    tableData.value = res.data.data
+  })
+}
+</code></pre>
+<h3 id="增">增</h3>
+<pre><code class="language-typescript">// mock/index.ts
+Mock.mock('/api/add/news', 'post', (options: any) =&gt; {
+    list.list.push(JSON.parse(options.body))
+    console.log(list.list)
+    return {
+        code: 200,
+        msg: 'success',
+    }
+})
+</code></pre>
+<pre><code class="language-typescript">// App.vue
+const handleAdd = () =&gt; {
+  axios.post('/api/add/news', {
+    id: Math.floor(Math.random() * 1000),
+    title: '测试标题',
+    img_url: 'https://img1.baidu.com/it/u=1830000000,1830000000&amp;fm=26&amp;fmt=auto&amp;gp=0.jpg',
+    add_time: '2021-08-08 08:08:08'
+  }).then(res =&gt; {
+    console.log(res)
+  })
+  getTableData()
+}
+</code></pre>
+<h3 id="删">删</h3>
+<pre><code class="language-typescript">// mock/index.ts
+Mock.mock(RegExp('/api/delete/news'), 'delete', (option: any) =&gt; {
+    // 获取url的参数
+    const id = option.url.split('?')[1].split('=')[1]
+    // 删除对应id的数据
+    list.list = list.list.filter((item: any) =&gt; item.id != id)
+    console.log(list.list)
+    return {
+        code: 200,
+        msg: 'success',
+    }
+})
+</code></pre>
+<pre><code class="language-typescript">// App.vue
+const handleDelete = (id: number) =&gt; {
+  axios.delete(`/api/delete/news?id=${id}`).then(res =&gt; {
+    console.log(res)
+  })
+  getTableData()
+}
+</code></pre>
+<h3 id="改">改</h3>
+<pre><code class="language-typescript">// mock/index.ts
+Mock.mock('/api/put/news', 'put', (option: any) =&gt; {
+    const news = JSON.parse(option.body)
+    // 根据id修改
+    list.list = list.list.map((item: any) =&gt; {
+        if (item.id == news.id) {
+            item.title = news.title
+            item.img_url = news.img_url
+            item.add_time = news.add_time
+        }
+        return item
+    })
+})
+</code></pre>
+<pre><code class="language-typescript">// App.vue
+const handleUpdate = (id: number) =&gt; {
+  axios.put('/api/put/news', {
+    id: id,
+    title: '测试标题',
+    img_url: 'https://img1.baidu.com/it/u=1830000000,1830000000&amp;fm=26&amp;fmt=auto&amp;gp=0.jpg',
+    add_time: '2021-08-08 08:08:08'
+  }).then(res =&gt; {
+    getTableData()
+  })
+}
+</code></pre>
+<h2 id="代码地址">代码地址</h2>
+<p><code>https://github.com/zorroe/mock-demo</code></p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://zorroe.github.io/tag/0MK1dcwqP/" class="tag">
+                    mock
+                  </a>
+                
+                  <a href="https://zorroe.github.io/tag/pzFrXHj9c2/" class="tag">
+                    vue3
+                  </a>
+                
+                  <a href="https://zorroe.github.io/tag/SrN-KDXeYm/" class="tag">
+                    typescript
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://zorroe.github.io/post/vue-component/">
+                  <h3 class="post-title">
+                    Vue组件
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

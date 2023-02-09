@@ -1,0 +1,2080 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://zorroe.github.io</id>
+    <title>Zorroe</title>
+    <updated>2023-02-09T05:56:46.209Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://zorroe.github.io"/>
+    <link rel="self" href="https://zorroe.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://zorroe.github.io/images/avatar.png</logo>
+    <icon>https://zorroe.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2023, Zorroe</rights>
+    <entry>
+        <title type="html"><![CDATA[Java基础常见面试题（上）]]></title>
+        <id>https://zorroe.github.io/post/java-ji-chu-chang-jian-mian-shi-ti-shang/</id>
+        <link href="https://zorroe.github.io/post/java-ji-chu-chang-jian-mian-shi-ti-shang/">
+        </link>
+        <updated>2023-02-08T11:13:44.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="基础概念与常识">基础概念与常识</h2>
+<h3 id="java语言有哪些特点">Java语言有哪些特点？</h3>
+<ol>
+<li>简单易学</li>
+<li>面向对象（封装，继承，多态）</li>
+<li>平台无关性（Java的虚拟机实现平台无关性）</li>
+<li>支持多线程</li>
+<li>可靠性</li>
+<li>安全性</li>
+<li>支持网络编程并且很方便</li>
+<li>编译与解释并存</li>
+</ol>
+<h3 id="jvm-vs-jdk-vs-jre">JVM vs JDK vs JRE</h3>
+<h4 id="jvm">JVM</h4>
+<p>Java虚拟机（JVM）是运行Java字节码的虚拟机。JVM有针对不同系统的特定实现（Win，Linux，macOS），目的是使用相同的字节码，他们都会给出相同的结果。字节码和不同系统的JVM实现是Java语言“一次编译，随处可以运行”的关键所在。</p>
+<p>**JVM并不只有一种！只要满足JVM规范，每个公司、组织或个人都可以开发自己的专属JVM。**也就是说我们平时接触到的HotSpot VM仅仅是JVM规范的一种实现而已。</p>
+<h4 id="jdk和jre">JDK和JRE</h4>
+<p>JDK是Java Development Kit的缩写，他是功能齐全的Java SDK。它拥有JRE所拥有的一切，还有编译器（javac）和工具（如Jjavadoc和jdb）。它能够创建和编译程序。</p>
+<p>如果只是为了运行Java程序，只需要安装JRE。如果需要进行Java编程工作，那么需要安装JDK。但是，这不是绝对的。有时，即使不打算再计算上进行任何的Java开发，仍然需要安装JDK。例如，如果使用JSP部署Web应用程序，那么从技术上讲，只是在应用程序服务器上运行Java程序。那么为什么需要JDK呢？因为应用程序服务器会将JSP转换为Java servlet，并且需要使用JDK来编译servlet。</p>
+<h3 id="什么是字节码采用字节码的好处是什么">什么是字节码？采用字节码的好处是什么？</h3>
+<p>在Java中，JVM可以理解的代码就叫做字节码（即扩展名为<code>.class</code>的文件），它不免向任何特定的处理器，只面向虚拟机。Java语言通过字节码的方式，在一定程度上解决了传统解释型语言执行效率低的问题，同时又保留了解释型语言可移植的特点。所以，Java程序运行时相对来说还是高效的（和C++，Rust，Go等语言相比还有一定差距），而且，由于字节码并不针对一种特定的机器，因此，Java程序无需重新编译便可在多种不同操作系统的计算机上运行。</p>
+<h4 id="java程序从源代码到运行的过程如下图所示">Java程序从源代码到运行的过程如下图所示：</h4>
+<figure data-type="image" tabindex="1"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/02/08/e66c7c2cf5892e9bc64e0282b05d16da-6f5407.png" alt="未命名文件" loading="lazy"></figure>
+<p>我么需要注意的是<code>.class-&gt;机器码</code>这一步。在这一步JVM类加载器首先加载字节码文件，然后通过解释器逐行解释执行，这种方式的执行速度会相对较慢。而且，有些方法和代码块是经常被调用的（热点代码），所以后面引进了JIT（just-in-time compilation）编译器，而JIT编译器完成第一次编译后，其会将字节码对应的机器码保存下来，下次可以直接使用。机器码的运行效率肯定是高于Java解释器的。这也解释了为什么说Java是编译与解释共存的语言</p>
+<blockquote>
+<p>HotSpot采用了惰性评估（Lazy Evaluation）的做法，根据二八定律，小号大部分系统资源的只有那一小部分代码（热点代码），而这也就是JIT所需要编译的部分。JVM会根据代码每次被执行的情况手机信息并相应地做出一些优化，因此执行的次数越多，它的速度就越快。JDK9引入了一种新的编译模式AOT（Ahead of Time Compilation），他是直接将字节码编译成机器码，这样就避免了JIT预热等方面的开销。JDK支持分层编译哥AOT协作使用。</p>
+</blockquote>
+<h3 id="为什么不全部使用aot呢">为什么不全部使用AOT呢？</h3>
+<p>AOT可以提前编译节省启动时间，那为什么不全部使用这种编译方式呢？</p>
+<p>长话短说，这和Java语言的动态特性有千丝万缕的联系。举个例子，CGLIB动态代理使用的是ASM技术，这种技术的大致原理是运行时直接在内存中生成并加载修改后的字节码文件，也就是<code>.class</code>文件，如果全部使用AOT提前编译，也就不能使用ASM技术。为了支持类似的动态特性，所以选择使用JIT即时编译器</p>
+<h3 id="为什么说java语言编译与解释并存">为什么说Java语言“编译与解释并存”</h3>
+<p>高级编程语言按照程序的执行方式分为两种</p>
+<ul>
+<li>编译型：编译型语言会通过编译器将源代码一次性翻译成可被该平台执行的机器码，一般情况下，编译语言的执行速度比较快，开发效率比较低。常见的编译型语言有C、C++、Go、Rust等等。</li>
+<li>解释型：解释型语言会通过解释器一句一句地将代码解释为机器码后再执行，解释型语言开发效率比较快，执行速度比较慢。常见的解释型语言有Python、JS、PHP等。</li>
+</ul>
+<blockquote>
+<p>为了改善编译语言的效率而发展出的即时编译技术，已经缩小了这两种语言的差距，这种技术混合了编译型语言与解释型语言的优点，它像编译语言一样，先把程序源代码编译成字节码。到执行期时，再把字节码直译，之后执行。Java与LLVM是这种技术的代表产物</p>
+</blockquote>
+<p>因为Java语言既有编译型语言的特征，也具有解释型语言的特征。因为Java程序要经过先编译，后解释的两个步骤，由Java编写的程序需要先经过编译步骤，生成字节码（<code>.class</code>文件），这种字节码必须由Java解释器来解释执行。</p>
+<h2 id="基本语法">基本语法</h2>
+<h3 id="静态变量有什么作用">静态变量有什么作用？</h3>
+<p>静态变量可以被类的所有实例共享。无论一个类创建了多少个对象，他们都共享同一份静态变量</p>
+<p>通常情况下，我们会使用<code>final</code>关键字来修饰静态变量成为常量</p>
+<h3 id="字符型常量和字符串常量的区别">字符型常量和字符串常量的区别？</h3>
+<ol>
+<li><strong>形式</strong>：字符常量是单引号引起的一个字符，字符串常量是双引号引起的0个或若干个字符。</li>
+<li><strong>含义</strong>：字符串常量相当于一个整型值（ASCII值），可以参加表达式运算；字符串常量代表一个地址（该字符串再内存中的存放位置）</li>
+<li><strong>占内存大小</strong>：字符常量只占2个字节，字符串常量占若干个字节</li>
+</ol>
+<p>（<strong>注意</strong>：<code>char</code><strong>在Java中占两个字节</strong>）</p>
+<h3 id="方法">方法</h3>
+<ol>
+<li>
+<p>无参无返回值的方法</p>
+<pre><code class="language-java">public void f1() {
+    System.out.println(&quot;Hello World&quot;);
+}
+</code></pre>
+</li>
+<li>
+<p>无参有返回值的方法</p>
+<pre><code class="language-java">public int f2() {
+    return 1;
+}
+</code></pre>
+</li>
+<li>
+<p>有参无返回值的方法</p>
+<pre><code class="language-java">public void f3(int x) {
+    System.out.println(x);
+}
+</code></pre>
+</li>
+<li>
+<p>有参有返回值的方法</p>
+<pre><code class="language-java">public int f4(int a, int b) {
+    return a * b;
+}
+</code></pre>
+</li>
+</ol>
+<h3 id="静态方法方法为什么不能调用非静态成员">静态方法方法为什么不能调用非静态成员？</h3>
+<ol>
+<li>静态方法是属于类的，在类加载的时候就会分配内存，可以通过类名直接访问。而非静态成员属于实例对象，只有在对象实例化之后才存在，需要通过类的实例对象去访问。</li>
+<li>在类的非静态成员不存在的时候静态方法就已经存在了，此时调用在内存中还不存在的非静态成员属于非法操作。</li>
+</ol>
+<h3 id="静态方法和实例方法有何不同">静态方法和实例方法有何不同？</h3>
+<ol>
+<li>
+<p>调用方式</p>
+<p>在外部调用静态方法时，可以使用<code>类名.方法名</code>的方式，也可以使用<code>对象.方法名</code>的方式，而实例方法只有后面这种方式。也就是说，调用静态方法可以不创建对象。</p>
+<p>不过，需要注意的是一般不建议使用<code>对象.方法名</code>的方式调用静态方法。这种方式容易造成混淆，静态方法不属于类的某个对象，而是属于这个类。</p>
+<p>因此，一般建议使用<code>类名.方法名</code>的方式来调用静态方法</p>
+<pre><code class="language-java">public class Person {
+    public void method() {
+      //......
+    }
+
+    public static void staicMethod(){
+      //......
+    }
+    public static void main(String[] args) {
+        Person person = new Person();
+        // 调用实例方法
+        person.method();
+        // 调用静态方法
+        Person.staicMethod()
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>访问类成员是否存在限制</p>
+<p>静态方法在访问本类的成员时，只允许访问静态成员（即静态成员变量和静态方法），不允许访问实例成员（即实例成员变量和实例方法），而实例方法不存在这个限制。</p>
+</li>
+</ol>
+<h3 id="重载和重写有什么区别">重载和重写有什么区别</h3>
+<blockquote>
+<p>重载是同样的一个方法能够根据输入数据的不同，做出不同的处理</p>
+<p>重写就是当子类继承来自父类的相同的方法，输入数据一样，但要做出有别于父类的响应时，你就要覆盖父类方法</p>
+</blockquote>
+<h4 id="重载">重载</h4>
+<p>发生在同一个类中（或者父类和子类之间），方法名必须相同，参数类型不同、个数不同、顺序不同，方法的返回值和访问修饰符可以不同</p>
+<blockquote>
+<p>如果多个方法（比如<code>StringBuilder</code>的构造方法）有相同的名字、不同的参数，便产生了重载</p>
+<pre><code class="language-java">StringBuilder sb = new StringBuilder();
+StringBuilder sb2 = new StringBuilder(&quot;HelloWorld&quot;);
+</code></pre>
+<p>编译器必须挑选出具体执行哪个方法，它通过用各个方法给出的参数类型与特定方法调用所使用的值类型进行匹配来挑选出相应的方法。如果编译器找不到匹配的参数，就会产生编译时错误，因为根本不存在匹配，或者没有一个比其他的更好（这个过程被称为重载解析（overloading resolution））</p>
+<p>Java允许重载任何方法，而不只是构造器方法</p>
+</blockquote>
+<p>综上：重载就是同一个类中多个同名方法根据不同的传参来执行不同的逻辑处理。</p>
+<h4 id="重写">重写</h4>
+<p>重写发生在运行期，是子类对弗雷的允许访问的方法的实现过程进行重新编写。</p>
+<ol>
+<li>方法名、参数列表必须相同，子类方法的返回值类型比父类返回值类型更小或相等，抛出的异常范围小于等于父类，访问修饰范围大于等于父类</li>
+<li>如果父类方法访问修饰符为<code>private/final/static</code>则子类不能重写该方法，但是被<code>static</code>修饰的方法能够被再次声明</li>
+<li>构造方法无法被重写</li>
+</ol>
+<p>✨关于<strong>重写的返回值类型</strong>，这里需要额外多说明一下，如果方法的返回值类型是void和基本数据类型，则返回值重写时不可修改。但是如果方法的返回值是引用类型，重写时是可以返回改引用类型的子类的</p>
+<pre><code class="language-java">public class Hero {
+    public String name() {
+        return &quot;超级英雄&quot;;
+    }
+}
+public class SuperMan extends Hero{
+    @Override
+    public String name() {
+        return &quot;超人&quot;;
+    }
+    public Hero hero() {
+        return new Hero();
+    }
+}
+
+public class SuperSuperMan extends SuperMan {
+    public String name() {
+        return &quot;超级超级英雄&quot;;
+    }
+
+    @Override
+    public SuperMan hero() {
+        return new SuperMan();
+    }
+}
+</code></pre>
+<h4 id="什么是可变长参数">什么是可变长参数？</h4>
+<p>从Java5开始，Java支持定义可变长参数，所谓可变长参数就是允许在调用方法时传入不定长度的参数。如下</p>
+<pre><code class="language-java">public static void method1(String... args) {
+   //......
+}
+// 可以接受0个或多个参数
+</code></pre>
+<p>另外，可变参数只能作为参数的最后一个参数</p>
+<pre><code class="language-java">public static void method2(String arg1, String... args) {
+   //......
+}
+</code></pre>
+<p><strong>遇到方法重载的情况怎么办呢？会优先匹配固定参数还是可变参数的方法呢？</strong></p>
+<p>会优先匹配固定参数的方法，因为固定参数的方法匹配度更高</p>
+<h2 id="基本数据类型">基本数据类型</h2>
+<h3 id="java中的集中基本数据类型了解吗">Java中的集中基本数据类型了解吗？</h3>
+<p>Java中有8中基本数据类型，分别为：</p>
+<ul>
+<li>
+<p>6种数字类型：<code>byte</code>、<code>short</code>、<code>int</code>、<code>long</code>、<code>float</code>、<code>double</code></p>
+</li>
+<li>
+<p>1种字符类型：<code>char</code></p>
+</li>
+<li>
+<p>1种布尔型：<code>boolean</code></p>
+</li>
+</ul>
+<p>这8中基本数据类型的默认值以及所占空间的大小如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">基础类型</th>
+<th>包装类型</th>
+<th>位数</th>
+<th>字节</th>
+<th>默认值</th>
+<th style="text-align:right">取值范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>byte</code></td>
+<td><code>Byte</code></td>
+<td>8</td>
+<td>1</td>
+<td>0</td>
+<td style="text-align:right">-128~127</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>short</code></td>
+<td><code>Short</code></td>
+<td>16</td>
+<td>2</td>
+<td>0</td>
+<td style="text-align:right">-32768~32767</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>int</code></td>
+<td><code>Integer</code></td>
+<td>32</td>
+<td>4</td>
+<td>0</td>
+<td style="text-align:right">-2147483648 ~ 2147483647</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>long</code></td>
+<td><code>Long</code></td>
+<td>64</td>
+<td>8</td>
+<td>0L</td>
+<td style="text-align:right">-9223372036854775808 ~ 9223372036854775807</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>char</code></td>
+<td><code>Float</code></td>
+<td>16</td>
+<td>2</td>
+<td>'u0000'</td>
+<td style="text-align:right">0 ~ 65535</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>float</code></td>
+<td><code>Double</code></td>
+<td>32</td>
+<td>4</td>
+<td>0f</td>
+<td style="text-align:right">1.4E-45 ~ 3.4028235E38</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>double</code></td>
+<td><code>Character</code></td>
+<td>64</td>
+<td>8</td>
+<td>0d</td>
+<td style="text-align:right">4.9E-324 ~ 1.7976931348623157E308</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>boolean</code></td>
+<td><code>Boolean</code></td>
+<td>1</td>
+<td></td>
+<td>false</td>
+<td style="text-align:right">true、false</td>
+</tr>
+</tbody>
+</table>
+<p>对于<code>boolean</code>，官方文档未明确定义，它依赖于JVM厂商的具体实现。逻辑上理解是占用1位，但是实际中会考虑计算机高效存储因素</p>
+<p>另外，Java的每种基本类型所占存储空间的大小不会像其他大多数语言那样随机器硬件架构的变化而变化。这种所占存储空间大小的不变性是Java程序比用其他大多数语言编写的程序更具可移植性的原因之一</p>
+<blockquote>
+<ol>
+<li>Java中使用<code>long</code>类型的数据一定要在数值后加上L，否则会作为整型解析</li>
+<li><code>char a = 'h'</code>：<code>char</code>使用单引号，<code>String a = &quot;hello&quot;：String使用双引号</code></li>
+</ol>
+</blockquote>
+<h3 id="基本类型和包装类型的区别">基本类型和包装类型的区别？</h3>
+<ul>
+<li>包装类型不赋值的时候是<code>null</code>，基本数据类型有默认值</li>
+<li>包装类型可以用于泛型，基本类型不可以</li>
+<li>基本数据类型的局部变量存放在Java虚拟机栈的局部变量表中，基本数据类型的成员变量（未被<code>static</code>修饰）存放在Java虚拟机的堆中。包装类型属于对象类型，我们知道几乎所有的对象实例都存在于堆中</li>
+<li>相比于对象类型，基本数据类型占用的控件非常小</li>
+</ul>
+<p><strong>为什么说几乎所有的对象实例呢？</strong>：这是因为HotSpot虚拟机引入了JIT优化之后，会对对象进行逃逸分析，如果发现某一个对象并没有逃逸到方法外部，那么就可能通过标量替换来实现栈上分配，而避免堆上分配内存</p>
+<p>⚠️ 注意：**基本数据类型存放在栈中是一个常见的误区！**基本数据类型的成员变量如果没有被<code>static</code>修饰的话（不建议这么使用，应该要使用基本数据类型对应的包装类型），就存放在堆中。</p>
+<pre><code class="language-java">class BasicTypeVar{
+  private int x;
+}
+</code></pre>
+<h3 id="包装类型的缓存机制了解么">包装类型的缓存机制了解么？</h3>
+<p>Java基本数据类型的包装类型大部分都用到了缓存机制来提升性能</p>
+<p><code>Byte</code>、<code>Short</code>、<code>Integer</code>、<code>Long</code>这4中包装类默认创建了数值[-128, 127]的相应类型的缓存数据，<code>Character</code>创建了数值在[0, 127]范围的缓存数据，<code>Boolean</code>直接返回<code>True</code>或<code>False</code>.</p>
+<p><strong><code>Interger</code>缓存源码：</strong></p>
+<pre><code class="language-java">public static Integer valueOf(int i) {
+    if (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)
+        return IntegerCache.cache[i + (-IntegerCache.low)];
+    return new Integer(i);
+}
+private static class IntegerCache {
+    static final int low = -128;
+    static final int high;
+    static {
+        // high value may be configured by property
+        int h = 127;
+    }
+}
+</code></pre>
+<p><strong><code>Character</code>缓存源码：</strong></p>
+<pre><code class="language-java">public static Character valueOf(char c) {
+    if (c &lt;= 127) { // must cache
+      return CharacterCache.cache[(int)c];
+    }
+    return new Character(c);
+}
+
+private static class CharacterCache {
+    private CharacterCache(){}
+    static final Character cache[] = new Character[127 + 1];
+    static {
+        for (int i = 0; i &lt; cache.length; i++)
+            cache[i] = new Character((char)i);
+    }
+}
+</code></pre>
+<p><strong><code>Boolean</code>缓存源码</strong></p>
+<pre><code class="language-java">public static Boolean valueOf(boolean b) {
+    return (b ? TRUE : FALSE);
+}
+</code></pre>
+<p>如果超出对应范围仍然会创建新的对象，缓存的范围区间的大小只是在性能和资源之间的权衡</p>
+<p>两种浮点数类型的包装类<code>Float</code>，<code>Double</code>并没有实现缓存机制</p>
+<pre><code class="language-java">Integer i1 = 33;
+Integer i2 = 33;
+System.out.println(i1 == i2);// 输出 true
+
+Float i11 = 333f;
+Float i22 = 333f;
+System.out.println(i11 == i22);// 输出 false
+
+Double i3 = 1.2;
+Double i4 = 1.2;
+System.out.println(i3 == i4);// 输出 false
+</code></pre>
+<p>下面是true还是false呢？</p>
+<pre><code class="language-java">Integer i1 = 40;
+Integer i2 = new Integer(40);
+System.out.println(i1==i2);
+</code></pre>
+<p><code>Integer i1 = 40</code>这一行代码会发生装箱，也就是说这行代码等价于<code>Integer i1 = Integer.valueOf(40)</code>。因此，<code>i1</code>直接使用的是缓存中的对象。而<code>Integer i2 = new Integer(40)</code>会直接创建新的对象。</p>
+<p>因此，答案是<code>false</code></p>
+<blockquote>
+<p>所有的整型包装包装类对象之间值的比较，全部使用equals方法比较</p>
+<p>说明：对于Integer var = ？ 在-128到127之间的数值，Integer对象是在<code>IntegerCache.cache</code>产生，会复用已有对象，这个区间内的Integer值可以直接使用<code>==</code>进行判断，但是这个区间之外的所有数据，都会在堆上产生，并不会复用已有对象，这是一个大坑，推荐使用<code>equals</code>进行判断</p>
+</blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Typescript的Mixin]]></title>
+        <id>https://zorroe.github.io/post/typescript-de-mixin/</id>
+        <link href="https://zorroe.github.io/post/typescript-de-mixin/">
+        </link>
+        <updated>2023-01-31T09:01:37.000Z</updated>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#mixin-%E6%B7%B7%E5%85%A5">Mixin 混入</a>
+<ul>
+<li><a href="#%E5%A4%9A%E7%BB%A7%E6%89%BF%E7%9A%84%E6%AF%9B%E7%97%85">多继承的毛病</a></li>
+<li><a href="#%E6%B7%B7%E5%85%A5%E4%BB%8B%E7%BB%8D">混入介绍</a></li>
+<li><a href="#%E6%B7%B7%E5%85%A5%E7%9A%84%E9%99%90%E5%88%B6">混入的限制</a></li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="mixin-混入">Mixin 混入</h1>
+<h2 id="多继承的毛病">多继承的毛病</h2>
+<ul>
+<li>TypeScript 不支持多重继承，这意味着一个类只能继承自一个类，因为他会潜在地增加程序的复杂性。</li>
+<li>倘若，在支持多继承的环境下，一个子类所继承的两个父类都拥有一个同名的方法，子类在调用父类方法的时候，哪一个父类的方法被调用是不清楚或者说是有歧义的。</li>
+</ul>
+<h2 id="混入介绍">混入介绍</h2>
+<ul>
+<li>但是，有时候，我们会认为声明一个同时继承两个或多个类的类是一个好的想法。</li>
+<li>为了避免多继承实现中潜在的危险，我们可以使用混入（又称混合，Mixin）特性。</li>
+</ul>
+<p>首先定义两个基类</p>
+<pre><code class="language-typescript">class Mammal {
+  breath(): void {
+    console.log(&quot;I'm alive&quot;)
+  }
+}
+
+class WingedAnimal {
+  fly(): void {
+    console.log(&quot;I'm fly&quot;)
+  }
+}
+</code></pre>
+<p>下面是子类，使用<code>implements</code>替代<code>extends</code>，因此继承的类仍需要实现，这里只是占坑</p>
+<pre><code class="language-typescript">class Bat implements Mammal, WingedAnimal {
+  fly: () =&gt; string
+  breath: () =&gt; string
+}
+</code></pre>
+<p>使用以下函数，将基类的方法实现/复制到子类中</p>
+<pre><code class="language-typescript">function applyMixins(derivedCtor: any, baseCtors: any[]) {
+  baseCtors.forEach((baseCtor) =&gt; {
+    Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) =&gt; {
+      if (name !== 'constructor') {
+        derivedCtor.prototype[name] = baseCtor.prototype[name]
+      }
+    })
+  })
+}
+</code></pre>
+<p>实现效果</p>
+<pre><code class="language-typescript">applyMixins(Bat, [Mammal, WingedAnimal])
+const bat = new Bat()
+bat.breath() // I'm alive
+bat.fly() // I'm fly
+</code></pre>
+<h2 id="混入的限制">混入的限制</h2>
+<ul>
+<li>只能在继承树上继承一级的方法和属性。因为编译过后，在 <code>JavaScript</code> 中，父类的方法是在父类的原型对象中，子类的原型对象上找不到父类的方法。</li>
+<li>如果两个或更多的父类包含了同名的方法，那么只会继承传入 <code>applyMixins</code> 函数中 <code>baseCtor</code> 数组中最后一个类中的该方法。</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Typescript的枚举]]></title>
+        <id>https://zorroe.github.io/post/typescript-de-mei-ju/</id>
+        <link href="https://zorroe.github.io/post/typescript-de-mei-ju/">
+        </link>
+        <updated>2023-01-31T08:27:50.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="枚举">枚举</h1>
+<p>使用枚举我们可以定义一些有名字的数字常量。枚举通过<code>enum</code>关键字来定义</p>
+<pre><code class="language-typescript">enum Direction {
+    Up = 1,
+    Down,
+    Left,
+    Right
+}
+</code></pre>
+<p>一个枚举类型可以包含零个或多个枚举成员。 枚举成员具有一个数字值，它可以是常数或是计算得出的值 当满足如下条件时，枚举成员被当作是常数：</p>
+<ul>
+<li>不具有初始化函数并且之前的枚举成员是常数。 在这种情况下，当前枚举成员的值为上一个枚举成员的值加<code>1</code>。 但第一个枚举元素是个例外。 如果它没有初始化方法，那么它的初始值为<code>0</code>。</li>
+<li>枚举成员使用常数枚举表达式初始化。 常数枚举表达式是TypeScript表达式的子集，它可以在编译阶段求值。 当一个表达式满足下面条件之一时，它就是一个常数枚举表达式：
+<ul>
+<li>数字字面量</li>
+<li>引用之前定义的常数枚举成员（可以是在不同的枚举类型中定义的） 如果这个成员是在同一个枚举类型中定义的，可以使用非限定名来引用。</li>
+<li>带括号的常数枚举表达式</li>
+<li><code>+</code>, <code>-</code>, <code>~</code> 一元运算符应用于常数枚举表达式<br>
+<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>&lt;&lt;</code>, <code>&gt;&gt;</code>, <code>&gt;&gt;&gt;</code>, <code>&amp;</code>, <code>|</code>, <code>^</code> 二元运算符，常数枚举表达式做为其一个操作对象。 若常数枚举表达式求值后为<code>NaN</code>或<code>Infinity</code>，则会在编译阶段报错。</li>
+</ul>
+</li>
+</ul>
+<p>所有其它情况的枚举成员被当作是需要计算得出的值。</p>
+<pre><code class="language-typescript">enum FileAccess {
+    // constant members
+    None,
+    Read    = 1 &lt;&lt; 1,
+    Write   = 1 &lt;&lt; 2,
+    ReadWrite  = Read | Write,
+    // computed member
+    G = &quot;123&quot;.length
+}
+</code></pre>
+<p>枚举是在运行时真正存在的一个对象。其中一个原因是因为这样可以从枚举值到枚举名进行反向映射</p>
+<pre><code class="language-typescript">enum Enum{
+  A
+}
+
+console.log(Enum.A)
+console.log(Enum[0])
+</code></pre>
+<p>编译成</p>
+<pre><code class="language-js">var Enum;
+(function (Enum) {
+    Enum[Enum[&quot;A&quot;] = 0] = &quot;A&quot;;
+})(Enum || (Enum = {}));
+console.log(Enum.A);
+console.log(Enum[0]);
+</code></pre>
+<p>生成的代码中，枚举类型被编译成一个对象，它包含双向映射（<code>name</code> -&gt; <code>value</code>）和（<code>value</code> -&gt; <code>name</code>）。 引用枚举成员总会生成一次属性访问并且永远不会内联。 在大多数情况下这是很好的并且正确的解决方案。 然而有时候需求却比较严格。 当访问枚举值时，为了避免生成多余的代码和间接引用，可以使用常数枚举。 常数枚举是在<code>enum</code>关键字前使用<code>const</code>修饰符。</p>
+<p>常数枚举只能使用常数枚举表达式并且不同于常规的枚举的是他们在编译阶段会被删除。常数枚举成员在使用的地方被内敛进来。这是因为常数枚举不可能有计算成员</p>
+<pre><code class="language-typescript">const enum FileAccess {
+  None,
+  Read = 1 &lt;&lt; 1,
+  Write = 1 &lt;&lt; 2,
+  ReadWrite = Read | Write,
+}
+
+console.log(FileAccess.None)
+console.log(FileAccess.Read)
+console.log(FileAccess.Write)
+console.log(FileAccess.ReadWrite)
+</code></pre>
+<p>编译成</p>
+<pre><code class="language-js">console.log(0 /* FileAccess.None */);
+console.log(2 /* FileAccess.Read */);
+console.log(4 /* FileAccess.Write */);
+console.log(6 /* FileAccess.ReadWrite */);
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Typescript的泛型]]></title>
+        <id>https://zorroe.github.io/post/typescript-de-fan-xing/</id>
+        <link href="https://zorroe.github.io/post/typescript-de-fan-xing/">
+        </link>
+        <updated>2023-01-31T07:58:15.000Z</updated>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#%E6%B3%9B%E5%9E%8B">泛型</a>
+<ul>
+<li><a href="#%E4%BB%8B%E7%BB%8D">介绍</a></li>
+<li><a href="#%E6%B3%9B%E5%9E%8B%E4%B9%8Bhello-world">泛型之Hello World</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E6%B3%9B%E5%9E%8B%E5%8F%98%E9%87%8F">使用泛型变量</a></li>
+<li><a href="#%E6%B3%9B%E5%9E%8B%E7%B1%BB%E5%9E%8B">泛型类型</a></li>
+<li><a href="#%E6%B3%9B%E5%9E%8B%E7%B1%BB">泛型类</a></li>
+<li><a href="#%E6%B3%9B%E5%9E%8B%E7%BA%A6%E6%9D%9F">泛型约束</a></li>
+<li><a href="#%E5%9C%A8%E6%B3%9B%E5%9E%8B%E7%BA%A6%E6%9D%9F%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%8F%82%E6%95%B0">在泛型约束中使用类型参数</a></li>
+<li><a href="#%E5%9C%A8%E6%B3%9B%E5%9E%8B%E9%87%8C%E4%BD%BF%E7%94%A8%E7%B1%BB%E7%B1%BB%E5%9E%8B">在泛型里使用类类型</a></li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="泛型">泛型</h1>
+<h2 id="介绍">介绍</h2>
+<p>软件工程中，我们不仅要创建一致的定义良好的API，同时也要考虑可重用性。 组件不仅能够支持当前的数据类型，同时也能支持未来的数据类型，这在创建大型系统时为你提供了十分灵活的功能。</p>
+<p>在像C#和Java这样的语言中，可以使用泛型来创建可重用的组件，一个组件可以支持多种类型的数据。 这样用户就可以以自己的数据类型来使用组件。</p>
+<h2 id="泛型之hello-world">泛型之Hello World</h2>
+<p>下面来创建第一个使用泛型的例子：identity函数。 这个函数会返回任何传入它的值。</p>
+<p>不用泛型的话，这个函数可能是下面这样</p>
+<pre><code class="language-typescript">function identity(arg: number): number {
+  return arg
+}
+</code></pre>
+<p>或者，我们使用<code>any</code>类型来定义函数：</p>
+<pre><code class="language-typescript">function identity(arg: any): any {
+  return arg
+}
+</code></pre>
+<p>使用<code>any</code>类型会导致这个函数可以接受任何类型的<code>arg</code>参数，这样就丢失了一些信息：传入的类型与返回的类型应该是相同的。如果我们传入一个数字，我们只知道任何类型的值都有可能被返回</p>
+<p>因此，我们需要一种方法使返回值的类型与传入参数的类型是相同的。 这里，我们使用了<em>类型变量</em>，它是一种特殊的变量，只用于表示类型而不是值。</p>
+<pre><code class="language-typescript">function identity&lt;T&gt;(arg: T): T {
+  return arg
+}
+</code></pre>
+<p>我们给identity添加了类型变量<code>T</code>。 <code>T</code>帮助我们捕获用户传入的类型（比如：<code>number</code>），之后我们就可以使用这个类型。 之后我们再次使用了<code>T</code>当做返回值类型。现在我们可以知道参数类型与返回值类型是相同的了。 这允许我们跟踪函数里使用的类型的信息。</p>
+<p>我们把这个版本的<code>identity</code>函数叫做泛型，因为它可以适用于多个类型。 不同于使用<code>any</code>，它不会丢失信息，像第一个例子那像保持准确性，传入数值类型并返回数值类型。</p>
+<p>我们定义了泛型函数后，可以用两种方法使用。</p>
+<p>第一种方法，传入所有的参数，包含类型参数：</p>
+<pre><code class="language-typescript">let output1 = identity&lt;string&gt;('hello') // output1的类型为string
+let output2 = identity&lt;number&gt;(11)      // output2的类型为number
+</code></pre>
+<p>这里我们明确的指定<code>T</code>是<code>string</code>类型，并作为一个参数传给函数，使用<code>&lt;&gt;</code>而不是<code>()</code>。</p>
+<p>第二种方法更普遍，利用<em>类型推断</em> - 编译器会根据传入的参数自动地帮助我们确定T的类型：</p>
+<pre><code class="language-typescript">let output3 = identity(&quot;world&quot;)  // output3的类型为string
+let output4 = identity(22)       // output4的类型为number
+</code></pre>
+<p>大多数情况下没必要使用尖括号<code>&lt;&gt;</code>来明确地传入类型；编译器可以查看<code>arg</code>的值，然后把<code>T</code>设置为它的类型。类型推论帮助我们保持代码精简及可读性。如果编译器不能自动地推断出类型的话，只能像上面那样明确传入<code>T</code>的类型，在一些复杂情况下，这是可能出现的</p>
+<h2 id="使用泛型变量">使用泛型变量</h2>
+<p>使用泛型创建像<code>identity</code>这样的泛型函数时，编译器要求你在函数体必须正确的使用这个通用的类型。 换句话说，你必须把这些参数当做是任意或所有类型。</p>
+<p>之前<code>identity</code>例子</p>
+<pre><code class="language-typescript">function identity&lt;T&gt;(arg: T): T {
+  return arg
+}
+</code></pre>
+<p>如果我们向同事打印出<code>arg</code>的长度。我们可能会这样做：</p>
+<pre><code class="language-typescript">function loggindIdentity&lt;T&gt;(arg: T): T{
+  console.log(arg.length) // 类型“T”上不存在属性“length”。
+  return arg
+}
+</code></pre>
+<p>如果这么做，编译器会报错说我们使用了<code>arg</code>的<code>.length</code>属性，但是没有地方指明<code>arg</code>具有这个属性。 记住，这些类型变量代表的是任意类型，所以使用这个函数的人可能传入的是个数字，而数字是没有<code>.length</code>属性的。</p>
+<p>现在假设我们想操作<code>T</code>类型的数组而不直接是<code>T</code>。由于我们操作的是数组，所以<code>.length</code>属性是应该存在的。 我们可以像创建其它数组一样创建这个数组：</p>
+<pre><code class="language-typescript">function loggindIdentity&lt;T&gt;(arg: T[]): T[]{
+  console.log(arg.length)
+  return arg
+}
+</code></pre>
+<p>这样理解<code>loggindIdentity</code>的类型：泛型函数<code>loggindIdentity</code>，接受类型参数<code>T</code>和参数<code>arg</code>，它是一个类型是<code>T</code>的数组，并返回类型为<code>T</code>d的数组。如果我们传入数字数组，将返回一个数字数组，因为此时<code>T</code>的类型为<code>number</code>。这可以让我们把泛型变量<code>T</code>当作类型的一部分使用，而不是整个类型，增加了灵活性</p>
+<h2 id="泛型类型">泛型类型</h2>
+<p>上一节，我们创建了<code>identity</code>通用函数，可以适用于不同的类型。在这节，我们研究了一下函数本身的类型，以及如何创建泛型接口</p>
+<p>泛型函数的类型与非泛型函数的类型没什么不同，只是有一个类型参数在最前面，像函数声明一样：</p>
+<pre><code class="language-typescript">function identity&lt;T&gt;(arg: T): T {
+  return arg
+}
+
+let myIdentity: &lt;T&gt;(arg: T) =&gt; T = identity
+</code></pre>
+<p>我们也可以使用不同的泛型参数名，只要在数量和使用方式上能对应上就行</p>
+<pre><code class="language-typescript">function identity&lt;T&gt;(arg: T): T {
+  return arg
+}
+
+let myIdentity: &lt;U&gt;(arg: U) =&gt; U = identity
+</code></pre>
+<p>我们还可以使用带有调用签名的对象字面量来定义泛型函数</p>
+<pre><code class="language-typescript">function identity&lt;T&gt;(arg: T): T {
+  return arg
+}
+
+let myIdentity: { &lt;T&gt;(arg: T): T } = identity
+</code></pre>
+<p>这引导我们去写第一个泛型接口了。我们把上面例子里的字面量拿来作为一个接口</p>
+<pre><code class="language-typescript">interface GenericIdentityFn{
+  &lt;T&gt;(arg: T): T
+}
+
+function identity&lt;T&gt;(arg: T): T {
+  return arg
+}
+
+let myIdentity: GenericIdentityFn = identity
+</code></pre>
+<p>一个相似的例子，我们可能想把泛型参数当作整个接口的一个参数。 这样我们就能清楚的知道使用的具体是哪个泛型类型（比如： <code>Dictionary&lt;string&gt;</code>而不只是<code>Dictionary</code>）。 这样接口里的其它成员也能知道这个参数的类型了。</p>
+<pre><code class="language-typescript">interface GenericIdentityFn&lt;T&gt;{
+  (arg: T): T
+}
+
+function identity&lt;T&gt;(arg: T): T {
+  return arg
+}
+
+let myIdentity: GenericIdentityFn&lt;string&gt; = identity
+</code></pre>
+<p>注意，我们的示例做了少许改动。 不再描述泛型函数，而是把非泛型函数签名作为泛型类型一部分。 当我们使用<code>GenericIdentityFn</code>的时候，还得传入一个类型参数来指定泛型类型（这里是：<code>string</code>），锁定了之后代码里使用的类型。 对于描述哪部分类型属于泛型部分来说，理解何时把参数放在调用签名里和何时放在接口上是很有帮助的。</p>
+<p>除了泛型接口，我们还可以创建泛型类。 注意，无法创建泛型枚举和泛型命名空间。</p>
+<h2 id="泛型类">泛型类</h2>
+<p>泛型类看上去与泛型接口差不多。 泛型类使用<code>&lt;&gt;</code>括起泛型类型，跟在类名后面。</p>
+<pre><code class="language-typescript">class GenericNumber&lt;T&gt; {
+  zeroValue: T
+  add: (x: T, y: T) =&gt; T
+}
+</code></pre>
+<p><code>GenericNumber</code>类的使用是十分直观的，并且你可能已经注意到了，没有什么去限制它只能使用<code>number</code>类型。 也可以使用字符串或其它更复杂的类型。</p>
+<pre><code class="language-typescript">let numberGeneric = new GenericNumber&lt;number&gt;()
+numberGeneric.zeroValue = 0
+numberGeneric.add = (x, y) =&gt; {
+  return x + y
+}
+
+let stringGeneric = new GenericNumber&lt;string&gt;()
+stringGeneric.zeroValue = '12'
+stringGeneric.add = (x, y) =&gt; {
+  return stringGeneric.zeroValue + x + y
+}
+
+console.log(numberGeneric.add(1, 2))  // 3
+console.log(stringGeneric.add('34', '56'))  // 123456
+</code></pre>
+<p>与接口一样，直接把泛型类型放在类后面，可以帮助我们却人类的所有属性都在使用相同的类型</p>
+<blockquote>
+<p>类有两部分：静态部分和实例部分。 泛型类指的是实例部分的类型，所以类的静态属性不能使用这个泛型类型。</p>
+</blockquote>
+<h2 id="泛型约束">泛型约束</h2>
+<p>上面说过，我们有时候想操作某类型的一组值，并且我们知道这组值具有什么样的属性。 在 <code>loggingIdentity</code>例子中，我们想访问<code>arg</code>的<code>length</code>属性，但是编译器并不能证明每种类型都有<code>length</code>属性，所以就报错了。</p>
+<pre><code class="language-typescript">function loggindIdentity&lt;T&gt;(arg: T): T{
+  console.log(arg.length) // 类型&quot;T&quot;上不存在属性“length”。
+  return arg
+}
+</code></pre>
+<p>相比于操作any所有类型，我们想要限制函数去处理任意带有<code>.length</code>属性的所有类型。只要传入的类型有这个属性，我们就允许。为此，我们需要列出对于<code>T</code>的约束要求</p>
+<p>为此，我们定义一个接口来描述约束条件。创建一个包含<code>.length</code>属性的接口，使用这个接口和<code>extends</code>关键字来实现约束。</p>
+<pre><code class="language-typescript">interface LengthWise {
+  length: number
+}
+
+function loggindIdentity&lt;T extends LengthWise&gt;(arg: T): T {
+  console.log(arg.length)
+  return arg
+}
+</code></pre>
+<p>现在这个泛型函数被定义了约束，因此它不再是适用于任意类型</p>
+<pre><code class="language-typescript">loggindIdentity(3)  // 类型&quot;number&quot;的参数不能赋给类型&quot;LengthWise&quot;的参数
+loggindIdentity('hello')
+loggindIdentity([1, 2, 3])
+</code></pre>
+<h2 id="在泛型约束中使用类型参数">在泛型约束中使用类型参数</h2>
+<p>你可以声明一个类型参数，且它被另一个类型参数所约束。 比如，现在我们想要用属性名从对象里获取这个属性。 并且我们想要确保这个属性存在于对象 <code>obj</code>上，因此我们需要在这两个类型之间使用约束。</p>
+<pre><code class="language-typescript">function getProperty&lt;T, K extends keyof T&gt;(obj: T, key: K) {
+  return obj[key]
+}
+let x = { a: 1, b: 2, c: 3, d: 4 }
+
+getProperty(x, 'a')
+getProperty(x, 'z')  //类型&quot;z&quot;的参数不能赋给类型&quot;a&quot; | &quot;b&quot; | &quot;c&quot; | &quot;d&quot;的参数。
+</code></pre>
+<h2 id="在泛型里使用类类型">在泛型里使用类类型</h2>
+<p>在Typescript使用泛型创建工厂函数时，需要引用构造函数的类类型。比如</p>
+<pre><code class="language-typescript">class Person {
+  age: number
+}
+
+function create&lt;T&gt;(c: { new (): T }): T {
+  return new c()
+}
+
+const p1 = create&lt;Person&gt;(Person)
+console.log(p1)  // Person {}
+</code></pre>
+<blockquote>
+<p>关于<code>create</code>方法里面的<code>{new(): T}</code>相关解释</p>
+<p>typescript中new()描述一个构造函数签名。它代表构造函数的特征。例如<code>{new(): T}</code>。它是一个带有无参构造函数的类的类型。例如：</p>
+<pre><code class="language-typescript">function create&lt;T&gt;(c: { new(): T } ): T {
+    return new c();
+}
+</code></pre>
+<p>这个<code>create</code>函数接收一个参数，这个参数是一个包含无参构造函数的类并且返回一个<code>T</code>类型的实例</p>
+<pre><code class="language-typescript">function create&lt;T&gt;(c: { new(a: number): T },age: number): T{
+    return new c(age)
+}
+</code></pre>
+<p>这个<code>create</code>函数接收两个参数，第一个参数是一个包含一个有参构造函数（有参构造函数传入一个参数类型为<code>number</code>的数）的类，第二个参数是一个<code>number</code>类型的参数，然后返回这个<code>T</code>类型的实例，如下</p>
+</blockquote>
+<pre><code class="language-typescript">class Person {
+  age: number
+
+  constructor(age: number) {
+    this.age = age
+  }
+}
+
+function create&lt;T&gt;(c: { new (age: number): T }, age: number): T {
+  return new c(age)
+}
+
+const p1 = create&lt;Person&gt;(Person, 18)
+console.log(p1) // Person { age: 18 }
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[UIAutomation的使用]]></title>
+        <id>https://zorroe.github.io/post/uiautomation-de-shi-yong/</id>
+        <link href="https://zorroe.github.io/post/uiautomation-de-shi-yong/">
+        </link>
+        <updated>2023-01-30T13:49:25.000Z</updated>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#uiautomation%E7%9A%84%E4%BD%BF%E7%94%A8">UIAutomation的使用</a>
+<ul>
+<li><a href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87">环境准备</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B">代码示例</a></li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="uiautomation的使用">UIAutomation的使用</h1>
+<h2 id="环境准备">环境准备</h2>
+<blockquote>
+<p>python版本：3.7.3</p>
+<p>uiautomation版本：2.0.17</p>
+</blockquote>
+<p>获取win元素工具：<a href="https://file-lxxx.oss-cn-shanghai.aliyuncs.com/UISpy.exe">UI Spy</a></p>
+<p>如果是Windows XP系统，请确保系统目录有这个文件：UIAutomationCore.dll。如果没有，需要安装补丁 <strong><a href="https://github.com/yinkaisheng/WindowsUpdateKB971513ForIUIAutomation">KB971513</a></strong> 才能支持UIAutomtion.</p>
+<figure data-type="image" tabindex="1"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/30/36bec74bccefd251211077d8338a3f54-image-20230130163852773-ba670a.png" alt="image-20230130163852773" loading="lazy"></figure>
+<h2 id="代码示例">代码示例</h2>
+<pre><code class="language-python">import subprocess
+import time
+import uiautomation as auto
+auto.uiautomation.SetGlobalSearchTimeout(15)  # 设置全局搜索超时 15
+
+
+def main():
+
+    def GetFirstChild(control):
+        return control.GetFirstChildControl()
+
+    def GetNextSibling(control):
+        return control.GetNextSiblingControl()
+
+    subprocess.Popen(&quot;D:\\Tencent\\QQ\\Bin\\QQ.exe&quot;)
+    desktop = auto.GetRootControl()  # 查找桌面控件
+    toolBar = desktop.ToolBarControl(ClassName=&quot;ToolbarWindow32&quot;,Name=&quot;用户提示通知区域&quot;)  # 工具栏控件
+    while(True):
+        flag = False
+        # 遍历工具栏控件，找到登录成功的QQ控件
+        for control, depth in auto.WalkTree(toolBar, getFirstChild=GetFirstChild, getNextSibling=GetNextSibling, includeTop=False, maxDepth=1):
+            if(str(control.Name).startswith(&quot;QQ&quot;) and str(control.Name) is not &quot;QQ&quot;):
+                control.Click()
+                flag = True
+        if(flag):
+            break
+        time.sleep(0.5)
+
+    qqWindow = auto.WindowControl(searchDepth=1,ClassName=&quot;TXGuiFoundation&quot;,Name=&quot;QQ&quot;)  # 查找QQ界面
+    qqWindow.ListItemControl(searchDepth=18,Name=&quot;我的Android手机&quot;).DoubleClick()  # 点击聊天
+    time.sleep(1)
+
+    chatWindow = auto.WindowControl(searchDepth=1,ClassName=&quot;TXGuiFoundation&quot;,Name=&quot;我的Android手机&quot;)  # 查找聊天界面
+    chatWindow.EditControl(searchDepth=11,foundIndex=1).SendKeys(&quot;hello android手机&quot;)  # 聊天框输入文字
+    time.sleep(1)
+    chatWindow.ButtonControl(searchDepth=12,Name=&quot;发送(&amp;S)&quot;).Click()  # 发送信息
+
+if __name__ == '__main__':
+    main()
+</code></pre>
+<p>查找控件的可选参数</p>
+<ul>
+<li><code>searchFromControl = None</code>：从哪个控件开始查找，如果为None，从根节点Desktop开始查找</li>
+<li><code>searchDepth = 0xFFFFFFFF</code>：搜索深度</li>
+<li><code>searchInterval = SEARCH_INTERVAL</code>：搜索间隔</li>
+<li><code>foundIndex = 1</code> ：搜索到的满足搜索条件的控件索引，索引从1开始</li>
+<li><code>Name</code> ：控件名字</li>
+<li><code>SubName</code> ：控件部分名字</li>
+<li><code>RegexName</code> ：使用re.match匹配符合正则表达式的名字，Name,SubName,RegexName只能使用一个，不能同时使用</li>
+<li><code>ClassName</code>：类名字</li>
+<li><code>AutomationId</code>：控件AutomationId</li>
+<li><code>ControlType</code>：控件类型</li>
+<li><code>Depth</code>：控件相对于searchFromControl的精确深度</li>
+<li><code>Compare</code>：自定义比较函数function(control: Control, depth: int)-&gt;bool</li>
+</ul>
+<p>searchDepth和Depth的区别：</p>
+<ul>
+<li>searchDepth在指定的深度范围内（包括1-searchDepth层中的所有子孙控件）搜索第一个满足搜索条件的控件</li>
+<li>Depth只在Depth所在的深度（如果Depth&gt;1，排除1~searchDepth-1层中的所有子孙控件）搜索第一个满足搜索条件的控件</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[引入eventlet报错]]></title>
+        <id>https://zorroe.github.io/post/yin-ru-eventlet-bao-cuo/</id>
+        <link href="https://zorroe.github.io/post/yin-ru-eventlet-bao-cuo/">
+        </link>
+        <updated>2023-01-30T13:48:32.000Z</updated>
+        <content type="html"><![CDATA[<p>代码如下：</p>
+<pre><code class="language-python">import eventlet
+</code></pre>
+<p>报错：</p>
+<blockquote>
+<p>Attribute Error: module &quot;dns.rdtypes&quot; has no attribute ANY</p>
+</blockquote>
+<p>解决办法：</p>
+<blockquote>
+<p>pip install dnspython==2.2.1</p>
+</blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[box-shadow不生效的问题]]></title>
+        <id>https://zorroe.github.io/post/box-shadow-bu-sheng-xiao-de-wen-ti/</id>
+        <link href="https://zorroe.github.io/post/box-shadow-bu-sheng-xiao-de-wen-ti/">
+        </link>
+        <updated>2023-01-30T13:46:06.000Z</updated>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#box-shadow%E4%B8%8D%E7%94%9F%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98">box-shadow不生效的问题</a>
+<ul>
+<li><a href="#%E6%96%B9%E6%B3%951">方法1</a></li>
+<li><a href="#%E6%96%B9%E6%B3%952">方法2</a></li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="box-shadow不生效的问题">box-shadow不生效的问题</h1>
+<p>页面布局中，无论是正常的文档流，还是<code>flex</code>布局，都会让页面铺满盒子。而<code>box-shadow</code>再页面设计中是不可缺少的效果，在单独盒子中的元素，<code>box-shadow</code>的阴影会投影到父级上。但是当<code>阴影</code>盒子是紧贴着，那<code>阴影</code>就会变得不可见。</p>
+<h2 id="方法1">方法1</h2>
+<p><strong>在需要的<code>box-shadow</code>的元素设置<code>position: relative</code></strong></p>
+<p>在正常文档流中，紧贴着，意味着元素<em>涂在</em>父级上的<code>阴影</code>被旁边元素覆盖<code>再次涂写</code>，所以设置<code>position: relative</code>就让元素脱离文档流，浏览器单独处理，就出现了<code>z轴</code>上的<code>堆叠</code>，也就不存在被<code>紧贴着</code>，<code>阴影</code>就直接投影在正常文档流之上。</p>
+<h2 id="方法2">方法2</h2>
+<p><strong>在父级上设置<code>flex</code>，然后在需要<code>阴影</code>的元素设置<code>z-index</code>大于等于0</strong></p>
+<p><code>flex</code>会让直接子元素变为一种<code>flex-item</code>元素，这个时候就不能称为文档流了，<code>flex-item</code>就有了<code>z轴</code>的概念，所以设置<code>z-index</code>就能调整阴影出现的<code>堆叠</code>层次。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mock.js]]></title>
+        <id>https://zorroe.github.io/post/mockjs/</id>
+        <link href="https://zorroe.github.io/post/mockjs/">
+        </link>
+        <updated>2023-01-30T13:45:22.000Z</updated>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#mockjs">Mock.js</a>
+<ul>
+<li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#mockjs-2">Mock.js</a></li>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8">基本使用</a></li>
+<li><a href="#vue%E4%B8%AD%E5%BC%95%E5%85%A5mockjs">Vue中引入mockjs</a>
+<ul>
+<li><a href="#%E6%96%B0%E5%BB%BAindexts%E6%96%87%E4%BB%B6">新建<code>index.ts</code>文件</a></li>
+<li><a href="#%E5%BC%95%E5%85%A5indexts">引入<code>index.ts</code></a></li>
+<li><a href="#%E7%BC%96%E5%86%99%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E8%A1%A8%E6%95%B0%E6%8D%AE">编写返回的列表数据</a></li>
+<li><a href="#%E6%9F%A5">查</a></li>
+<li><a href="#%E5%A2%9E">增</a></li>
+<li><a href="#%E5%88%A0">删</a></li>
+<li><a href="#%E6%94%B9">改</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%9C%B0%E5%9D%80">代码地址</a></li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="mockjs">Mock.js</h1>
+<h2 id="前言">前言</h2>
+<p>在前端开发的时候，往往都需要都需要后端提供接口数据来进行相应页面的开发。但这个时候就需要后端先行开发，之后前端才进行开发，从而可能会影响开发效率。</p>
+<p>那前端能不能独立进行开发呢？答案是可以的。接下来就有请我们今天的主角，<strong>Mock.js</strong>。</p>
+<h2 id="mockjs-2">Mock.js</h2>
+<ul>
+<li>是一款模拟数据生成器</li>
+<li>生成随机数据，拦截Ajax请求</li>
+<li>Mock.js这个工具完全可以通过我们设置的规则，来提供数据，从而解决前端不能独立开发的问题</li>
+<li>对接后端接口的时候，也不需要修改既有代码</li>
+</ul>
+<h2 id="基本使用">基本使用</h2>
+<ol>
+<li>
+<p>生成随机字符串</p>
+<pre><code class="language-js">var Mock = require('mockjs')
+
+const data = Mock.mock({
+    'title': '@ctitle(1,10)', // 生成中文标题，长度为1-10个字符
+    'words|1-10': '@cword()', // 生成中文字符串，长度为1-10个字符
+})
+
+console.log(data)
+
+// { title: '据再达场价是回', words: '利才质件' }
+</code></pre>
+</li>
+<li>
+<p>生成图片</p>
+<pre><code class="language-js">const img = Mock.mock({
+    img_url: &quot;@image('100x100', '#fff', '#000', 'png','坤坤')&quot;,
+})
+
+console.log(img)
+
+// { img_url: 'http://dummyimage.com/100x100/fff/000.png&amp;text=坤坤' }
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/15/e48847e997a0045e6cdb2928af359167-image-20230115200041897-012651.png" alt="image-20230115200041897" loading="lazy"></figure>
+</li>
+<li>
+<p>生成日期</p>
+<pre><code class="language-js">const date = Mock.mock({
+    date: '@date(&quot;yyyy-MM-dd HH:mm:ss&quot;)',
+})
+
+console.log(date)
+
+// { date: '1995-01-18 14:11:26' }
+</code></pre>
+</li>
+<li>
+<p>生成json</p>
+<pre><code class="language-js">const list = Mock.mock({
+    list: [
+        {
+            id: '@increment(1)',
+            name: '@cname(2,4)',
+            age: '@integer(18,30)',
+            'gender|1': ['男', '女'],
+        },
+    ],
+})
+
+console.log(list.list)
+
+// [ { id: 1, name: '卢丽', age: 28, gender: '男' } ]
+</code></pre>
+</li>
+<li>
+<p>生成json列表</p>
+<pre><code class="language-js">const list = Mock.mock({
+    'list|5': [
+        {
+            id: '@increment(1)',     // 自增类型
+            name: '@cname(2,4)',     // 中文姓名
+            age: '@integer(18,30)',  // 整数
+            'gender|1': ['男', '女'],// 枚举
+        },
+    ],
+})
+
+console.log(list.list)
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/15/d38d9dd12f04078aa06707c114730c68-image-20230115200449709-79a783.png" alt="image-20230115200449709" loading="lazy"></figure>
+</li>
+</ol>
+<h2 id="vue中引入mockjs">Vue中引入mockjs</h2>
+<pre><code class="language-shell">npm install mockjs
+</code></pre>
+<h3 id="新建indexts文件">新建<code>index.ts</code>文件</h3>
+<figure data-type="image" tabindex="3"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/15/b3578d327fa59b1914e59df114bb48d1-image-20230115202645600-302d74.png" alt="image-20230115202645600" loading="lazy"></figure>
+<h3 id="引入indexts">引入<code>index.ts</code></h3>
+<figure data-type="image" tabindex="4"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/15/08dbef7f991f947a114a33c18a33c14a-image-20230115202846600-b07576.png" alt="image-20230115202846600" loading="lazy"></figure>
+<h3 id="编写返回的列表数据">编写返回的列表数据</h3>
+<pre><code class="language-typescript">// mock/index.ts
+const list = Mock.mock({
+    'list|5': [
+        {
+            id: '@increment(1)',
+            title: '@title(2,4)',
+            img_url: `@image('100x100', '#fff', '#000', 'png','坤坤')`,
+            add_time: '@date(&quot;yyyy-MM-dd HH:mm:ss&quot;)',
+        },
+    ],
+})
+</code></pre>
+<h3 id="查">查</h3>
+<pre><code class="language-typescript">// mock/index.ts
+Mock.mock('/api/get/news', 'get', () =&gt; {
+    return {
+        code: 200,
+        msg: 'success',
+        data: list.list,
+        total: list.list.length,
+    }
+})
+</code></pre>
+<pre><code class="language-typescript">// App.vue
+const getTableData = () =&gt; {
+  axios.get('/api/get/news').then(res =&gt; {
+    tableData.value = res.data.data
+  })
+}
+</code></pre>
+<h3 id="增">增</h3>
+<pre><code class="language-typescript">// mock/index.ts
+Mock.mock('/api/add/news', 'post', (options: any) =&gt; {
+    list.list.push(JSON.parse(options.body))
+    console.log(list.list)
+    return {
+        code: 200,
+        msg: 'success',
+    }
+})
+</code></pre>
+<pre><code class="language-typescript">// App.vue
+const handleAdd = () =&gt; {
+  axios.post('/api/add/news', {
+    id: Math.floor(Math.random() * 1000),
+    title: '测试标题',
+    img_url: 'https://img1.baidu.com/it/u=1830000000,1830000000&amp;fm=26&amp;fmt=auto&amp;gp=0.jpg',
+    add_time: '2021-08-08 08:08:08'
+  }).then(res =&gt; {
+    console.log(res)
+  })
+  getTableData()
+}
+</code></pre>
+<h3 id="删">删</h3>
+<pre><code class="language-typescript">// mock/index.ts
+Mock.mock(RegExp('/api/delete/news'), 'delete', (option: any) =&gt; {
+    // 获取url的参数
+    const id = option.url.split('?')[1].split('=')[1]
+    // 删除对应id的数据
+    list.list = list.list.filter((item: any) =&gt; item.id != id)
+    console.log(list.list)
+    return {
+        code: 200,
+        msg: 'success',
+    }
+})
+</code></pre>
+<pre><code class="language-typescript">// App.vue
+const handleDelete = (id: number) =&gt; {
+  axios.delete(`/api/delete/news?id=${id}`).then(res =&gt; {
+    console.log(res)
+  })
+  getTableData()
+}
+</code></pre>
+<h3 id="改">改</h3>
+<pre><code class="language-typescript">// mock/index.ts
+Mock.mock('/api/put/news', 'put', (option: any) =&gt; {
+    const news = JSON.parse(option.body)
+    // 根据id修改
+    list.list = list.list.map((item: any) =&gt; {
+        if (item.id == news.id) {
+            item.title = news.title
+            item.img_url = news.img_url
+            item.add_time = news.add_time
+        }
+        return item
+    })
+})
+</code></pre>
+<pre><code class="language-typescript">// App.vue
+const handleUpdate = (id: number) =&gt; {
+  axios.put('/api/put/news', {
+    id: id,
+    title: '测试标题',
+    img_url: 'https://img1.baidu.com/it/u=1830000000,1830000000&amp;fm=26&amp;fmt=auto&amp;gp=0.jpg',
+    add_time: '2021-08-08 08:08:08'
+  }).then(res =&gt; {
+    getTableData()
+  })
+}
+</code></pre>
+<h2 id="代码地址">代码地址</h2>
+<p><code>https://github.com/zorroe/mock-demo</code></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Vue组件]]></title>
+        <id>https://zorroe.github.io/post/vue-component/</id>
+        <link href="https://zorroe.github.io/post/vue-component/">
+        </link>
+        <updated>2023-01-30T13:43:59.000Z</updated>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#%E7%BB%84%E4%BB%B6%E5%9F%BA%E7%A1%80">组件基础</a>
+<ul>
+<li><a href="#%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E7%BB%84%E4%BB%B6">定义一个组件</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6">使用组件</a></li>
+<li><a href="#%E4%BC%A0%E9%80%92props">传递props</a></li>
+<li><a href="#%E7%9B%91%E5%90%AC%E4%BA%8B%E4%BB%B6">监听事件</a></li>
+<li><a href="#%E9%80%9A%E8%BF%87%E6%8F%92%E6%A7%BD%E6%9D%A5%E5%88%86%E9%85%8D%E5%86%85%E5%AE%B9">通过插槽来分配内容</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6">动态组件</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E6%B3%A8%E5%86%8C">组件注册</a>
+<ul>
+<li><a href="#%E5%85%A8%E5%B1%80%E6%B3%A8%E5%86%8C">全局注册</a></li>
+<li><a href="#%E5%B1%80%E9%83%A8%E6%B3%A8%E5%86%8C">局部注册</a></li>
+</ul>
+</li>
+<li><a href="#props">Props</a>
+<ul>
+<li><a href="#props%E5%A3%B0%E6%98%8E">Props声明</a></li>
+<li><a href="#%E5%8D%95%E5%90%91%E6%95%B0%E6%8D%AE%E6%B5%81">单向数据流</a></li>
+<li><a href="#prop%E6%A0%A1%E9%AA%8C">Prop校验</a></li>
+<li><a href="#boolean%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2">Boolean类型转换</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E4%BA%8B%E4%BB%B6">组件事件</a>
+<ul>
+<li><a href="#%E8%A7%A6%E5%8F%91%E4%B8%8E%E7%9B%91%E5%90%AC%E4%BA%8B%E4%BB%B6">触发与监听事件</a></li>
+<li><a href="#%E4%BA%8B%E4%BB%B6%E5%8F%82%E6%95%B0">事件参数</a></li>
+<li><a href="#%E5%A3%B0%E6%98%8E%E8%A7%A6%E5%8F%91%E7%9A%84%E4%BA%8B%E4%BB%B6">声明触发的事件</a></li>
+<li><a href="#%E4%BA%8B%E4%BB%B6%E6%A0%A1%E9%AA%8C">事件校验</a></li>
+<li><a href="#%E9%85%8D%E5%90%88v-model%E4%BD%BF%E7%94%A8">配合<code>v-model</code>使用</a></li>
+<li><a href="#%E9%80%8F%E4%BC%A0attributes">透传Attributes</a></li>
+<li><a href="#attributes%E7%BB%A7%E6%89%BF">Attributes继承</a>
+<ul>
+<li><a href="#%E5%AF%B9-class-%E5%92%8C-style-%E7%9A%84%E5%90%88%E5%B9%B6">对 <code>class</code> 和 <code>style</code> 的合并</a></li>
+<li><a href="#v-on%E7%9B%91%E5%90%AC%E5%99%A8%E7%BB%A7%E6%89%BF"><code>v-on</code>监听器继承</a></li>
+<li><a href="#%E6%B7%B1%E5%B1%82%E7%BB%84%E4%BB%B6%E7%BB%A7%E6%89%BF">深层组件继承</a></li>
+</ul>
+</li>
+<li><a href="#%E7%A6%81%E7%94%A8attributes%E7%BB%A7%E6%89%BF">禁用Attributes继承</a>
+<ul>
+<li><a href="#%E5%A4%9A%E4%B8%AA%E6%A0%B9%E8%8A%82%E7%82%B9%E7%9A%84attributes%E7%BB%A7%E6%89%BF">多个根节点的Attributes继承</a></li>
+<li><a href="#%E5%9C%A8javascript%E4%B8%AD%E8%AE%BF%E9%97%AE%E9%80%8F%E4%BC%A0attributes">在JavaScript中访问透传Attributes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%8F%92%E6%A7%BD">插槽</a>
+<ul>
+<li><a href="#%E6%8F%92%E6%A7%BD%E5%86%85%E5%AE%B9%E4%B8%8E%E5%87%BA%E5%8F%A3">插槽内容与出口</a></li>
+<li><a href="#%E6%B8%B2%E6%9F%93%E4%BD%9C%E7%94%A8%E5%9F%9F">渲染作用域</a></li>
+<li><a href="#%E9%BB%98%E8%AE%A4%E5%86%85%E5%AE%B9">默认内容</a></li>
+<li><a href="#%E5%85%B7%E5%90%8D%E6%8F%92%E6%A7%BD">具名插槽</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E6%8F%92%E6%A7%BD%E5%90%8D">动态插槽名</a></li>
+<li><a href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8F%92%E6%A7%BD">作用域插槽</a>
+<ul>
+<li><a href="#%E5%85%B7%E5%90%8D%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8F%92%E6%A7%BD">具名作用域插槽</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="组件基础">组件基础</h1>
+<blockquote>
+<p>使用组件将UI划分为独立的、可重用的部分，并且可以对每个部分进行单独的思考。在实际应用中，组件常常被组织成层层嵌套的树状结构：</p>
+<figure data-type="image" tabindex="1"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/04/34b4e327c618c5454bf154d2e225e95b-components.7fbb3771-8702fc.png" alt="组件树" loading="lazy"></figure>
+</blockquote>
+<h2 id="定义一个组件">定义一个组件</h2>
+<p>当使用构建步骤时，一般将Vue组件定义在一个单独的<code>.vue</code>文件中，这被叫做<strong>单文件组件</strong>（SFC）</p>
+<pre><code class="language-vue">&lt;script&gt;
+export default {
+  data() {
+    return {
+      count: 0
+    }
+  }
+}
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;button @click=&quot;count++&quot;&gt;You clicked me {{ count }} times.&lt;/button&gt;
+&lt;/template&gt;
+</code></pre>
+<h2 id="使用组件">使用组件</h2>
+<p>要使用一个子组件，我们需要在父组件中导入。如下所示</p>
+<blockquote>
+<p>子组件</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+    &lt;div&gt;
+        &lt;button&gt;这是一个按钮&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<blockquote>
+<p>父组件</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+  &lt;div&gt;
+      &lt;Button/&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+&lt;script setup lang=&quot;ts&quot;&gt;
+import MyButton from './components/MyButton.vue';
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<h2 id="传递props">传递props</h2>
+<p>如果我们正在构建一个博客，我们可能需要一个表示博客文章的组件。我们希望所有的博客文章分享相同的视觉布局，但有不同的内容。要实现这样的效果需要向组件中传递数据，例如每篇文章的标题和内容，这就会使用到props。</p>
+<p>props是一种特别的attributes，你可以在组件上声明注册。要传递给博客文章组件一个标题，我们必须在组件的props列表上声明。这里要用到<code>props</code>选项：</p>
+<pre><code class="language-vue">&lt;!-- BlogPost.vue --&gt;
+&lt;template&gt;
+    &lt;div style=&quot;margin-bottom:10px; border: 1px solid black;&quot;&gt;
+        &lt;h1&gt;{{ title }}&lt;/h1&gt;
+        &lt;div&gt;{{ content }}&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+const props = defineProps({
+    title: {
+        type: String,
+        default: 'No title'
+    },
+    content: {
+        type: String,
+        default: 'No content'
+    },
+})
+</code></pre>
+<pre><code class="language-vue">&lt;!-- App.vue --&gt;
+&lt;script setup lang=&quot;ts&quot;&gt;
+import { ref } from 'vue';
+import BlogPost from './components/BlogPost.vue'
+
+const blogs = ref([
+  {
+    title: 'Blog 1',
+    content: 'Content 1'
+  },
+  ...
+])
+
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;BlogPost v-for=&quot;blog in blogs&quot; :title=&quot;blog.title&quot; :content=&quot;blog.content&quot; /&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>效果</p>
+<figure data-type="image" tabindex="2"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/04/02c1ddd3ec2d5059193f8784e3e67a55-image-20230104204143441-6f141b.png" alt="image-20230104204143441" loading="lazy"></figure>
+<h2 id="监听事件">监听事件</h2>
+<p>继续关注<code>BlogPost</code>组件。有时候需要与父组件进行交互。例如，将博客文章的文字能够放大，二页面的其余部分仍使用默认字号。</p>
+<p>在<strong>父组件</strong>中，我们添加一个<code>postFontSize</code>数据属性来实现这个效果</p>
+<pre><code class="language-vue">&lt;!-- App.vue --&gt;
+&lt;script setup lang=&quot;ts&quot;&gt;
+const postFontSize = ref(1)
+&lt;/script&gt;
+</code></pre>
+<p>在<strong>父组件</strong>模板中用它来控制所有博客文章的字体大小</p>
+<pre><code class="language-vue">&lt;!-- App.vue --&gt;
+&lt;template&gt;
+  &lt;div :style=&quot;{ fontSize: postFontSize + 'px' }&quot;&gt;
+    &lt;BlogPost v-for=&quot;blog in blogs&quot; 
+    :title=&quot;blog.title&quot; 
+    :content=&quot;blog.content&quot; /&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>然后给<strong>子组件</strong>添加一个按钮</p>
+<pre><code class="language-vue">&lt;!-- BlogPost.vue --&gt;
+&lt;template&gt;
+    &lt;div style=&quot;margin-bottom:10px; border: 1px solid black;&quot;&gt;
+        &lt;h1&gt;{{ title }}&lt;/h1&gt;
+        &lt;div&gt;{{ content }}&lt;/div&gt;
+        &lt;button&gt;Enlarge text&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>这个按钮目前还没有做任何事情，我们想要点击这个按钮来告诉父组件他应该放大所有博客文章的文字。要解决这个问题，组件实例提供了一个自定义时间系统。父组件可以通过<code>v-on</code>或<code>@</code>来选择性地监听子组件上抛的事件，就像监听原生DOM事件那样</p>
+<pre><code class="language-vue">&lt;!-- App.vue --&gt;
+&lt;template&gt;
+  &lt;div :style=&quot;{ fontSize: postFontSize + 'em' }&quot;&gt;
+    &lt;BlogPost v-for=&quot;blog in blogs&quot; 
+    :title=&quot;blog.title&quot; 
+    :content=&quot;blog.content&quot; 
+    @enlarge-text=&quot;postFontSize += 0.1&quot;/&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>子组件可以通过调用内置的<code>$emit</code>方法，通过传入事件名称来抛出一个事件：</p>
+<pre><code class="language-vue">&lt;!-- BlogPost.vue --&gt;
+&lt;template&gt;
+    &lt;div style=&quot;margin-bottom:10px; border: 1px solid black;&quot;&gt;
+        &lt;h1&gt;{{ title }}&lt;/h1&gt;
+        &lt;div&gt;{{ content }}&lt;/div&gt;
+        &lt;button @click=&quot;handleClick&quot;&gt;Enlarge text&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+....
+const emits = defineEmits({
+    enlargeText: () =&gt; {
+        return true
+    }
+})
+
+const handleClick = () =&gt; {
+    emits('enlargeText')
+}
+
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p>子组件中的<code>button</code>按钮的<code>click</code>事件绑定<code>handleClick</code>方法，这个方法会抛出<code>enlarge-text</code>事件，父组件中这个事件会修改字体大小。</p>
+</blockquote>
+<p>效果</p>
+<img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/04/bce2b938cdb8e7512430a3bc350e8400-ezgif.com-gif-maker-a74bc2.gif" alt="ezgif.com-gif-maker" style="zoom:200%;" />
+<h2 id="通过插槽来分配内容">通过插槽来分配内容</h2>
+<p>一般情况下我们会希望能和HTML元素一样向组件中传递内容</p>
+<pre><code class="language-vue">&lt;template&gt;
+  &lt;div :style=&quot;{ fontSize: postFontSize + 'em' }&quot;&gt;
+    &lt;BlogPost v-for=&quot;blog in blogs&quot; 
+    :title=&quot;blog.title&quot; 
+    :content=&quot;blog.content&quot; 
+    @enlarge-text=&quot;postFontSize += 0.1&quot;&gt;
+    &lt;div&gt;这是一个slot插槽&lt;/div&gt;
+    &lt;/BlogPost&gt; 
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>通过Vue的自定义<code>&lt;slot&gt;</code>元素来实现</p>
+<pre><code class="language-vue">&lt;template&gt;
+    &lt;div style=&quot;margin-bottom:10px; border: 1px solid black;&quot;&gt;
+        ...
+        &lt;slot&gt;&lt;/slot&gt;
+        &lt;button @click=&quot;handleClick&quot;&gt;Enlarge text&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>效果</p>
+<figure data-type="image" tabindex="3"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/04/9b13199926c4410d002c7e6e497a5afd-image-20230104211305017-c024b2.png" alt="image-20230104211305017" loading="lazy"></figure>
+<h2 id="动态组件">动态组件</h2>
+<p>有些场景需要在两个组件间来回切换，比如Tab界面</p>
+<pre><code class="language-vue">&lt;!-- currentTab 改变时组件也改变 --&gt;
+&lt;component :is=&quot;currentTab&quot;&gt;&lt;/component&gt;
+</code></pre>
+<p>在上面的例子中，被传给 <code>:is</code> 的值可以是以下几种：</p>
+<ul>
+<li>被注册的组件名</li>
+<li>导入的组件对象</li>
+</ul>
+<p>当使用 <code>&lt;component :is=&quot;...&quot;&gt;</code> 来在多个组件间作切换时，被切换掉的组件会被卸载。我们可以通过<code>&lt;KeepAlive&gt;</code>组件强制被切换掉的组件仍然保持“存活”的状态。</p>
+<h1 id="组件注册">组件注册</h1>
+<blockquote>
+<p>一个Vue组件在使用前需要先被“注册”，这样Vue才能在渲染模板时找到其对应的实现。组件注册有两种方式：全局注册和局部注册</p>
+</blockquote>
+<h2 id="全局注册">全局注册</h2>
+<p>我们可以使用Vue应用实例的<code>app.component()</code>方法，让组件在当前Vue应用中全局可用</p>
+<pre><code class="language-typescript">import { createApp } from 'vue'
+
+const app = createApp({})
+
+app.component(
+  // 注册的名字
+  'MyComponent',
+  // 组件的实现
+  {
+    /* ... */
+  }
+)
+</code></pre>
+<p>如果使用单文件组件，可以注册被导入的<code>.vue</code>文件</p>
+<pre><code class="language-typescript">import MyComponent from './App.vue'
+
+app.component('MyComponent', MyComponent)
+</code></pre>
+<p><code>app.component()</code>方法可以被链式调用</p>
+<pre><code class="language-typescript">app.component('ComponentA', ComponentA)
+   .component('ComponentB', ComponentB)
+   .component('ComponentC', ComponentC)
+</code></pre>
+<p>全局注册的组件可以在此应用的任意组件的模板中使用：</p>
+<pre><code class="language-vue">&lt;!-- 这在当前应用的任意组件中都可用 --&gt;
+&lt;ComponentA/&gt;
+&lt;ComponentB/&gt;
+&lt;ComponentC/&gt;
+</code></pre>
+<p>所有的子组件也可以使用全局注册的组件，这意味着这三个组件也都可以在<strong>彼此内部</strong>使用。</p>
+<blockquote>
+<p>全局注册的缺点</p>
+<ol>
+<li>全局注册，但并没有被使用的组件无法在生产打包时被自动移除 (也叫“tree-shaking”)。如果你全局注册了一个组件，即使它并没有被实际使用，它仍然会出现在打包后的 JS 文件中。</li>
+<li>全局注册在大型项目中使项目的依赖关系变得不那么明确。在父组件中使用子组件时，不太容易定位子组件的实现。和使用过多的全局变量一样，这可能会影响应用长期的可维护性。</li>
+</ol>
+</blockquote>
+<h2 id="局部注册">局部注册</h2>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+import BlogPost from './components/BlogPost.vue'
+&lt;/script&gt;
+</code></pre>
+<p>使用</p>
+<pre><code class="language-vue">&lt;template&gt;
+  &lt;div&gt;
+    &lt;BlogPost&gt;&lt;/BlogPost&gt; 
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<h1 id="props">Props</h1>
+<h2 id="props声明">Props声明</h2>
+<p>一个组件需要显式声明它所接受的props，这样Vue才能知道外部传入的那些是props，哪些是透传attribute</p>
+<p>props使用<code>defineProps</code>来定义：</p>
+<pre><code class="language-js">const props = defineProps({
+    title: {
+        type: String,
+        default: 'No title',
+        required: false
+    },
+    content: {
+        type: String,
+        default: 'No content',
+        required: false
+    },
+})
+</code></pre>
+<p>这种定义方式可以定义prop的类型，默认值，是否必须等。</p>
+<h2 id="单向数据流">单向数据流</h2>
+<p>所有的props都遵循<strong>单向绑定</strong>的原则，props因父组件的更新而变化，自然地将新的状态向下流往子组件，而不会逆向传递。这避免了组件意外修改父组件的状态的情况，不然应用的数据流将很容易变得混乱。</p>
+<p>另外，每次父组件更新后，左右的子组件中的props都会被更新到最新值，这意味着你不应该在子组件中去更改一个prop。若这样做，Vue会在控制台抛出警告</p>
+<pre><code class="language-typescript">// 子组件
+export default {
+  props: ['foo'],
+  created() {
+    // ❌ 警告！prop 是只读的！
+    this.foo = 'bar'
+  }
+}
+</code></pre>
+<p>导致你想要更改一个 prop 的需求通常来源于以下两种场景：</p>
+<ol>
+<li>
+<p><strong>prop 被用于传入初始值；而子组件想在之后将其作为一个局部数据属性</strong>。在这种情况下，最好是新定义一个局部数据属性，从 props 上获取初始值即可：</p>
+<pre><code class="language-typescript">export default {
+  props: ['initialCounter'],
+  const counter = ref(props.counter)
+}
+</code></pre>
+</li>
+<li>
+<p><strong>需要对传入的 prop 值做进一步的转换</strong>。在这种情况中，最好是基于该 prop 值定义一个计算属性：</p>
+<pre><code class="language-typescript">export default {
+  props: ['size'],
+  const bigCounter = computed(() =&gt; counter.value * 100)
+}
+</code></pre>
+</li>
+</ol>
+<h2 id="prop校验">Prop校验</h2>
+<p>Vue 组件可以更细致地声明对传入的 props 的校验要求。比如我们上面已经看到过的类型声明，如果传入的值不满足类型要求，Vue 会在浏览器控制台中抛出警告来提醒使用者。这在开发给其他开发者使用的组件时非常有用。如下</p>
+<pre><code class="language-typescript">const props = defineProps({
+    // 基础类型检查
+    //（给出 `null` 和 `undefined` 值则会跳过任何类型检查）
+    propA: Number,
+    // 多种可能的类型
+    propB: [String, Number],
+    // 必传，且为 String 类型
+    propC: {
+        type: String,
+        required: true
+    },
+    // Number 类型的默认值
+    propD: {
+        type: Number,
+        default: 100
+    },
+    // 对象类型的默认值
+    propE: {
+        type: Object,
+        // 对象或者数组应当用工厂函数返回。
+        // 工厂函数会收到组件所接收的原始 props
+        // 作为参数
+        default() {
+            return { message: 'hello' }
+        }
+    },
+    // 自定义类型校验函数
+    propF: {
+        validator(value: string) {
+            // The value must match one of these strings
+            return ['success', 'warning', 'danger'].includes(value)
+        }
+    },
+    // 函数类型的默认值
+    propG: {
+        type: Function,
+        // 不像对象或数组的默认，这不是一个工厂函数。这会是一个用来作为默认值的函数
+        default() {
+            return 'Default function'
+        }
+    }
+})
+</code></pre>
+<ul>
+<li>所有prop默认都是可选的，除非声明了<code>required: true</code>。</li>
+<li>除 <code>Boolean</code> 外的未传递的可选 prop 将会有一个默认值 <code>undefined</code>。</li>
+<li><code>Boolean</code> 类型的未传递 prop 将被转换为 <code>false</code>。这可以通过为它设置 <code>default</code> 来更改——例如：设置为 <code>default: undefined</code> 将与非布尔类型的 prop 的行为保持一致。</li>
+<li>如果声明了 <code>default</code> 值，那么在 prop 的值被解析为 <code>undefined</code> 时，无论 prop 是未被传递还是显式指明的 <code>undefined</code>，都会改为 <code>default</code> 值。</li>
+</ul>
+<h2 id="boolean类型转换">Boolean类型转换</h2>
+<p>为了贴近原生boolean attributes的行为，声明为<code>Boolean</code>类型的props有特别的类型转换规则。</p>
+<pre><code class="language-typescript">export default {
+  props: {
+    disabled: Boolean
+  }
+}
+</code></pre>
+<p>组件可以这样使用</p>
+<pre><code class="language-vue">&lt;!-- 等同于传入 :disabled=&quot;true&quot; --&gt;
+&lt;MyComponent disabled /&gt;
+
+&lt;!-- 等同于传入 :disabled=&quot;false&quot; --&gt;
+&lt;MyComponent /&gt;
+</code></pre>
+<p>当一个prop被声明为允许多种类型时，例如</p>
+<pre><code class="language-typescript">export default {
+  props: {
+    disabled: [Boolean, Number]
+  }
+}
+</code></pre>
+<p>无论声明类型的顺序如何，<code>Boolean</code> 类型的特殊转换规则都会被应用。</p>
+<h1 id="组件事件">组件事件</h1>
+<h2 id="触发与监听事件">触发与监听事件</h2>
+<p>在组件的模板表达式中，可以直接使用<code>$emit</code>方法触发自定义事件</p>
+<pre><code class="language-vue">&lt;!-- MyComponent --&gt;
+&lt;button @click=&quot;$emit('someEvent')&quot;&gt;click me&lt;/button&gt;
+</code></pre>
+<p>在父组件中通过<code>v-on</code>或<code>@</code>来监听事件</p>
+<pre><code class="language-vue">&lt;MyComponent @some-event=&quot;callback&quot; /&gt;
+</code></pre>
+<p>同样，组件的事件监听器也支持<code>.once</code>修饰符</p>
+<pre><code class="language-vue">&lt;MyComponent @some-event.once=&quot;callback&quot; /&gt;
+</code></pre>
+<h2 id="事件参数">事件参数</h2>
+<p>有时候我们需要在出发事件时附带一个特定的值。例如，我们想要<code>&lt;BlogPost&gt;</code>组件来管理文本会缩放的多大。在这个场景下，我们可以给<code>$emit</code>提供一个额外的参数</p>
+<pre><code class="language-vue">&lt;button @click=&quot;$emit('increaseBy', 1)&quot;&gt;
+  Increase by 1
+&lt;/button&gt;
+</code></pre>
+<p>用一个组件方法来作为事件处理函数：</p>
+<pre><code class="language-vue">&lt;MyButton @increase-by=&quot;increaseCount&quot; /&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+function increaseCount(n) {
+  count.value += n
+}
+&lt;/script&gt;
+</code></pre>
+<h2 id="声明触发的事件">声明触发的事件</h2>
+<p>组件要触发的事件可以显式地通过<code>defineEmits()</code>宏来声明：</p>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+defineEmits(['inFocus', 'submit'])
+&lt;/script&gt;
+</code></pre>
+<p>搭配Typescript使用<code>&lt;script setup&gt;</code>，也可以使用纯类型标注来声明触发的事件</p>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+const emits = defineEmits({
+    increaseBy: (amount: number) =&gt; {
+        // 通过返回值为 `true` 还是为 `false` 来判断
+        // 验证是否通过
+        if (amount &lt; 0) {
+            return false
+        }
+        return true
+    }
+})
+&lt;/script&gt;
+
+</code></pre>
+<h2 id="事件校验">事件校验</h2>
+<p>和对props添加类型校验的方式类似，所有触发的时间也可以使用对象形式来描述。</p>
+<p>要为事件添加校验，那么事件可以被赋值为一个函数，接受的参数就是抛出事件时传入<code>emit</code>的内容，返回一个布尔值来表明事件是否合法</p>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+const emit = defineEmits({
+  // 没有校验
+  click: null,
+
+  // 校验 submit 事件
+  submit: ({ email, password }) =&gt; {
+    if (email &amp;&amp; password) {
+      return true
+    } else {
+      console.warn('Invalid submit event payload!')
+      return false
+    }
+  }
+})
+
+function submitForm(email, password) {
+  emit('submit', { email, password })
+}
+&lt;/script&gt;
+
+</code></pre>
+<h2 id="配合v-model使用">配合<code>v-model</code>使用</h2>
+<p>自定义事件可用于开发支持<code>v-model</code>的自定义表单组件。<code>v-model</code>在原生元素上的用法如下</p>
+<pre><code class="language-vue">&lt;input v-model=&quot;searchText&quot; /&gt;
+</code></pre>
+<p>等价于</p>
+<pre><code class="language-vue">&lt;input
+  :value=&quot;searchText&quot;
+  @input=&quot;searchText = $event.target.value&quot;
+/&gt;
+</code></pre>
+<p>当使用在一个组件上时，<code>v-model</code>会被展开为如下的形式</p>
+<pre><code class="language-vue">&lt;CustomInput
+  :modelValue=&quot;searchText&quot;
+  @update:modelValue=&quot;newValue =&gt; searchText = newValue&quot;
+/&gt;
+</code></pre>
+<p>要让这个例子实际工作起来，<code>&lt;CustomInput&gt;</code>组件内部需要做两件事</p>
+<ol>
+<li>将内部原生<code>input</code>元素的<code>value</code>属性绑定到<code>modelValue</code>prop</li>
+<li>输入新的值时在<code>input</code>元素上触发<code>update:modelValue</code>事件</li>
+</ol>
+<p>对应代码如下</p>
+<pre><code class="language-vue">&lt;!-- CustomInput.vue --&gt;
+&lt;script setup&gt;
+defineProps(['modelValue'])
+defineEmits(['update:modelValue'])
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;input
+    :value=&quot;modelValue&quot;
+    @input=&quot;$emit('update:modelValue', $event.target.value)&quot;
+  /&gt;
+&lt;/template&gt;
+</code></pre>
+<p>现在<code>v-model</code>可以在这个组件上正常工作</p>
+<pre><code class="language-vue">&lt;CustomInput v-model=&quot;searchText&quot; /&gt;
+</code></pre>
+<h2 id="透传attributes">透传Attributes</h2>
+<h2 id="attributes继承">Attributes继承</h2>
+<p>“透传 attribute”指的是传递给一个组件，却没有被该组件声明为 props或 emits的 attribute 或者 <code>v-on</code> 事件监听器。最常见的例子就是 <code>class</code>、<code>style</code> 和 <code>id</code>。</p>
+<p>当一个组件以单个元素为根作渲染时，透传的 attribute 会自动被添加到根元素上。举例来说，假如我们有一个 <code>&lt;MyButton&gt;</code> 组件，它的模板长这样：</p>
+<pre><code class="language-vue">&lt;!-- &lt;MyButton&gt; 的模板 --&gt;
+&lt;button&gt;click me&lt;/button&gt;
+</code></pre>
+<p>一个父组件使用了这个组件，并且传入了 <code>class</code>：</p>
+<pre><code class="language-vue">&lt;MyButton class=&quot;large&quot; /&gt;
+</code></pre>
+<p>最后渲染出的 DOM 结果是：</p>
+<pre><code class="language-vue">&lt;button class=&quot;large&quot;&gt;click me&lt;/button&gt;
+</code></pre>
+<h3 id="对-class-和-style-的合并">对 <code>class</code> 和 <code>style</code> 的合并</h3>
+<p>如果一个子组件的根元素已经有了 <code>class</code> 或 <code>style</code> attribute，它会和从父组件上继承的值合并。如果我们将之前的 <code>&lt;MyButton&gt;</code> 组件的模板改成这样：</p>
+<pre><code class="language-vue">&lt;!-- &lt;MyButton&gt; 的模板 --&gt;
+&lt;button class=&quot;btn&quot;&gt;click me&lt;/button&gt;
+</code></pre>
+<p>则最后渲染出的 DOM 结果会变成：</p>
+<pre><code class="language-vue">&lt;button class=&quot;btn large&quot;&gt;click me&lt;/button&gt;
+</code></pre>
+<h3 id="v-on监听器继承"><code>v-on</code>监听器继承</h3>
+<p>同样的规则也适用于 <code>v-on</code> 事件监听器：</p>
+<pre><code class="language-vue">&lt;MyButton @click=&quot;onClick&quot; /&gt;
+</code></pre>
+<p><code>click</code> 监听器会被添加到 <code>&lt;MyButton&gt;</code> 的根元素，即那个原生的 <code>&lt;button&gt;</code> 元素之上。当原生的 <code>&lt;button&gt;</code> 被点击，会触发父组件的 <code>onClick</code> 方法。同样的，如果原生 <code>button</code> 元素自身也通过 <code>v-on</code> 绑定了一个事件监听器，则这个监听器和从父组件继承的监听器都会被触发。</p>
+<h3 id="深层组件继承">深层组件继承</h3>
+<p>有些情况下一个组件会在根节点上渲染另一个组件。例如，我们重构一下 <code>&lt;MyButton&gt;</code>，让它在根节点上渲染 <code>&lt;BaseButton&gt;</code>：</p>
+<pre><code class="language-vue">&lt;!-- &lt;MyButton/&gt; 的模板，只是渲染另一个组件 --&gt;
+&lt;BaseButton /&gt;
+</code></pre>
+<p>此时 <code>&lt;MyButton&gt;</code> 接收的透传 attribute 会直接继续传给 <code>&lt;BaseButton&gt;</code>。</p>
+<ol>
+<li>透传的 attribute 不会包含 <code>&lt;MyButton&gt;</code> 上声明过的 props 或是针对 <code>emits</code> 声明事件的 <code>v-on</code> 侦听函数，换句话说，声明过的 props 和侦听函数被 <code>&lt;MyButton&gt;</code>“消费”了。</li>
+<li>透传的 attribute 若符合声明，也可以作为 props 传入 <code>&lt;BaseButton&gt;</code>。</li>
+</ol>
+<h2 id="禁用attributes继承">禁用Attributes继承</h2>
+<p>如果你<strong>不想要</strong>一个组件自动地继承 attribute，你可以在组件选项中设置 <code>inheritAttrs: false</code>。如果你使用了 <code>&lt;script setup&gt;</code>，你需要一个额外的 <code>&lt;script&gt;</code> 块来书写这个选项声明：</p>
+<pre><code class="language-vue">&lt;script&gt;
+// 使用普通的 &lt;script&gt; 来声明选项
+export default {
+  inheritAttrs: false
+}
+&lt;/script&gt;
+
+&lt;script setup&gt;
+// ...setup 部分逻辑
+&lt;/script&gt;
+</code></pre>
+<p>最常见的需要禁用 attribute 继承的场景就是 attribute 需要应用在根节点以外的其他元素上。通过设置 <code>inheritAttrs</code> 选项为 <code>false</code>，你可以完全控制透传进来的 attribute 被如何使用。</p>
+<p>这些透传进来的 attribute 可以在模板的表达式中直接用 <code>$attrs</code> 访问到。</p>
+<pre><code class="language-vue">&lt;span&gt;Fallthrough attribute: {{ $attrs }}&lt;/span&gt;
+</code></pre>
+<p>这个 <code>$attrs</code> 对象包含了除组件所声明的 <code>props</code> 和 <code>emits</code> 之外的所有其他 attribute，例如 <code>class</code>，<code>style</code>，<code>v-on</code> 监听器等等。</p>
+<h3 id="多个根节点的attributes继承">多个根节点的Attributes继承</h3>
+<p>和单根节点组件有所不同，有着多个根节点的组件没有自动 attribute 透传行为。如果 <code>$attrs</code> 没有被显式绑定，将会抛出一个运行时警告。</p>
+<pre><code class="language-vue">&lt;CustomLayout id=&quot;custom-layout&quot; @click=&quot;changeValue&quot; /&gt;
+</code></pre>
+<p>如果 <code>&lt;CustomLayout&gt;</code> 有下面这样的多根节点模板，由于 Vue 不知道要将 attribute 透传到哪里，所以会抛出一个警告。</p>
+<pre><code class="language-vue">&lt;header&gt;...&lt;/header&gt;
+&lt;main&gt;...&lt;/main&gt;
+&lt;footer&gt;...&lt;/footer&gt;
+</code></pre>
+<p>如果 <code>$attrs</code> 被显式绑定，则不会有警告：</p>
+<pre><code class="language-vue">&lt;header&gt;...&lt;/header&gt;
+&lt;main v-bind=&quot;$attrs&quot;&gt;...&lt;/main&gt;
+&lt;footer&gt;...&lt;/footer&gt;
+</code></pre>
+<h3 id="在javascript中访问透传attributes">在JavaScript中访问透传Attributes</h3>
+<p>如果需要，你可以在 <code>&lt;script setup&gt;</code> 中使用 <code>useAttrs()</code> API 来访问一个组件的所有透传 attribute：</p>
+<pre><code class="language-vue">&lt;script setup&gt;
+import { useAttrs } from 'vue'
+
+const attrs = useAttrs()
+&lt;/script&gt;
+</code></pre>
+<p>需要注意的是，虽然这里的 <code>attrs</code> 对象总是反映为最新的透传 attribute，但它并不是响应式的 (考虑到性能因素)。你不能通过侦听器去监听它的变化。如果你需要响应性，可以使用 prop。或者你也可以使用 <code>onUpdated()</code> 使得在每次更新时结合最新的 <code>attrs</code> 执行副作用。</p>
+<h1 id="插槽">插槽</h1>
+<h2 id="插槽内容与出口">插槽内容与出口</h2>
+<p>在某些场景中，我们可能想要为子组件传递一些模板片段，让子组件在他们的组件中渲染这些片段，例如下面的<code>&lt;FancyButton&gt;</code>组件，可以像这样使用</p>
+<pre><code class="language-vue">&lt;FancyButton&gt;
+  Click me! &lt;!-- 插槽内容 --&gt;
+&lt;/FancyButton&gt;
+</code></pre>
+<p>而<code>&lt;FancyButton&gt;</code>的模板是这样的</p>
+<pre><code class="language-vue">&lt;button class=&quot;fancy-btn&quot;&gt;
+  &lt;slot&gt;&lt;/slot&gt; &lt;!-- 插槽出口 --&gt;
+&lt;/button&gt;
+</code></pre>
+<p><code>&lt;slot&gt;</code> 元素是一个<strong>插槽出口</strong> (slot outlet)，标示了父元素提供的<strong>插槽内容</strong> (slot content) 将在哪里被渲染。</p>
+<figure data-type="image" tabindex="4"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/05/e031155d8d00a97ed8cd15221e6d28b4-slots.dbdaf1e8-e60c04.png" alt="插槽图示" loading="lazy"></figure>
+<p>最终渲染出的DOM是这样的：</p>
+<pre><code class="language-vue">&lt;button class=&quot;fancy-btn&quot;&gt;Click me!&lt;/button&gt;
+</code></pre>
+<p>通过使用插槽，<code>&lt;FancyButton&gt;</code> 仅负责渲染外层的 <code>&lt;button&gt;</code> (以及相应的样式)，而其内部的内容由父组件提供。</p>
+<p>插槽内容可以是任意合法的模板内容，不局限于文本。例如我们可以传入多个元素，甚至是组件。</p>
+<h2 id="渲染作用域">渲染作用域</h2>
+<p>插槽内容可以访问到父组件的数据作用域，因为插槽内容本身是在父组件模板中定义的。举例来说：</p>
+<pre><code class="language-vue">&lt;span&gt;{{ message }}&lt;/span&gt;
+&lt;FancyButton&gt;{{ message }}&lt;/FancyButton&gt;
+</code></pre>
+<p>这里的两个 <code>{{ message }}</code> 插值表达式渲染的内容都是一样的。</p>
+<p>插槽内容<strong>无法访问</strong>子组件的数据。Vue 模板中的表达式只能访问其定义时所处的作用域，这和 JavaScript 的词法作用域规则是一致的。换言之：</p>
+<blockquote>
+<p>父组件模板中的表达式只能访问父组件的作用域；子组件模板中的表达式只能访问子组件的作用域。</p>
+</blockquote>
+<h2 id="默认内容">默认内容</h2>
+<p>在外部没有提供任何内容的情况下，可以为插槽指定默认内容。比如有这样一个 <code>&lt;SubmitButton&gt;</code> 组件：</p>
+<pre><code class="language-vue">&lt;button type=&quot;submit&quot;&gt;
+  &lt;slot&gt;&lt;/slot&gt;
+&lt;/button&gt;
+</code></pre>
+<p>如果我们想在父组件没有提供任何插槽内容时在 <code>&lt;button&gt;</code> 内渲染“Submit”，只需要将“Submit”写在 <code>&lt;slot&gt;</code> 标签之间来作为默认内容：</p>
+<pre><code class="language-vue">&lt;button type=&quot;submit&quot;&gt;
+  &lt;slot&gt;
+    Submit &lt;!-- 默认内容 --&gt;
+  &lt;/slot&gt;
+&lt;/button&gt;
+</code></pre>
+<p>当我们在父组件中使用 <code>&lt;SubmitButton&gt;</code> 且没有提供任何插槽内容时：</p>
+<pre><code class="language-vue">&lt;SubmitButton /&gt;
+</code></pre>
+<p>“Submit”将会被作为默认内容渲染：</p>
+<pre><code class="language-vue">&lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
+</code></pre>
+<p>但如果我们提供了插槽内容：</p>
+<pre><code class="language-vue">&lt;SubmitButton&gt;Save&lt;/SubmitButton&gt;
+</code></pre>
+<p>那么被显式提供的内容会取代默认内容：</p>
+<pre><code class="language-vue">&lt;button type=&quot;submit&quot;&gt;Save&lt;/button&gt;
+</code></pre>
+<h2 id="具名插槽">具名插槽</h2>
+<p>有时在一个组件中包含多个插槽出口是很有用的。举例来说，在一个 <code>&lt;BaseLayout&gt;</code> 组件中，有如下模板：</p>
+<pre><code class="language-vue">&lt;div class=&quot;container&quot;&gt;
+  &lt;header&gt;
+    &lt;!-- 标题内容放这里 --&gt;
+  &lt;/header&gt;
+  &lt;main&gt;
+    &lt;!-- 主要内容放这里 --&gt;
+  &lt;/main&gt;
+  &lt;footer&gt;
+    &lt;!-- 底部内容放这里 --&gt;
+  &lt;/footer&gt;
+&lt;/div&gt;
+</code></pre>
+<p>对于这种场景，<code>&lt;slot&gt;</code> 元素可以有一个特殊的 attribute <code>name</code>，用来给各个插槽分配唯一的 ID，以确定每一处要渲染的内容：</p>
+<pre><code class="language-vue">&lt;div class=&quot;container&quot;&gt;
+  &lt;header&gt;
+    &lt;slot name=&quot;header&quot;&gt;&lt;/slot&gt;
+  &lt;/header&gt;
+  &lt;main&gt;
+    &lt;slot&gt;&lt;/slot&gt;
+  &lt;/main&gt;
+  &lt;footer&gt;
+    &lt;slot name=&quot;footer&quot;&gt;&lt;/slot&gt;
+  &lt;/footer&gt;
+&lt;/div&gt;
+</code></pre>
+<p>这类带 <code>name</code> 的插槽被称为具名插槽 (named slots)。没有提供 <code>name</code> 的 <code>&lt;slot&gt;</code> 出口会隐式地命名为“default”。</p>
+<p>在父组件中使用 <code>&lt;BaseLayout&gt;</code> 时，我们需要一种方式将多个插槽内容传入到各自目标插槽的出口。此时就需要用到<strong>具名插槽</strong>了：</p>
+<p>要为具名插槽传入内容，我们需要使用一个含 <code>v-slot</code> 指令的 <code>&lt;template&gt;</code> 元素，并将目标插槽的名字传给该指令：</p>
+<pre><code class="language-vue">&lt;BaseLayout&gt;
+  &lt;template v-slot:header&gt;
+    &lt;!-- header 插槽的内容放这里 --&gt;
+  &lt;/template&gt;
+&lt;/BaseLayout&gt;
+</code></pre>
+<p><code>v-slot</code> 有对应的简写 <code>#</code>，因此 <code>&lt;template v-slot:header&gt;</code> 可以简写为 <code>&lt;template #header&gt;</code>。其意思就是“将这部分模板片段传入子组件的 header 插槽中”。</p>
+<figure data-type="image" tabindex="5"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/05/598e791a719538c43a464b92f3041b33-named-slots.ebb7b207-e46c3d.png" alt="具名插槽图示" loading="lazy"></figure>
+<pre><code class="language-vue">&lt;BaseLayout&gt;
+  &lt;template #header&gt;
+    &lt;h1&gt;Here might be a page title&lt;/h1&gt;
+  &lt;/template&gt;
+
+  &lt;template #default&gt;
+    &lt;p&gt;A paragraph for the main content.&lt;/p&gt;
+    &lt;p&gt;And another one.&lt;/p&gt;
+  &lt;/template&gt;
+
+  &lt;template #footer&gt;
+    &lt;p&gt;Here's some contact info&lt;/p&gt;
+  &lt;/template&gt;
+&lt;/BaseLayout&gt;
+</code></pre>
+<p>当一个组件同时接收默认插槽和具名插槽时，所有位于顶级的非 <code>&lt;template&gt;</code> 节点都被隐式地视为默认插槽的内容。所以上面也可以写成：</p>
+<pre><code class="language-vue">&lt;BaseLayout&gt;
+  &lt;template #header&gt;
+    &lt;h1&gt;Here might be a page title&lt;/h1&gt;
+  &lt;/template&gt;
+
+  &lt;!-- 隐式的默认插槽 --&gt;
+  &lt;p&gt;A paragraph for the main content.&lt;/p&gt;
+  &lt;p&gt;And another one.&lt;/p&gt;
+
+  &lt;template #footer&gt;
+    &lt;p&gt;Here's some contact info&lt;/p&gt;
+  &lt;/template&gt;
+&lt;/BaseLayout&gt;
+</code></pre>
+<p>现在 <code>&lt;template&gt;</code> 元素中的所有内容都将被传递到相应的插槽。最终渲染出的 HTML 如下：</p>
+<pre><code class="language-vue">&lt;div class=&quot;container&quot;&gt;
+  &lt;header&gt;
+    &lt;h1&gt;Here might be a page title&lt;/h1&gt;
+  &lt;/header&gt;
+  &lt;main&gt;
+    &lt;p&gt;A paragraph for the main content.&lt;/p&gt;
+    &lt;p&gt;And another one.&lt;/p&gt;
+  &lt;/main&gt;
+  &lt;footer&gt;
+    &lt;p&gt;Here's some contact info&lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="动态插槽名">动态插槽名</h2>
+<p>动态指令参数在<code>v-slot</code>上也是有效的，即可以定义下面这样的动态插槽名</p>
+<pre><code class="language-vue">&lt;base-layout&gt;
+  &lt;template v-slot:[dynamicSlotName]&gt;
+    ...
+  &lt;/template&gt;
+
+  &lt;!-- 缩写为 --&gt;
+  &lt;template #[dynamicSlotName]&gt;
+    ...
+  &lt;/template&gt;
+&lt;/base-layout&gt;
+</code></pre>
+<h2 id="作用域插槽">作用域插槽</h2>
+<p>在上面的<strong>渲染作用域</strong>中我们讨论到，插槽的内容无法访问到子组件的状态。</p>
+<p>然而在某些场景下插槽的内容可能想要同时使用父组件域内和子组件域内的数据。要做到这一点，我们需要一种方法来让子组件在渲染时将一部分数据提供给插槽。</p>
+<p>我们也确实有办法这么做！可以像对组件传递 props 那样，向一个插槽的出口上传递 attributes：</p>
+<pre><code class="language-vue">&lt;!-- &lt;MyComponent&gt; 的模板 --&gt;
+&lt;div&gt;
+  &lt;slot :text=&quot;greetingMessage&quot; :count=&quot;1&quot;&gt;&lt;/slot&gt;
+&lt;/div&gt;
+</code></pre>
+<p>当需要接收插槽 props 时，默认插槽和具名插槽的使用方式有一些小区别。下面我们将先展示默认插槽如何接受 props，通过子组件标签上的 <code>v-slot</code> 指令，直接接收到了一个插槽 props 对象：</p>
+<pre><code class="language-vue">&lt;MyComponent v-slot=&quot;slotProps&quot;&gt;
+  {{ slotProps.text }} {{ slotProps.count }}
+&lt;/MyComponent
+</code></pre>
+<p><code>v-slot=&quot;slotProps&quot;</code> 可以类比这里的函数签名，和函数的参数类似，我们也可以在 <code>v-slot</code> 中使用解构：</p>
+<pre><code class="language-vue">&lt;MyComponent v-slot=&quot;{ text, count }&quot;&gt;
+  {{ text }} {{ count }}
+&lt;/MyComponent&gt;
+</code></pre>
+<h3 id="具名作用域插槽">具名作用域插槽</h3>
+<p>---待补充</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Axios封装]]></title>
+        <id>https://zorroe.github.io/post/axios-encapsulation/</id>
+        <link href="https://zorroe.github.io/post/axios-encapsulation/">
+        </link>
+        <updated>2023-01-30T13:22:54.000Z</updated>
+        <content type="html"><![CDATA[<pre><code class="language-typescript">// http.ts
+import axios, {type AxiosRequestConfig} from &quot;axios&quot;;
+
+axios.defaults.baseURL = localStorage.getItem('BASE_URL')?.toString();
+axios.defaults.timeout = 20 * 1000;
+axios.defaults.maxBodyLength = 5 * 1024 * 1024;
+axios.defaults.withCredentials = true
+
+axios.interceptors.request.use(
+    (config: AxiosRequestConfig | any) =&gt; {
+
+        config.params = {
+            ...config.params,
+            t: Date.now(),
+        }
+        return config;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
+
+// 添加响应拦截器
+axios.interceptors.response.use(
+    (response) =&gt; {
+        return response;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
+
+interface ResType&lt;T&gt; {
+    code: number;
+    data?: T;
+    msg: string;
+    err?: string;
+}
+
+interface Http {
+    get&lt;T&gt;(url: string, params?: unknown): Promise&lt;T&gt;;
+
+    post&lt;T&gt;(url: string, params?: unknown): Promise&lt;T&gt;;
+
+    upload&lt;T&gt;(url: string, params: unknown): Promise&lt;T&gt;;
+
+    put&lt;T&gt;(url: string, params: unknown): Promise&lt;T&gt;;
+
+    delete&lt;T&gt;(url: string, params: unknown): Promise&lt;T&gt;;
+
+    download(url: string): void;
+}
+
+const http: Http = {
+    get(url, params) {
+        return new Promise((resolve, reject) =&gt; {
+            axios
+                .get(url, {params})
+                .then((res) =&gt; {
+                    resolve(res.data);
+                })
+                .catch((err) =&gt; {
+                    reject(err.data);
+                });
+        });
+    },
+
+    post(url, params) {
+        return new Promise((resolve, reject) =&gt; {
+            axios
+                .post(url, JSON.stringify(params))
+                .then((res) =&gt; {
+                    resolve(res.data);
+                })
+                .catch((err) =&gt; {
+                    reject(err.data);
+                });
+        });
+    },
+
+    put(url, params) {
+        return new Promise((resolve, reject) =&gt; {
+            axios
+                .put(url, JSON.stringify(params))
+                .then((res) =&gt; {
+                    resolve(res.data);
+                })
+                .catch((err) =&gt; {
+                    reject(err.data);
+                });
+        });
+    },
+
+    delete(url, params) {
+        return new Promise((resolve, reject) =&gt; {
+            axios
+                .delete(url, {params})
+                .then((res) =&gt; {
+                    resolve(res.data);
+                })
+                .catch((err) =&gt; {
+                    reject(err.data);
+                });
+        });
+    },
+
+    upload(url, file) {
+        return new Promise((resolve, reject) =&gt; {
+            axios
+                .post(url, file, {
+                    headers: {&quot;Content-Type&quot;: &quot;multipart/form-data&quot;},
+                })
+                .then((res) =&gt; {
+                    resolve(res.data);
+                })
+                .catch((err) =&gt; {
+                    reject(err.data);
+                });
+        });
+    },
+
+    download(url) {
+        const iframe = document.createElement(&quot;iframe&quot;);
+        iframe.style.display = &quot;none&quot;;
+        iframe.src = url;
+        iframe.onload = function () {
+            document.body.removeChild(iframe);
+        };
+
+        document.body.appendChild(iframe);
+    },
+};
+
+export default http;
+</code></pre>
+<p>测试：</p>
+<pre><code class="language-typescript">import http from &quot;@/utils/http&quot;;
+
+onMounted(() =&gt; {
+  http.get(&quot;search?keywords=海阔天空&quot;).then((res) =&gt; {
+    console.log(res);
+  });
+});
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/08/79089c4412f26ba8529b1ed217dfd9c0-image-20230108215041817-7c22ee.png" alt="image-20230108215041817" loading="lazy"></figure>
+]]></content>
+    </entry>
+</feed>

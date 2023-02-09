@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Axios封装 | Zorroe</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://zorroe.github.io/favicon.ico?v=1675922185517">
+<link rel="stylesheet" href="https://zorroe.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="// http.ts
+import axios, {type AxiosRequestConfig} from &quot;axios&quot;;
+
+axios.defaults.baseURL = localStorage.getIte..." />
+    <meta name="keywords" content="axios,vue3,typescript" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://zorroe.github.io">
+        <img src="https://zorroe.github.io/images/avatar.png?v=1675922185517" class="site-logo">
+        <h1 class="site-title">Zorroe</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://zorroe.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Axios封装</h2>
+            <div class="post-date">2023-01-30</div>
+            
+            <div class="post-content" v-pre>
+              <pre><code class="language-typescript">// http.ts
+import axios, {type AxiosRequestConfig} from &quot;axios&quot;;
+
+axios.defaults.baseURL = localStorage.getItem('BASE_URL')?.toString();
+axios.defaults.timeout = 20 * 1000;
+axios.defaults.maxBodyLength = 5 * 1024 * 1024;
+axios.defaults.withCredentials = true
+
+axios.interceptors.request.use(
+    (config: AxiosRequestConfig | any) =&gt; {
+
+        config.params = {
+            ...config.params,
+            t: Date.now(),
+        }
+        return config;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
+
+// 添加响应拦截器
+axios.interceptors.response.use(
+    (response) =&gt; {
+        return response;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
+
+interface ResType&lt;T&gt; {
+    code: number;
+    data?: T;
+    msg: string;
+    err?: string;
+}
+
+interface Http {
+    get&lt;T&gt;(url: string, params?: unknown): Promise&lt;T&gt;;
+
+    post&lt;T&gt;(url: string, params?: unknown): Promise&lt;T&gt;;
+
+    upload&lt;T&gt;(url: string, params: unknown): Promise&lt;T&gt;;
+
+    put&lt;T&gt;(url: string, params: unknown): Promise&lt;T&gt;;
+
+    delete&lt;T&gt;(url: string, params: unknown): Promise&lt;T&gt;;
+
+    download(url: string): void;
+}
+
+const http: Http = {
+    get(url, params) {
+        return new Promise((resolve, reject) =&gt; {
+            axios
+                .get(url, {params})
+                .then((res) =&gt; {
+                    resolve(res.data);
+                })
+                .catch((err) =&gt; {
+                    reject(err.data);
+                });
+        });
+    },
+
+    post(url, params) {
+        return new Promise((resolve, reject) =&gt; {
+            axios
+                .post(url, JSON.stringify(params))
+                .then((res) =&gt; {
+                    resolve(res.data);
+                })
+                .catch((err) =&gt; {
+                    reject(err.data);
+                });
+        });
+    },
+
+    put(url, params) {
+        return new Promise((resolve, reject) =&gt; {
+            axios
+                .put(url, JSON.stringify(params))
+                .then((res) =&gt; {
+                    resolve(res.data);
+                })
+                .catch((err) =&gt; {
+                    reject(err.data);
+                });
+        });
+    },
+
+    delete(url, params) {
+        return new Promise((resolve, reject) =&gt; {
+            axios
+                .delete(url, {params})
+                .then((res) =&gt; {
+                    resolve(res.data);
+                })
+                .catch((err) =&gt; {
+                    reject(err.data);
+                });
+        });
+    },
+
+    upload(url, file) {
+        return new Promise((resolve, reject) =&gt; {
+            axios
+                .post(url, file, {
+                    headers: {&quot;Content-Type&quot;: &quot;multipart/form-data&quot;},
+                })
+                .then((res) =&gt; {
+                    resolve(res.data);
+                })
+                .catch((err) =&gt; {
+                    reject(err.data);
+                });
+        });
+    },
+
+    download(url) {
+        const iframe = document.createElement(&quot;iframe&quot;);
+        iframe.style.display = &quot;none&quot;;
+        iframe.src = url;
+        iframe.onload = function () {
+            document.body.removeChild(iframe);
+        };
+
+        document.body.appendChild(iframe);
+    },
+};
+
+export default http;
+</code></pre>
+<p>测试：</p>
+<pre><code class="language-typescript">import http from &quot;@/utils/http&quot;;
+
+onMounted(() =&gt; {
+  http.get(&quot;search?keywords=海阔天空&quot;).then((res) =&gt; {
+    console.log(res);
+  });
+});
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/08/79089c4412f26ba8529b1ed217dfd9c0-image-20230108215041817-7c22ee.png" alt="image-20230108215041817" loading="lazy"></figure>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://zorroe.github.io/tag/oqYtoADdL/" class="tag">
+                    axios
+                  </a>
+                
+                  <a href="https://zorroe.github.io/tag/pzFrXHj9c2/" class="tag">
+                    vue3
+                  </a>
+                
+                  <a href="https://zorroe.github.io/tag/SrN-KDXeYm/" class="tag">
+                    typescript
+                  </a>
+                
+              </div>
+            
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>UIAutomation的使用 | Zorroe</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://zorroe.github.io/favicon.ico?v=1675922185517">
+<link rel="stylesheet" href="https://zorroe.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="
+UIAutomation的使用
+
+环境准备
+代码示例
+
+
+
+
+UIAutomation的使用
+环境准备
+
+python版本：3.7.3
+uiautomation版本：2.0.17
+
+获取win元素工具：UI Spy
+如果是Windows ..." />
+    <meta name="keywords" content="uiautomation,python" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://zorroe.github.io">
+        <img src="https://zorroe.github.io/images/avatar.png?v=1675922185517" class="site-logo">
+        <h1 class="site-title">Zorroe</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://zorroe.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">UIAutomation的使用</h2>
+            <div class="post-date">2023-01-30</div>
+            
+            <div class="post-content" v-pre>
+              <p><ul class="markdownIt-TOC">
+<li><a href="#uiautomation%E7%9A%84%E4%BD%BF%E7%94%A8">UIAutomation的使用</a>
+<ul>
+<li><a href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87">环境准备</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B">代码示例</a></li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="uiautomation的使用">UIAutomation的使用</h1>
+<h2 id="环境准备">环境准备</h2>
+<blockquote>
+<p>python版本：3.7.3</p>
+<p>uiautomation版本：2.0.17</p>
+</blockquote>
+<p>获取win元素工具：<a href="https://file-lxxx.oss-cn-shanghai.aliyuncs.com/UISpy.exe">UI Spy</a></p>
+<p>如果是Windows XP系统，请确保系统目录有这个文件：UIAutomationCore.dll。如果没有，需要安装补丁 <strong><a href="https://github.com/yinkaisheng/WindowsUpdateKB971513ForIUIAutomation">KB971513</a></strong> 才能支持UIAutomtion.</p>
+<figure data-type="image" tabindex="1"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/30/36bec74bccefd251211077d8338a3f54-image-20230130163852773-ba670a.png" alt="image-20230130163852773" loading="lazy"></figure>
+<h2 id="代码示例">代码示例</h2>
+<pre><code class="language-python">import subprocess
+import time
+import uiautomation as auto
+auto.uiautomation.SetGlobalSearchTimeout(15)  # 设置全局搜索超时 15
+
+
+def main():
+
+    def GetFirstChild(control):
+        return control.GetFirstChildControl()
+
+    def GetNextSibling(control):
+        return control.GetNextSiblingControl()
+
+    subprocess.Popen(&quot;D:\\Tencent\\QQ\\Bin\\QQ.exe&quot;)
+    desktop = auto.GetRootControl()  # 查找桌面控件
+    toolBar = desktop.ToolBarControl(ClassName=&quot;ToolbarWindow32&quot;,Name=&quot;用户提示通知区域&quot;)  # 工具栏控件
+    while(True):
+        flag = False
+        # 遍历工具栏控件，找到登录成功的QQ控件
+        for control, depth in auto.WalkTree(toolBar, getFirstChild=GetFirstChild, getNextSibling=GetNextSibling, includeTop=False, maxDepth=1):
+            if(str(control.Name).startswith(&quot;QQ&quot;) and str(control.Name) is not &quot;QQ&quot;):
+                control.Click()
+                flag = True
+        if(flag):
+            break
+        time.sleep(0.5)
+
+    qqWindow = auto.WindowControl(searchDepth=1,ClassName=&quot;TXGuiFoundation&quot;,Name=&quot;QQ&quot;)  # 查找QQ界面
+    qqWindow.ListItemControl(searchDepth=18,Name=&quot;我的Android手机&quot;).DoubleClick()  # 点击聊天
+    time.sleep(1)
+
+    chatWindow = auto.WindowControl(searchDepth=1,ClassName=&quot;TXGuiFoundation&quot;,Name=&quot;我的Android手机&quot;)  # 查找聊天界面
+    chatWindow.EditControl(searchDepth=11,foundIndex=1).SendKeys(&quot;hello android手机&quot;)  # 聊天框输入文字
+    time.sleep(1)
+    chatWindow.ButtonControl(searchDepth=12,Name=&quot;发送(&amp;S)&quot;).Click()  # 发送信息
+
+if __name__ == '__main__':
+    main()
+</code></pre>
+<p>查找控件的可选参数</p>
+<ul>
+<li><code>searchFromControl = None</code>：从哪个控件开始查找，如果为None，从根节点Desktop开始查找</li>
+<li><code>searchDepth = 0xFFFFFFFF</code>：搜索深度</li>
+<li><code>searchInterval = SEARCH_INTERVAL</code>：搜索间隔</li>
+<li><code>foundIndex = 1</code> ：搜索到的满足搜索条件的控件索引，索引从1开始</li>
+<li><code>Name</code> ：控件名字</li>
+<li><code>SubName</code> ：控件部分名字</li>
+<li><code>RegexName</code> ：使用re.match匹配符合正则表达式的名字，Name,SubName,RegexName只能使用一个，不能同时使用</li>
+<li><code>ClassName</code>：类名字</li>
+<li><code>AutomationId</code>：控件AutomationId</li>
+<li><code>ControlType</code>：控件类型</li>
+<li><code>Depth</code>：控件相对于searchFromControl的精确深度</li>
+<li><code>Compare</code>：自定义比较函数function(control: Control, depth: int)-&gt;bool</li>
+</ul>
+<p>searchDepth和Depth的区别：</p>
+<ul>
+<li>searchDepth在指定的深度范围内（包括1-searchDepth层中的所有子孙控件）搜索第一个满足搜索条件的控件</li>
+<li>Depth只在Depth所在的深度（如果Depth&gt;1，排除1~searchDepth-1层中的所有子孙控件）搜索第一个满足搜索条件的控件</li>
+</ul>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://zorroe.github.io/tag/jnaPUZJB9/" class="tag">
+                    uiautomation
+                  </a>
+                
+                  <a href="https://zorroe.github.io/tag/xKiRX7Em3/" class="tag">
+                    python
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://zorroe.github.io/post/yin-ru-eventlet-bao-cuo/">
+                  <h3 class="post-title">
+                    引入eventlet报错
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Typescript的枚举 | Zorroe</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://zorroe.github.io/favicon.ico?v=1675922185517">
+<link rel="stylesheet" href="https://zorroe.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="枚举
+使用枚举我们可以定义一些有名字的数字常量。枚举通过enum关键字来定义
+enum Direction {
+    Up = 1,
+    Down,
+    Left,
+    Right
+}
+
+一个枚举类型可以包含零个或多个枚举成员..." />
+    <meta name="keywords" content="typescript" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://zorroe.github.io">
+        <img src="https://zorroe.github.io/images/avatar.png?v=1675922185517" class="site-logo">
+        <h1 class="site-title">Zorroe</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://zorroe.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Typescript的枚举</h2>
+            <div class="post-date">2023-01-31</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="枚举">枚举</h1>
+<p>使用枚举我们可以定义一些有名字的数字常量。枚举通过<code>enum</code>关键字来定义</p>
+<pre><code class="language-typescript">enum Direction {
+    Up = 1,
+    Down,
+    Left,
+    Right
+}
+</code></pre>
+<p>一个枚举类型可以包含零个或多个枚举成员。 枚举成员具有一个数字值，它可以是常数或是计算得出的值 当满足如下条件时，枚举成员被当作是常数：</p>
+<ul>
+<li>不具有初始化函数并且之前的枚举成员是常数。 在这种情况下，当前枚举成员的值为上一个枚举成员的值加<code>1</code>。 但第一个枚举元素是个例外。 如果它没有初始化方法，那么它的初始值为<code>0</code>。</li>
+<li>枚举成员使用常数枚举表达式初始化。 常数枚举表达式是TypeScript表达式的子集，它可以在编译阶段求值。 当一个表达式满足下面条件之一时，它就是一个常数枚举表达式：
+<ul>
+<li>数字字面量</li>
+<li>引用之前定义的常数枚举成员（可以是在不同的枚举类型中定义的） 如果这个成员是在同一个枚举类型中定义的，可以使用非限定名来引用。</li>
+<li>带括号的常数枚举表达式</li>
+<li><code>+</code>, <code>-</code>, <code>~</code> 一元运算符应用于常数枚举表达式<br>
+<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>&lt;&lt;</code>, <code>&gt;&gt;</code>, <code>&gt;&gt;&gt;</code>, <code>&amp;</code>, <code>|</code>, <code>^</code> 二元运算符，常数枚举表达式做为其一个操作对象。 若常数枚举表达式求值后为<code>NaN</code>或<code>Infinity</code>，则会在编译阶段报错。</li>
+</ul>
+</li>
+</ul>
+<p>所有其它情况的枚举成员被当作是需要计算得出的值。</p>
+<pre><code class="language-typescript">enum FileAccess {
+    // constant members
+    None,
+    Read    = 1 &lt;&lt; 1,
+    Write   = 1 &lt;&lt; 2,
+    ReadWrite  = Read | Write,
+    // computed member
+    G = &quot;123&quot;.length
+}
+</code></pre>
+<p>枚举是在运行时真正存在的一个对象。其中一个原因是因为这样可以从枚举值到枚举名进行反向映射</p>
+<pre><code class="language-typescript">enum Enum{
+  A
+}
+
+console.log(Enum.A)
+console.log(Enum[0])
+</code></pre>
+<p>编译成</p>
+<pre><code class="language-js">var Enum;
+(function (Enum) {
+    Enum[Enum[&quot;A&quot;] = 0] = &quot;A&quot;;
+})(Enum || (Enum = {}));
+console.log(Enum.A);
+console.log(Enum[0]);
+</code></pre>
+<p>生成的代码中，枚举类型被编译成一个对象，它包含双向映射（<code>name</code> -&gt; <code>value</code>）和（<code>value</code> -&gt; <code>name</code>）。 引用枚举成员总会生成一次属性访问并且永远不会内联。 在大多数情况下这是很好的并且正确的解决方案。 然而有时候需求却比较严格。 当访问枚举值时，为了避免生成多余的代码和间接引用，可以使用常数枚举。 常数枚举是在<code>enum</code>关键字前使用<code>const</code>修饰符。</p>
+<p>常数枚举只能使用常数枚举表达式并且不同于常规的枚举的是他们在编译阶段会被删除。常数枚举成员在使用的地方被内敛进来。这是因为常数枚举不可能有计算成员</p>
+<pre><code class="language-typescript">const enum FileAccess {
+  None,
+  Read = 1 &lt;&lt; 1,
+  Write = 1 &lt;&lt; 2,
+  ReadWrite = Read | Write,
+}
+
+console.log(FileAccess.None)
+console.log(FileAccess.Read)
+console.log(FileAccess.Write)
+console.log(FileAccess.ReadWrite)
+</code></pre>
+<p>编译成</p>
+<pre><code class="language-js">console.log(0 /* FileAccess.None */);
+console.log(2 /* FileAccess.Read */);
+console.log(4 /* FileAccess.Write */);
+console.log(6 /* FileAccess.ReadWrite */);
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://zorroe.github.io/tag/SrN-KDXeYm/" class="tag">
+                    typescript
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://zorroe.github.io/post/typescript-de-fan-xing/">
+                  <h3 class="post-title">
+                    Typescript的泛型
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

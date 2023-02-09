@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>box-shadow不生效的问题 | Zorroe</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://zorroe.github.io/favicon.ico?v=1675922185517">
+<link rel="stylesheet" href="https://zorroe.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="
+box-shadow不生效的问题
+
+方法1
+方法2
+
+
+
+
+box-shadow不生效的问题
+页面布局中，无论是正常的文档流，还是flex布局，都会让页面铺满盒子。而box-shadow再页面设计中是不可缺少的效果，在单独盒子中的元素，b..." />
+    <meta name="keywords" content="css" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://zorroe.github.io">
+        <img src="https://zorroe.github.io/images/avatar.png?v=1675922185517" class="site-logo">
+        <h1 class="site-title">Zorroe</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://zorroe.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">box-shadow不生效的问题</h2>
+            <div class="post-date">2023-01-30</div>
+            
+            <div class="post-content" v-pre>
+              <p><ul class="markdownIt-TOC">
+<li><a href="#box-shadow%E4%B8%8D%E7%94%9F%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98">box-shadow不生效的问题</a>
+<ul>
+<li><a href="#%E6%96%B9%E6%B3%951">方法1</a></li>
+<li><a href="#%E6%96%B9%E6%B3%952">方法2</a></li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="box-shadow不生效的问题">box-shadow不生效的问题</h1>
+<p>页面布局中，无论是正常的文档流，还是<code>flex</code>布局，都会让页面铺满盒子。而<code>box-shadow</code>再页面设计中是不可缺少的效果，在单独盒子中的元素，<code>box-shadow</code>的阴影会投影到父级上。但是当<code>阴影</code>盒子是紧贴着，那<code>阴影</code>就会变得不可见。</p>
+<h2 id="方法1">方法1</h2>
+<p><strong>在需要的<code>box-shadow</code>的元素设置<code>position: relative</code></strong></p>
+<p>在正常文档流中，紧贴着，意味着元素<em>涂在</em>父级上的<code>阴影</code>被旁边元素覆盖<code>再次涂写</code>，所以设置<code>position: relative</code>就让元素脱离文档流，浏览器单独处理，就出现了<code>z轴</code>上的<code>堆叠</code>，也就不存在被<code>紧贴着</code>，<code>阴影</code>就直接投影在正常文档流之上。</p>
+<h2 id="方法2">方法2</h2>
+<p><strong>在父级上设置<code>flex</code>，然后在需要<code>阴影</code>的元素设置<code>z-index</code>大于等于0</strong></p>
+<p><code>flex</code>会让直接子元素变为一种<code>flex-item</code>元素，这个时候就不能称为文档流了，<code>flex-item</code>就有了<code>z轴</code>的概念，所以设置<code>z-index</code>就能调整阴影出现的<code>堆叠</code>层次。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://zorroe.github.io/tag/-Ct_YDCCa/" class="tag">
+                    css
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://zorroe.github.io/post/mockjs/">
+                  <h3 class="post-title">
+                    Mock.js
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

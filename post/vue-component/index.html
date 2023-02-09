@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Vue组件 | Zorroe</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://zorroe.github.io/favicon.ico?v=1675922185517">
+<link rel="stylesheet" href="https://zorroe.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="
+组件基础
+
+定义一个组件
+使用组件
+传递props
+监听事件
+通过插槽来分配内容
+动态组件
+
+
+组件注册
+
+全局注册
+局部注册
+
+
+Props
+
+Props声明
+单向数据流
+Prop校验
+Boolean类型转换
+
+
+组件事件
+
+触发与监听..." />
+    <meta name="keywords" content="vue3,typescript" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://zorroe.github.io">
+        <img src="https://zorroe.github.io/images/avatar.png?v=1675922185517" class="site-logo">
+        <h1 class="site-title">Zorroe</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://zorroe.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Vue组件</h2>
+            <div class="post-date">2023-01-30</div>
+            
+            <div class="post-content" v-pre>
+              <p><ul class="markdownIt-TOC">
+<li><a href="#%E7%BB%84%E4%BB%B6%E5%9F%BA%E7%A1%80">组件基础</a>
+<ul>
+<li><a href="#%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E7%BB%84%E4%BB%B6">定义一个组件</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6">使用组件</a></li>
+<li><a href="#%E4%BC%A0%E9%80%92props">传递props</a></li>
+<li><a href="#%E7%9B%91%E5%90%AC%E4%BA%8B%E4%BB%B6">监听事件</a></li>
+<li><a href="#%E9%80%9A%E8%BF%87%E6%8F%92%E6%A7%BD%E6%9D%A5%E5%88%86%E9%85%8D%E5%86%85%E5%AE%B9">通过插槽来分配内容</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6">动态组件</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E6%B3%A8%E5%86%8C">组件注册</a>
+<ul>
+<li><a href="#%E5%85%A8%E5%B1%80%E6%B3%A8%E5%86%8C">全局注册</a></li>
+<li><a href="#%E5%B1%80%E9%83%A8%E6%B3%A8%E5%86%8C">局部注册</a></li>
+</ul>
+</li>
+<li><a href="#props">Props</a>
+<ul>
+<li><a href="#props%E5%A3%B0%E6%98%8E">Props声明</a></li>
+<li><a href="#%E5%8D%95%E5%90%91%E6%95%B0%E6%8D%AE%E6%B5%81">单向数据流</a></li>
+<li><a href="#prop%E6%A0%A1%E9%AA%8C">Prop校验</a></li>
+<li><a href="#boolean%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2">Boolean类型转换</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E4%BA%8B%E4%BB%B6">组件事件</a>
+<ul>
+<li><a href="#%E8%A7%A6%E5%8F%91%E4%B8%8E%E7%9B%91%E5%90%AC%E4%BA%8B%E4%BB%B6">触发与监听事件</a></li>
+<li><a href="#%E4%BA%8B%E4%BB%B6%E5%8F%82%E6%95%B0">事件参数</a></li>
+<li><a href="#%E5%A3%B0%E6%98%8E%E8%A7%A6%E5%8F%91%E7%9A%84%E4%BA%8B%E4%BB%B6">声明触发的事件</a></li>
+<li><a href="#%E4%BA%8B%E4%BB%B6%E6%A0%A1%E9%AA%8C">事件校验</a></li>
+<li><a href="#%E9%85%8D%E5%90%88v-model%E4%BD%BF%E7%94%A8">配合<code>v-model</code>使用</a></li>
+<li><a href="#%E9%80%8F%E4%BC%A0attributes">透传Attributes</a></li>
+<li><a href="#attributes%E7%BB%A7%E6%89%BF">Attributes继承</a>
+<ul>
+<li><a href="#%E5%AF%B9-class-%E5%92%8C-style-%E7%9A%84%E5%90%88%E5%B9%B6">对 <code>class</code> 和 <code>style</code> 的合并</a></li>
+<li><a href="#v-on%E7%9B%91%E5%90%AC%E5%99%A8%E7%BB%A7%E6%89%BF"><code>v-on</code>监听器继承</a></li>
+<li><a href="#%E6%B7%B1%E5%B1%82%E7%BB%84%E4%BB%B6%E7%BB%A7%E6%89%BF">深层组件继承</a></li>
+</ul>
+</li>
+<li><a href="#%E7%A6%81%E7%94%A8attributes%E7%BB%A7%E6%89%BF">禁用Attributes继承</a>
+<ul>
+<li><a href="#%E5%A4%9A%E4%B8%AA%E6%A0%B9%E8%8A%82%E7%82%B9%E7%9A%84attributes%E7%BB%A7%E6%89%BF">多个根节点的Attributes继承</a></li>
+<li><a href="#%E5%9C%A8javascript%E4%B8%AD%E8%AE%BF%E9%97%AE%E9%80%8F%E4%BC%A0attributes">在JavaScript中访问透传Attributes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%8F%92%E6%A7%BD">插槽</a>
+<ul>
+<li><a href="#%E6%8F%92%E6%A7%BD%E5%86%85%E5%AE%B9%E4%B8%8E%E5%87%BA%E5%8F%A3">插槽内容与出口</a></li>
+<li><a href="#%E6%B8%B2%E6%9F%93%E4%BD%9C%E7%94%A8%E5%9F%9F">渲染作用域</a></li>
+<li><a href="#%E9%BB%98%E8%AE%A4%E5%86%85%E5%AE%B9">默认内容</a></li>
+<li><a href="#%E5%85%B7%E5%90%8D%E6%8F%92%E6%A7%BD">具名插槽</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E6%8F%92%E6%A7%BD%E5%90%8D">动态插槽名</a></li>
+<li><a href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8F%92%E6%A7%BD">作用域插槽</a>
+<ul>
+<li><a href="#%E5%85%B7%E5%90%8D%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8F%92%E6%A7%BD">具名作用域插槽</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="组件基础">组件基础</h1>
+<blockquote>
+<p>使用组件将UI划分为独立的、可重用的部分，并且可以对每个部分进行单独的思考。在实际应用中，组件常常被组织成层层嵌套的树状结构：</p>
+<figure data-type="image" tabindex="1"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/04/34b4e327c618c5454bf154d2e225e95b-components.7fbb3771-8702fc.png" alt="组件树" loading="lazy"></figure>
+</blockquote>
+<h2 id="定义一个组件">定义一个组件</h2>
+<p>当使用构建步骤时，一般将Vue组件定义在一个单独的<code>.vue</code>文件中，这被叫做<strong>单文件组件</strong>（SFC）</p>
+<pre><code class="language-vue">&lt;script&gt;
+export default {
+  data() {
+    return {
+      count: 0
+    }
+  }
+}
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;button @click=&quot;count++&quot;&gt;You clicked me {{ count }} times.&lt;/button&gt;
+&lt;/template&gt;
+</code></pre>
+<h2 id="使用组件">使用组件</h2>
+<p>要使用一个子组件，我们需要在父组件中导入。如下所示</p>
+<blockquote>
+<p>子组件</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+    &lt;div&gt;
+        &lt;button&gt;这是一个按钮&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<blockquote>
+<p>父组件</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+  &lt;div&gt;
+      &lt;Button/&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+&lt;script setup lang=&quot;ts&quot;&gt;
+import MyButton from './components/MyButton.vue';
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<h2 id="传递props">传递props</h2>
+<p>如果我们正在构建一个博客，我们可能需要一个表示博客文章的组件。我们希望所有的博客文章分享相同的视觉布局，但有不同的内容。要实现这样的效果需要向组件中传递数据，例如每篇文章的标题和内容，这就会使用到props。</p>
+<p>props是一种特别的attributes，你可以在组件上声明注册。要传递给博客文章组件一个标题，我们必须在组件的props列表上声明。这里要用到<code>props</code>选项：</p>
+<pre><code class="language-vue">&lt;!-- BlogPost.vue --&gt;
+&lt;template&gt;
+    &lt;div style=&quot;margin-bottom:10px; border: 1px solid black;&quot;&gt;
+        &lt;h1&gt;{{ title }}&lt;/h1&gt;
+        &lt;div&gt;{{ content }}&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+const props = defineProps({
+    title: {
+        type: String,
+        default: 'No title'
+    },
+    content: {
+        type: String,
+        default: 'No content'
+    },
+})
+</code></pre>
+<pre><code class="language-vue">&lt;!-- App.vue --&gt;
+&lt;script setup lang=&quot;ts&quot;&gt;
+import { ref } from 'vue';
+import BlogPost from './components/BlogPost.vue'
+
+const blogs = ref([
+  {
+    title: 'Blog 1',
+    content: 'Content 1'
+  },
+  ...
+])
+
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;BlogPost v-for=&quot;blog in blogs&quot; :title=&quot;blog.title&quot; :content=&quot;blog.content&quot; /&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>效果</p>
+<figure data-type="image" tabindex="2"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/04/02c1ddd3ec2d5059193f8784e3e67a55-image-20230104204143441-6f141b.png" alt="image-20230104204143441" loading="lazy"></figure>
+<h2 id="监听事件">监听事件</h2>
+<p>继续关注<code>BlogPost</code>组件。有时候需要与父组件进行交互。例如，将博客文章的文字能够放大，二页面的其余部分仍使用默认字号。</p>
+<p>在<strong>父组件</strong>中，我们添加一个<code>postFontSize</code>数据属性来实现这个效果</p>
+<pre><code class="language-vue">&lt;!-- App.vue --&gt;
+&lt;script setup lang=&quot;ts&quot;&gt;
+const postFontSize = ref(1)
+&lt;/script&gt;
+</code></pre>
+<p>在<strong>父组件</strong>模板中用它来控制所有博客文章的字体大小</p>
+<pre><code class="language-vue">&lt;!-- App.vue --&gt;
+&lt;template&gt;
+  &lt;div :style=&quot;{ fontSize: postFontSize + 'px' }&quot;&gt;
+    &lt;BlogPost v-for=&quot;blog in blogs&quot; 
+    :title=&quot;blog.title&quot; 
+    :content=&quot;blog.content&quot; /&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>然后给<strong>子组件</strong>添加一个按钮</p>
+<pre><code class="language-vue">&lt;!-- BlogPost.vue --&gt;
+&lt;template&gt;
+    &lt;div style=&quot;margin-bottom:10px; border: 1px solid black;&quot;&gt;
+        &lt;h1&gt;{{ title }}&lt;/h1&gt;
+        &lt;div&gt;{{ content }}&lt;/div&gt;
+        &lt;button&gt;Enlarge text&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>这个按钮目前还没有做任何事情，我们想要点击这个按钮来告诉父组件他应该放大所有博客文章的文字。要解决这个问题，组件实例提供了一个自定义时间系统。父组件可以通过<code>v-on</code>或<code>@</code>来选择性地监听子组件上抛的事件，就像监听原生DOM事件那样</p>
+<pre><code class="language-vue">&lt;!-- App.vue --&gt;
+&lt;template&gt;
+  &lt;div :style=&quot;{ fontSize: postFontSize + 'em' }&quot;&gt;
+    &lt;BlogPost v-for=&quot;blog in blogs&quot; 
+    :title=&quot;blog.title&quot; 
+    :content=&quot;blog.content&quot; 
+    @enlarge-text=&quot;postFontSize += 0.1&quot;/&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>子组件可以通过调用内置的<code>$emit</code>方法，通过传入事件名称来抛出一个事件：</p>
+<pre><code class="language-vue">&lt;!-- BlogPost.vue --&gt;
+&lt;template&gt;
+    &lt;div style=&quot;margin-bottom:10px; border: 1px solid black;&quot;&gt;
+        &lt;h1&gt;{{ title }}&lt;/h1&gt;
+        &lt;div&gt;{{ content }}&lt;/div&gt;
+        &lt;button @click=&quot;handleClick&quot;&gt;Enlarge text&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+....
+const emits = defineEmits({
+    enlargeText: () =&gt; {
+        return true
+    }
+})
+
+const handleClick = () =&gt; {
+    emits('enlargeText')
+}
+
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p>子组件中的<code>button</code>按钮的<code>click</code>事件绑定<code>handleClick</code>方法，这个方法会抛出<code>enlarge-text</code>事件，父组件中这个事件会修改字体大小。</p>
+</blockquote>
+<p>效果</p>
+<img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/04/bce2b938cdb8e7512430a3bc350e8400-ezgif.com-gif-maker-a74bc2.gif" alt="ezgif.com-gif-maker" style="zoom:200%;" />
+<h2 id="通过插槽来分配内容">通过插槽来分配内容</h2>
+<p>一般情况下我们会希望能和HTML元素一样向组件中传递内容</p>
+<pre><code class="language-vue">&lt;template&gt;
+  &lt;div :style=&quot;{ fontSize: postFontSize + 'em' }&quot;&gt;
+    &lt;BlogPost v-for=&quot;blog in blogs&quot; 
+    :title=&quot;blog.title&quot; 
+    :content=&quot;blog.content&quot; 
+    @enlarge-text=&quot;postFontSize += 0.1&quot;&gt;
+    &lt;div&gt;这是一个slot插槽&lt;/div&gt;
+    &lt;/BlogPost&gt; 
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>通过Vue的自定义<code>&lt;slot&gt;</code>元素来实现</p>
+<pre><code class="language-vue">&lt;template&gt;
+    &lt;div style=&quot;margin-bottom:10px; border: 1px solid black;&quot;&gt;
+        ...
+        &lt;slot&gt;&lt;/slot&gt;
+        &lt;button @click=&quot;handleClick&quot;&gt;Enlarge text&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>效果</p>
+<figure data-type="image" tabindex="3"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/04/9b13199926c4410d002c7e6e497a5afd-image-20230104211305017-c024b2.png" alt="image-20230104211305017" loading="lazy"></figure>
+<h2 id="动态组件">动态组件</h2>
+<p>有些场景需要在两个组件间来回切换，比如Tab界面</p>
+<pre><code class="language-vue">&lt;!-- currentTab 改变时组件也改变 --&gt;
+&lt;component :is=&quot;currentTab&quot;&gt;&lt;/component&gt;
+</code></pre>
+<p>在上面的例子中，被传给 <code>:is</code> 的值可以是以下几种：</p>
+<ul>
+<li>被注册的组件名</li>
+<li>导入的组件对象</li>
+</ul>
+<p>当使用 <code>&lt;component :is=&quot;...&quot;&gt;</code> 来在多个组件间作切换时，被切换掉的组件会被卸载。我们可以通过<code>&lt;KeepAlive&gt;</code>组件强制被切换掉的组件仍然保持“存活”的状态。</p>
+<h1 id="组件注册">组件注册</h1>
+<blockquote>
+<p>一个Vue组件在使用前需要先被“注册”，这样Vue才能在渲染模板时找到其对应的实现。组件注册有两种方式：全局注册和局部注册</p>
+</blockquote>
+<h2 id="全局注册">全局注册</h2>
+<p>我们可以使用Vue应用实例的<code>app.component()</code>方法，让组件在当前Vue应用中全局可用</p>
+<pre><code class="language-typescript">import { createApp } from 'vue'
+
+const app = createApp({})
+
+app.component(
+  // 注册的名字
+  'MyComponent',
+  // 组件的实现
+  {
+    /* ... */
+  }
+)
+</code></pre>
+<p>如果使用单文件组件，可以注册被导入的<code>.vue</code>文件</p>
+<pre><code class="language-typescript">import MyComponent from './App.vue'
+
+app.component('MyComponent', MyComponent)
+</code></pre>
+<p><code>app.component()</code>方法可以被链式调用</p>
+<pre><code class="language-typescript">app.component('ComponentA', ComponentA)
+   .component('ComponentB', ComponentB)
+   .component('ComponentC', ComponentC)
+</code></pre>
+<p>全局注册的组件可以在此应用的任意组件的模板中使用：</p>
+<pre><code class="language-vue">&lt;!-- 这在当前应用的任意组件中都可用 --&gt;
+&lt;ComponentA/&gt;
+&lt;ComponentB/&gt;
+&lt;ComponentC/&gt;
+</code></pre>
+<p>所有的子组件也可以使用全局注册的组件，这意味着这三个组件也都可以在<strong>彼此内部</strong>使用。</p>
+<blockquote>
+<p>全局注册的缺点</p>
+<ol>
+<li>全局注册，但并没有被使用的组件无法在生产打包时被自动移除 (也叫“tree-shaking”)。如果你全局注册了一个组件，即使它并没有被实际使用，它仍然会出现在打包后的 JS 文件中。</li>
+<li>全局注册在大型项目中使项目的依赖关系变得不那么明确。在父组件中使用子组件时，不太容易定位子组件的实现。和使用过多的全局变量一样，这可能会影响应用长期的可维护性。</li>
+</ol>
+</blockquote>
+<h2 id="局部注册">局部注册</h2>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+import BlogPost from './components/BlogPost.vue'
+&lt;/script&gt;
+</code></pre>
+<p>使用</p>
+<pre><code class="language-vue">&lt;template&gt;
+  &lt;div&gt;
+    &lt;BlogPost&gt;&lt;/BlogPost&gt; 
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<h1 id="props">Props</h1>
+<h2 id="props声明">Props声明</h2>
+<p>一个组件需要显式声明它所接受的props，这样Vue才能知道外部传入的那些是props，哪些是透传attribute</p>
+<p>props使用<code>defineProps</code>来定义：</p>
+<pre><code class="language-js">const props = defineProps({
+    title: {
+        type: String,
+        default: 'No title',
+        required: false
+    },
+    content: {
+        type: String,
+        default: 'No content',
+        required: false
+    },
+})
+</code></pre>
+<p>这种定义方式可以定义prop的类型，默认值，是否必须等。</p>
+<h2 id="单向数据流">单向数据流</h2>
+<p>所有的props都遵循<strong>单向绑定</strong>的原则，props因父组件的更新而变化，自然地将新的状态向下流往子组件，而不会逆向传递。这避免了组件意外修改父组件的状态的情况，不然应用的数据流将很容易变得混乱。</p>
+<p>另外，每次父组件更新后，左右的子组件中的props都会被更新到最新值，这意味着你不应该在子组件中去更改一个prop。若这样做，Vue会在控制台抛出警告</p>
+<pre><code class="language-typescript">// 子组件
+export default {
+  props: ['foo'],
+  created() {
+    // ❌ 警告！prop 是只读的！
+    this.foo = 'bar'
+  }
+}
+</code></pre>
+<p>导致你想要更改一个 prop 的需求通常来源于以下两种场景：</p>
+<ol>
+<li>
+<p><strong>prop 被用于传入初始值；而子组件想在之后将其作为一个局部数据属性</strong>。在这种情况下，最好是新定义一个局部数据属性，从 props 上获取初始值即可：</p>
+<pre><code class="language-typescript">export default {
+  props: ['initialCounter'],
+  const counter = ref(props.counter)
+}
+</code></pre>
+</li>
+<li>
+<p><strong>需要对传入的 prop 值做进一步的转换</strong>。在这种情况中，最好是基于该 prop 值定义一个计算属性：</p>
+<pre><code class="language-typescript">export default {
+  props: ['size'],
+  const bigCounter = computed(() =&gt; counter.value * 100)
+}
+</code></pre>
+</li>
+</ol>
+<h2 id="prop校验">Prop校验</h2>
+<p>Vue 组件可以更细致地声明对传入的 props 的校验要求。比如我们上面已经看到过的类型声明，如果传入的值不满足类型要求，Vue 会在浏览器控制台中抛出警告来提醒使用者。这在开发给其他开发者使用的组件时非常有用。如下</p>
+<pre><code class="language-typescript">const props = defineProps({
+    // 基础类型检查
+    //（给出 `null` 和 `undefined` 值则会跳过任何类型检查）
+    propA: Number,
+    // 多种可能的类型
+    propB: [String, Number],
+    // 必传，且为 String 类型
+    propC: {
+        type: String,
+        required: true
+    },
+    // Number 类型的默认值
+    propD: {
+        type: Number,
+        default: 100
+    },
+    // 对象类型的默认值
+    propE: {
+        type: Object,
+        // 对象或者数组应当用工厂函数返回。
+        // 工厂函数会收到组件所接收的原始 props
+        // 作为参数
+        default() {
+            return { message: 'hello' }
+        }
+    },
+    // 自定义类型校验函数
+    propF: {
+        validator(value: string) {
+            // The value must match one of these strings
+            return ['success', 'warning', 'danger'].includes(value)
+        }
+    },
+    // 函数类型的默认值
+    propG: {
+        type: Function,
+        // 不像对象或数组的默认，这不是一个工厂函数。这会是一个用来作为默认值的函数
+        default() {
+            return 'Default function'
+        }
+    }
+})
+</code></pre>
+<ul>
+<li>所有prop默认都是可选的，除非声明了<code>required: true</code>。</li>
+<li>除 <code>Boolean</code> 外的未传递的可选 prop 将会有一个默认值 <code>undefined</code>。</li>
+<li><code>Boolean</code> 类型的未传递 prop 将被转换为 <code>false</code>。这可以通过为它设置 <code>default</code> 来更改——例如：设置为 <code>default: undefined</code> 将与非布尔类型的 prop 的行为保持一致。</li>
+<li>如果声明了 <code>default</code> 值，那么在 prop 的值被解析为 <code>undefined</code> 时，无论 prop 是未被传递还是显式指明的 <code>undefined</code>，都会改为 <code>default</code> 值。</li>
+</ul>
+<h2 id="boolean类型转换">Boolean类型转换</h2>
+<p>为了贴近原生boolean attributes的行为，声明为<code>Boolean</code>类型的props有特别的类型转换规则。</p>
+<pre><code class="language-typescript">export default {
+  props: {
+    disabled: Boolean
+  }
+}
+</code></pre>
+<p>组件可以这样使用</p>
+<pre><code class="language-vue">&lt;!-- 等同于传入 :disabled=&quot;true&quot; --&gt;
+&lt;MyComponent disabled /&gt;
+
+&lt;!-- 等同于传入 :disabled=&quot;false&quot; --&gt;
+&lt;MyComponent /&gt;
+</code></pre>
+<p>当一个prop被声明为允许多种类型时，例如</p>
+<pre><code class="language-typescript">export default {
+  props: {
+    disabled: [Boolean, Number]
+  }
+}
+</code></pre>
+<p>无论声明类型的顺序如何，<code>Boolean</code> 类型的特殊转换规则都会被应用。</p>
+<h1 id="组件事件">组件事件</h1>
+<h2 id="触发与监听事件">触发与监听事件</h2>
+<p>在组件的模板表达式中，可以直接使用<code>$emit</code>方法触发自定义事件</p>
+<pre><code class="language-vue">&lt;!-- MyComponent --&gt;
+&lt;button @click=&quot;$emit('someEvent')&quot;&gt;click me&lt;/button&gt;
+</code></pre>
+<p>在父组件中通过<code>v-on</code>或<code>@</code>来监听事件</p>
+<pre><code class="language-vue">&lt;MyComponent @some-event=&quot;callback&quot; /&gt;
+</code></pre>
+<p>同样，组件的事件监听器也支持<code>.once</code>修饰符</p>
+<pre><code class="language-vue">&lt;MyComponent @some-event.once=&quot;callback&quot; /&gt;
+</code></pre>
+<h2 id="事件参数">事件参数</h2>
+<p>有时候我们需要在出发事件时附带一个特定的值。例如，我们想要<code>&lt;BlogPost&gt;</code>组件来管理文本会缩放的多大。在这个场景下，我们可以给<code>$emit</code>提供一个额外的参数</p>
+<pre><code class="language-vue">&lt;button @click=&quot;$emit('increaseBy', 1)&quot;&gt;
+  Increase by 1
+&lt;/button&gt;
+</code></pre>
+<p>用一个组件方法来作为事件处理函数：</p>
+<pre><code class="language-vue">&lt;MyButton @increase-by=&quot;increaseCount&quot; /&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+function increaseCount(n) {
+  count.value += n
+}
+&lt;/script&gt;
+</code></pre>
+<h2 id="声明触发的事件">声明触发的事件</h2>
+<p>组件要触发的事件可以显式地通过<code>defineEmits()</code>宏来声明：</p>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+defineEmits(['inFocus', 'submit'])
+&lt;/script&gt;
+</code></pre>
+<p>搭配Typescript使用<code>&lt;script setup&gt;</code>，也可以使用纯类型标注来声明触发的事件</p>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+const emits = defineEmits({
+    increaseBy: (amount: number) =&gt; {
+        // 通过返回值为 `true` 还是为 `false` 来判断
+        // 验证是否通过
+        if (amount &lt; 0) {
+            return false
+        }
+        return true
+    }
+})
+&lt;/script&gt;
+
+</code></pre>
+<h2 id="事件校验">事件校验</h2>
+<p>和对props添加类型校验的方式类似，所有触发的时间也可以使用对象形式来描述。</p>
+<p>要为事件添加校验，那么事件可以被赋值为一个函数，接受的参数就是抛出事件时传入<code>emit</code>的内容，返回一个布尔值来表明事件是否合法</p>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+const emit = defineEmits({
+  // 没有校验
+  click: null,
+
+  // 校验 submit 事件
+  submit: ({ email, password }) =&gt; {
+    if (email &amp;&amp; password) {
+      return true
+    } else {
+      console.warn('Invalid submit event payload!')
+      return false
+    }
+  }
+})
+
+function submitForm(email, password) {
+  emit('submit', { email, password })
+}
+&lt;/script&gt;
+
+</code></pre>
+<h2 id="配合v-model使用">配合<code>v-model</code>使用</h2>
+<p>自定义事件可用于开发支持<code>v-model</code>的自定义表单组件。<code>v-model</code>在原生元素上的用法如下</p>
+<pre><code class="language-vue">&lt;input v-model=&quot;searchText&quot; /&gt;
+</code></pre>
+<p>等价于</p>
+<pre><code class="language-vue">&lt;input
+  :value=&quot;searchText&quot;
+  @input=&quot;searchText = $event.target.value&quot;
+/&gt;
+</code></pre>
+<p>当使用在一个组件上时，<code>v-model</code>会被展开为如下的形式</p>
+<pre><code class="language-vue">&lt;CustomInput
+  :modelValue=&quot;searchText&quot;
+  @update:modelValue=&quot;newValue =&gt; searchText = newValue&quot;
+/&gt;
+</code></pre>
+<p>要让这个例子实际工作起来，<code>&lt;CustomInput&gt;</code>组件内部需要做两件事</p>
+<ol>
+<li>将内部原生<code>input</code>元素的<code>value</code>属性绑定到<code>modelValue</code>prop</li>
+<li>输入新的值时在<code>input</code>元素上触发<code>update:modelValue</code>事件</li>
+</ol>
+<p>对应代码如下</p>
+<pre><code class="language-vue">&lt;!-- CustomInput.vue --&gt;
+&lt;script setup&gt;
+defineProps(['modelValue'])
+defineEmits(['update:modelValue'])
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;input
+    :value=&quot;modelValue&quot;
+    @input=&quot;$emit('update:modelValue', $event.target.value)&quot;
+  /&gt;
+&lt;/template&gt;
+</code></pre>
+<p>现在<code>v-model</code>可以在这个组件上正常工作</p>
+<pre><code class="language-vue">&lt;CustomInput v-model=&quot;searchText&quot; /&gt;
+</code></pre>
+<h2 id="透传attributes">透传Attributes</h2>
+<h2 id="attributes继承">Attributes继承</h2>
+<p>“透传 attribute”指的是传递给一个组件，却没有被该组件声明为 props或 emits的 attribute 或者 <code>v-on</code> 事件监听器。最常见的例子就是 <code>class</code>、<code>style</code> 和 <code>id</code>。</p>
+<p>当一个组件以单个元素为根作渲染时，透传的 attribute 会自动被添加到根元素上。举例来说，假如我们有一个 <code>&lt;MyButton&gt;</code> 组件，它的模板长这样：</p>
+<pre><code class="language-vue">&lt;!-- &lt;MyButton&gt; 的模板 --&gt;
+&lt;button&gt;click me&lt;/button&gt;
+</code></pre>
+<p>一个父组件使用了这个组件，并且传入了 <code>class</code>：</p>
+<pre><code class="language-vue">&lt;MyButton class=&quot;large&quot; /&gt;
+</code></pre>
+<p>最后渲染出的 DOM 结果是：</p>
+<pre><code class="language-vue">&lt;button class=&quot;large&quot;&gt;click me&lt;/button&gt;
+</code></pre>
+<h3 id="对-class-和-style-的合并">对 <code>class</code> 和 <code>style</code> 的合并</h3>
+<p>如果一个子组件的根元素已经有了 <code>class</code> 或 <code>style</code> attribute，它会和从父组件上继承的值合并。如果我们将之前的 <code>&lt;MyButton&gt;</code> 组件的模板改成这样：</p>
+<pre><code class="language-vue">&lt;!-- &lt;MyButton&gt; 的模板 --&gt;
+&lt;button class=&quot;btn&quot;&gt;click me&lt;/button&gt;
+</code></pre>
+<p>则最后渲染出的 DOM 结果会变成：</p>
+<pre><code class="language-vue">&lt;button class=&quot;btn large&quot;&gt;click me&lt;/button&gt;
+</code></pre>
+<h3 id="v-on监听器继承"><code>v-on</code>监听器继承</h3>
+<p>同样的规则也适用于 <code>v-on</code> 事件监听器：</p>
+<pre><code class="language-vue">&lt;MyButton @click=&quot;onClick&quot; /&gt;
+</code></pre>
+<p><code>click</code> 监听器会被添加到 <code>&lt;MyButton&gt;</code> 的根元素，即那个原生的 <code>&lt;button&gt;</code> 元素之上。当原生的 <code>&lt;button&gt;</code> 被点击，会触发父组件的 <code>onClick</code> 方法。同样的，如果原生 <code>button</code> 元素自身也通过 <code>v-on</code> 绑定了一个事件监听器，则这个监听器和从父组件继承的监听器都会被触发。</p>
+<h3 id="深层组件继承">深层组件继承</h3>
+<p>有些情况下一个组件会在根节点上渲染另一个组件。例如，我们重构一下 <code>&lt;MyButton&gt;</code>，让它在根节点上渲染 <code>&lt;BaseButton&gt;</code>：</p>
+<pre><code class="language-vue">&lt;!-- &lt;MyButton/&gt; 的模板，只是渲染另一个组件 --&gt;
+&lt;BaseButton /&gt;
+</code></pre>
+<p>此时 <code>&lt;MyButton&gt;</code> 接收的透传 attribute 会直接继续传给 <code>&lt;BaseButton&gt;</code>。</p>
+<ol>
+<li>透传的 attribute 不会包含 <code>&lt;MyButton&gt;</code> 上声明过的 props 或是针对 <code>emits</code> 声明事件的 <code>v-on</code> 侦听函数，换句话说，声明过的 props 和侦听函数被 <code>&lt;MyButton&gt;</code>“消费”了。</li>
+<li>透传的 attribute 若符合声明，也可以作为 props 传入 <code>&lt;BaseButton&gt;</code>。</li>
+</ol>
+<h2 id="禁用attributes继承">禁用Attributes继承</h2>
+<p>如果你<strong>不想要</strong>一个组件自动地继承 attribute，你可以在组件选项中设置 <code>inheritAttrs: false</code>。如果你使用了 <code>&lt;script setup&gt;</code>，你需要一个额外的 <code>&lt;script&gt;</code> 块来书写这个选项声明：</p>
+<pre><code class="language-vue">&lt;script&gt;
+// 使用普通的 &lt;script&gt; 来声明选项
+export default {
+  inheritAttrs: false
+}
+&lt;/script&gt;
+
+&lt;script setup&gt;
+// ...setup 部分逻辑
+&lt;/script&gt;
+</code></pre>
+<p>最常见的需要禁用 attribute 继承的场景就是 attribute 需要应用在根节点以外的其他元素上。通过设置 <code>inheritAttrs</code> 选项为 <code>false</code>，你可以完全控制透传进来的 attribute 被如何使用。</p>
+<p>这些透传进来的 attribute 可以在模板的表达式中直接用 <code>$attrs</code> 访问到。</p>
+<pre><code class="language-vue">&lt;span&gt;Fallthrough attribute: {{ $attrs }}&lt;/span&gt;
+</code></pre>
+<p>这个 <code>$attrs</code> 对象包含了除组件所声明的 <code>props</code> 和 <code>emits</code> 之外的所有其他 attribute，例如 <code>class</code>，<code>style</code>，<code>v-on</code> 监听器等等。</p>
+<h3 id="多个根节点的attributes继承">多个根节点的Attributes继承</h3>
+<p>和单根节点组件有所不同，有着多个根节点的组件没有自动 attribute 透传行为。如果 <code>$attrs</code> 没有被显式绑定，将会抛出一个运行时警告。</p>
+<pre><code class="language-vue">&lt;CustomLayout id=&quot;custom-layout&quot; @click=&quot;changeValue&quot; /&gt;
+</code></pre>
+<p>如果 <code>&lt;CustomLayout&gt;</code> 有下面这样的多根节点模板，由于 Vue 不知道要将 attribute 透传到哪里，所以会抛出一个警告。</p>
+<pre><code class="language-vue">&lt;header&gt;...&lt;/header&gt;
+&lt;main&gt;...&lt;/main&gt;
+&lt;footer&gt;...&lt;/footer&gt;
+</code></pre>
+<p>如果 <code>$attrs</code> 被显式绑定，则不会有警告：</p>
+<pre><code class="language-vue">&lt;header&gt;...&lt;/header&gt;
+&lt;main v-bind=&quot;$attrs&quot;&gt;...&lt;/main&gt;
+&lt;footer&gt;...&lt;/footer&gt;
+</code></pre>
+<h3 id="在javascript中访问透传attributes">在JavaScript中访问透传Attributes</h3>
+<p>如果需要，你可以在 <code>&lt;script setup&gt;</code> 中使用 <code>useAttrs()</code> API 来访问一个组件的所有透传 attribute：</p>
+<pre><code class="language-vue">&lt;script setup&gt;
+import { useAttrs } from 'vue'
+
+const attrs = useAttrs()
+&lt;/script&gt;
+</code></pre>
+<p>需要注意的是，虽然这里的 <code>attrs</code> 对象总是反映为最新的透传 attribute，但它并不是响应式的 (考虑到性能因素)。你不能通过侦听器去监听它的变化。如果你需要响应性，可以使用 prop。或者你也可以使用 <code>onUpdated()</code> 使得在每次更新时结合最新的 <code>attrs</code> 执行副作用。</p>
+<h1 id="插槽">插槽</h1>
+<h2 id="插槽内容与出口">插槽内容与出口</h2>
+<p>在某些场景中，我们可能想要为子组件传递一些模板片段，让子组件在他们的组件中渲染这些片段，例如下面的<code>&lt;FancyButton&gt;</code>组件，可以像这样使用</p>
+<pre><code class="language-vue">&lt;FancyButton&gt;
+  Click me! &lt;!-- 插槽内容 --&gt;
+&lt;/FancyButton&gt;
+</code></pre>
+<p>而<code>&lt;FancyButton&gt;</code>的模板是这样的</p>
+<pre><code class="language-vue">&lt;button class=&quot;fancy-btn&quot;&gt;
+  &lt;slot&gt;&lt;/slot&gt; &lt;!-- 插槽出口 --&gt;
+&lt;/button&gt;
+</code></pre>
+<p><code>&lt;slot&gt;</code> 元素是一个<strong>插槽出口</strong> (slot outlet)，标示了父元素提供的<strong>插槽内容</strong> (slot content) 将在哪里被渲染。</p>
+<figure data-type="image" tabindex="4"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/05/e031155d8d00a97ed8cd15221e6d28b4-slots.dbdaf1e8-e60c04.png" alt="插槽图示" loading="lazy"></figure>
+<p>最终渲染出的DOM是这样的：</p>
+<pre><code class="language-vue">&lt;button class=&quot;fancy-btn&quot;&gt;Click me!&lt;/button&gt;
+</code></pre>
+<p>通过使用插槽，<code>&lt;FancyButton&gt;</code> 仅负责渲染外层的 <code>&lt;button&gt;</code> (以及相应的样式)，而其内部的内容由父组件提供。</p>
+<p>插槽内容可以是任意合法的模板内容，不局限于文本。例如我们可以传入多个元素，甚至是组件。</p>
+<h2 id="渲染作用域">渲染作用域</h2>
+<p>插槽内容可以访问到父组件的数据作用域，因为插槽内容本身是在父组件模板中定义的。举例来说：</p>
+<pre><code class="language-vue">&lt;span&gt;{{ message }}&lt;/span&gt;
+&lt;FancyButton&gt;{{ message }}&lt;/FancyButton&gt;
+</code></pre>
+<p>这里的两个 <code>{{ message }}</code> 插值表达式渲染的内容都是一样的。</p>
+<p>插槽内容<strong>无法访问</strong>子组件的数据。Vue 模板中的表达式只能访问其定义时所处的作用域，这和 JavaScript 的词法作用域规则是一致的。换言之：</p>
+<blockquote>
+<p>父组件模板中的表达式只能访问父组件的作用域；子组件模板中的表达式只能访问子组件的作用域。</p>
+</blockquote>
+<h2 id="默认内容">默认内容</h2>
+<p>在外部没有提供任何内容的情况下，可以为插槽指定默认内容。比如有这样一个 <code>&lt;SubmitButton&gt;</code> 组件：</p>
+<pre><code class="language-vue">&lt;button type=&quot;submit&quot;&gt;
+  &lt;slot&gt;&lt;/slot&gt;
+&lt;/button&gt;
+</code></pre>
+<p>如果我们想在父组件没有提供任何插槽内容时在 <code>&lt;button&gt;</code> 内渲染“Submit”，只需要将“Submit”写在 <code>&lt;slot&gt;</code> 标签之间来作为默认内容：</p>
+<pre><code class="language-vue">&lt;button type=&quot;submit&quot;&gt;
+  &lt;slot&gt;
+    Submit &lt;!-- 默认内容 --&gt;
+  &lt;/slot&gt;
+&lt;/button&gt;
+</code></pre>
+<p>当我们在父组件中使用 <code>&lt;SubmitButton&gt;</code> 且没有提供任何插槽内容时：</p>
+<pre><code class="language-vue">&lt;SubmitButton /&gt;
+</code></pre>
+<p>“Submit”将会被作为默认内容渲染：</p>
+<pre><code class="language-vue">&lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
+</code></pre>
+<p>但如果我们提供了插槽内容：</p>
+<pre><code class="language-vue">&lt;SubmitButton&gt;Save&lt;/SubmitButton&gt;
+</code></pre>
+<p>那么被显式提供的内容会取代默认内容：</p>
+<pre><code class="language-vue">&lt;button type=&quot;submit&quot;&gt;Save&lt;/button&gt;
+</code></pre>
+<h2 id="具名插槽">具名插槽</h2>
+<p>有时在一个组件中包含多个插槽出口是很有用的。举例来说，在一个 <code>&lt;BaseLayout&gt;</code> 组件中，有如下模板：</p>
+<pre><code class="language-vue">&lt;div class=&quot;container&quot;&gt;
+  &lt;header&gt;
+    &lt;!-- 标题内容放这里 --&gt;
+  &lt;/header&gt;
+  &lt;main&gt;
+    &lt;!-- 主要内容放这里 --&gt;
+  &lt;/main&gt;
+  &lt;footer&gt;
+    &lt;!-- 底部内容放这里 --&gt;
+  &lt;/footer&gt;
+&lt;/div&gt;
+</code></pre>
+<p>对于这种场景，<code>&lt;slot&gt;</code> 元素可以有一个特殊的 attribute <code>name</code>，用来给各个插槽分配唯一的 ID，以确定每一处要渲染的内容：</p>
+<pre><code class="language-vue">&lt;div class=&quot;container&quot;&gt;
+  &lt;header&gt;
+    &lt;slot name=&quot;header&quot;&gt;&lt;/slot&gt;
+  &lt;/header&gt;
+  &lt;main&gt;
+    &lt;slot&gt;&lt;/slot&gt;
+  &lt;/main&gt;
+  &lt;footer&gt;
+    &lt;slot name=&quot;footer&quot;&gt;&lt;/slot&gt;
+  &lt;/footer&gt;
+&lt;/div&gt;
+</code></pre>
+<p>这类带 <code>name</code> 的插槽被称为具名插槽 (named slots)。没有提供 <code>name</code> 的 <code>&lt;slot&gt;</code> 出口会隐式地命名为“default”。</p>
+<p>在父组件中使用 <code>&lt;BaseLayout&gt;</code> 时，我们需要一种方式将多个插槽内容传入到各自目标插槽的出口。此时就需要用到<strong>具名插槽</strong>了：</p>
+<p>要为具名插槽传入内容，我们需要使用一个含 <code>v-slot</code> 指令的 <code>&lt;template&gt;</code> 元素，并将目标插槽的名字传给该指令：</p>
+<pre><code class="language-vue">&lt;BaseLayout&gt;
+  &lt;template v-slot:header&gt;
+    &lt;!-- header 插槽的内容放这里 --&gt;
+  &lt;/template&gt;
+&lt;/BaseLayout&gt;
+</code></pre>
+<p><code>v-slot</code> 有对应的简写 <code>#</code>，因此 <code>&lt;template v-slot:header&gt;</code> 可以简写为 <code>&lt;template #header&gt;</code>。其意思就是“将这部分模板片段传入子组件的 header 插槽中”。</p>
+<figure data-type="image" tabindex="5"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/01/05/598e791a719538c43a464b92f3041b33-named-slots.ebb7b207-e46c3d.png" alt="具名插槽图示" loading="lazy"></figure>
+<pre><code class="language-vue">&lt;BaseLayout&gt;
+  &lt;template #header&gt;
+    &lt;h1&gt;Here might be a page title&lt;/h1&gt;
+  &lt;/template&gt;
+
+  &lt;template #default&gt;
+    &lt;p&gt;A paragraph for the main content.&lt;/p&gt;
+    &lt;p&gt;And another one.&lt;/p&gt;
+  &lt;/template&gt;
+
+  &lt;template #footer&gt;
+    &lt;p&gt;Here's some contact info&lt;/p&gt;
+  &lt;/template&gt;
+&lt;/BaseLayout&gt;
+</code></pre>
+<p>当一个组件同时接收默认插槽和具名插槽时，所有位于顶级的非 <code>&lt;template&gt;</code> 节点都被隐式地视为默认插槽的内容。所以上面也可以写成：</p>
+<pre><code class="language-vue">&lt;BaseLayout&gt;
+  &lt;template #header&gt;
+    &lt;h1&gt;Here might be a page title&lt;/h1&gt;
+  &lt;/template&gt;
+
+  &lt;!-- 隐式的默认插槽 --&gt;
+  &lt;p&gt;A paragraph for the main content.&lt;/p&gt;
+  &lt;p&gt;And another one.&lt;/p&gt;
+
+  &lt;template #footer&gt;
+    &lt;p&gt;Here's some contact info&lt;/p&gt;
+  &lt;/template&gt;
+&lt;/BaseLayout&gt;
+</code></pre>
+<p>现在 <code>&lt;template&gt;</code> 元素中的所有内容都将被传递到相应的插槽。最终渲染出的 HTML 如下：</p>
+<pre><code class="language-vue">&lt;div class=&quot;container&quot;&gt;
+  &lt;header&gt;
+    &lt;h1&gt;Here might be a page title&lt;/h1&gt;
+  &lt;/header&gt;
+  &lt;main&gt;
+    &lt;p&gt;A paragraph for the main content.&lt;/p&gt;
+    &lt;p&gt;And another one.&lt;/p&gt;
+  &lt;/main&gt;
+  &lt;footer&gt;
+    &lt;p&gt;Here's some contact info&lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="动态插槽名">动态插槽名</h2>
+<p>动态指令参数在<code>v-slot</code>上也是有效的，即可以定义下面这样的动态插槽名</p>
+<pre><code class="language-vue">&lt;base-layout&gt;
+  &lt;template v-slot:[dynamicSlotName]&gt;
+    ...
+  &lt;/template&gt;
+
+  &lt;!-- 缩写为 --&gt;
+  &lt;template #[dynamicSlotName]&gt;
+    ...
+  &lt;/template&gt;
+&lt;/base-layout&gt;
+</code></pre>
+<h2 id="作用域插槽">作用域插槽</h2>
+<p>在上面的<strong>渲染作用域</strong>中我们讨论到，插槽的内容无法访问到子组件的状态。</p>
+<p>然而在某些场景下插槽的内容可能想要同时使用父组件域内和子组件域内的数据。要做到这一点，我们需要一种方法来让子组件在渲染时将一部分数据提供给插槽。</p>
+<p>我们也确实有办法这么做！可以像对组件传递 props 那样，向一个插槽的出口上传递 attributes：</p>
+<pre><code class="language-vue">&lt;!-- &lt;MyComponent&gt; 的模板 --&gt;
+&lt;div&gt;
+  &lt;slot :text=&quot;greetingMessage&quot; :count=&quot;1&quot;&gt;&lt;/slot&gt;
+&lt;/div&gt;
+</code></pre>
+<p>当需要接收插槽 props 时，默认插槽和具名插槽的使用方式有一些小区别。下面我们将先展示默认插槽如何接受 props，通过子组件标签上的 <code>v-slot</code> 指令，直接接收到了一个插槽 props 对象：</p>
+<pre><code class="language-vue">&lt;MyComponent v-slot=&quot;slotProps&quot;&gt;
+  {{ slotProps.text }} {{ slotProps.count }}
+&lt;/MyComponent
+</code></pre>
+<p><code>v-slot=&quot;slotProps&quot;</code> 可以类比这里的函数签名，和函数的参数类似，我们也可以在 <code>v-slot</code> 中使用解构：</p>
+<pre><code class="language-vue">&lt;MyComponent v-slot=&quot;{ text, count }&quot;&gt;
+  {{ text }} {{ count }}
+&lt;/MyComponent&gt;
+</code></pre>
+<h3 id="具名作用域插槽">具名作用域插槽</h3>
+<p>---待补充</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://zorroe.github.io/tag/pzFrXHj9c2/" class="tag">
+                    vue3
+                  </a>
+                
+                  <a href="https://zorroe.github.io/tag/SrN-KDXeYm/" class="tag">
+                    typescript
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://zorroe.github.io/post/axios-encapsulation/">
+                  <h3 class="post-title">
+                    Axios封装
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

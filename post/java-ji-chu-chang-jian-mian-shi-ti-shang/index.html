@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Java基础常见面试题（上） | Zorroe</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://zorroe.github.io/favicon.ico?v=1675922185517">
+<link rel="stylesheet" href="https://zorroe.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="基础概念与常识
+Java语言有哪些特点？
+
+简单易学
+面向对象（封装，继承，多态）
+平台无关性（Java的虚拟机实现平台无关性）
+支持多线程
+可靠性
+安全性
+支持网络编程并且很方便
+编译与解释并存
+
+JVM vs JDK vs JRE
+JV..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://zorroe.github.io">
+        <img src="https://zorroe.github.io/images/avatar.png?v=1675922185517" class="site-logo">
+        <h1 class="site-title">Zorroe</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://zorroe.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Java基础常见面试题（上）</h2>
+            <div class="post-date">2023-02-08</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="基础概念与常识">基础概念与常识</h2>
+<h3 id="java语言有哪些特点">Java语言有哪些特点？</h3>
+<ol>
+<li>简单易学</li>
+<li>面向对象（封装，继承，多态）</li>
+<li>平台无关性（Java的虚拟机实现平台无关性）</li>
+<li>支持多线程</li>
+<li>可靠性</li>
+<li>安全性</li>
+<li>支持网络编程并且很方便</li>
+<li>编译与解释并存</li>
+</ol>
+<h3 id="jvm-vs-jdk-vs-jre">JVM vs JDK vs JRE</h3>
+<h4 id="jvm">JVM</h4>
+<p>Java虚拟机（JVM）是运行Java字节码的虚拟机。JVM有针对不同系统的特定实现（Win，Linux，macOS），目的是使用相同的字节码，他们都会给出相同的结果。字节码和不同系统的JVM实现是Java语言“一次编译，随处可以运行”的关键所在。</p>
+<p>**JVM并不只有一种！只要满足JVM规范，每个公司、组织或个人都可以开发自己的专属JVM。**也就是说我们平时接触到的HotSpot VM仅仅是JVM规范的一种实现而已。</p>
+<h4 id="jdk和jre">JDK和JRE</h4>
+<p>JDK是Java Development Kit的缩写，他是功能齐全的Java SDK。它拥有JRE所拥有的一切，还有编译器（javac）和工具（如Jjavadoc和jdb）。它能够创建和编译程序。</p>
+<p>如果只是为了运行Java程序，只需要安装JRE。如果需要进行Java编程工作，那么需要安装JDK。但是，这不是绝对的。有时，即使不打算再计算上进行任何的Java开发，仍然需要安装JDK。例如，如果使用JSP部署Web应用程序，那么从技术上讲，只是在应用程序服务器上运行Java程序。那么为什么需要JDK呢？因为应用程序服务器会将JSP转换为Java servlet，并且需要使用JDK来编译servlet。</p>
+<h3 id="什么是字节码采用字节码的好处是什么">什么是字节码？采用字节码的好处是什么？</h3>
+<p>在Java中，JVM可以理解的代码就叫做字节码（即扩展名为<code>.class</code>的文件），它不免向任何特定的处理器，只面向虚拟机。Java语言通过字节码的方式，在一定程度上解决了传统解释型语言执行效率低的问题，同时又保留了解释型语言可移植的特点。所以，Java程序运行时相对来说还是高效的（和C++，Rust，Go等语言相比还有一定差距），而且，由于字节码并不针对一种特定的机器，因此，Java程序无需重新编译便可在多种不同操作系统的计算机上运行。</p>
+<h4 id="java程序从源代码到运行的过程如下图所示">Java程序从源代码到运行的过程如下图所示：</h4>
+<figure data-type="image" tabindex="1"><img src="https://pic-lxxx.oss-cn-shanghai.aliyuncs.com/2023/02/08/e66c7c2cf5892e9bc64e0282b05d16da-6f5407.png" alt="未命名文件" loading="lazy"></figure>
+<p>我么需要注意的是<code>.class-&gt;机器码</code>这一步。在这一步JVM类加载器首先加载字节码文件，然后通过解释器逐行解释执行，这种方式的执行速度会相对较慢。而且，有些方法和代码块是经常被调用的（热点代码），所以后面引进了JIT（just-in-time compilation）编译器，而JIT编译器完成第一次编译后，其会将字节码对应的机器码保存下来，下次可以直接使用。机器码的运行效率肯定是高于Java解释器的。这也解释了为什么说Java是编译与解释共存的语言</p>
+<blockquote>
+<p>HotSpot采用了惰性评估（Lazy Evaluation）的做法，根据二八定律，小号大部分系统资源的只有那一小部分代码（热点代码），而这也就是JIT所需要编译的部分。JVM会根据代码每次被执行的情况手机信息并相应地做出一些优化，因此执行的次数越多，它的速度就越快。JDK9引入了一种新的编译模式AOT（Ahead of Time Compilation），他是直接将字节码编译成机器码，这样就避免了JIT预热等方面的开销。JDK支持分层编译哥AOT协作使用。</p>
+</blockquote>
+<h3 id="为什么不全部使用aot呢">为什么不全部使用AOT呢？</h3>
+<p>AOT可以提前编译节省启动时间，那为什么不全部使用这种编译方式呢？</p>
+<p>长话短说，这和Java语言的动态特性有千丝万缕的联系。举个例子，CGLIB动态代理使用的是ASM技术，这种技术的大致原理是运行时直接在内存中生成并加载修改后的字节码文件，也就是<code>.class</code>文件，如果全部使用AOT提前编译，也就不能使用ASM技术。为了支持类似的动态特性，所以选择使用JIT即时编译器</p>
+<h3 id="为什么说java语言编译与解释并存">为什么说Java语言“编译与解释并存”</h3>
+<p>高级编程语言按照程序的执行方式分为两种</p>
+<ul>
+<li>编译型：编译型语言会通过编译器将源代码一次性翻译成可被该平台执行的机器码，一般情况下，编译语言的执行速度比较快，开发效率比较低。常见的编译型语言有C、C++、Go、Rust等等。</li>
+<li>解释型：解释型语言会通过解释器一句一句地将代码解释为机器码后再执行，解释型语言开发效率比较快，执行速度比较慢。常见的解释型语言有Python、JS、PHP等。</li>
+</ul>
+<blockquote>
+<p>为了改善编译语言的效率而发展出的即时编译技术，已经缩小了这两种语言的差距，这种技术混合了编译型语言与解释型语言的优点，它像编译语言一样，先把程序源代码编译成字节码。到执行期时，再把字节码直译，之后执行。Java与LLVM是这种技术的代表产物</p>
+</blockquote>
+<p>因为Java语言既有编译型语言的特征，也具有解释型语言的特征。因为Java程序要经过先编译，后解释的两个步骤，由Java编写的程序需要先经过编译步骤，生成字节码（<code>.class</code>文件），这种字节码必须由Java解释器来解释执行。</p>
+<h2 id="基本语法">基本语法</h2>
+<h3 id="静态变量有什么作用">静态变量有什么作用？</h3>
+<p>静态变量可以被类的所有实例共享。无论一个类创建了多少个对象，他们都共享同一份静态变量</p>
+<p>通常情况下，我们会使用<code>final</code>关键字来修饰静态变量成为常量</p>
+<h3 id="字符型常量和字符串常量的区别">字符型常量和字符串常量的区别？</h3>
+<ol>
+<li><strong>形式</strong>：字符常量是单引号引起的一个字符，字符串常量是双引号引起的0个或若干个字符。</li>
+<li><strong>含义</strong>：字符串常量相当于一个整型值（ASCII值），可以参加表达式运算；字符串常量代表一个地址（该字符串再内存中的存放位置）</li>
+<li><strong>占内存大小</strong>：字符常量只占2个字节，字符串常量占若干个字节</li>
+</ol>
+<p>（<strong>注意</strong>：<code>char</code><strong>在Java中占两个字节</strong>）</p>
+<h3 id="方法">方法</h3>
+<ol>
+<li>
+<p>无参无返回值的方法</p>
+<pre><code class="language-java">public void f1() {
+    System.out.println(&quot;Hello World&quot;);
+}
+</code></pre>
+</li>
+<li>
+<p>无参有返回值的方法</p>
+<pre><code class="language-java">public int f2() {
+    return 1;
+}
+</code></pre>
+</li>
+<li>
+<p>有参无返回值的方法</p>
+<pre><code class="language-java">public void f3(int x) {
+    System.out.println(x);
+}
+</code></pre>
+</li>
+<li>
+<p>有参有返回值的方法</p>
+<pre><code class="language-java">public int f4(int a, int b) {
+    return a * b;
+}
+</code></pre>
+</li>
+</ol>
+<h3 id="静态方法方法为什么不能调用非静态成员">静态方法方法为什么不能调用非静态成员？</h3>
+<ol>
+<li>静态方法是属于类的，在类加载的时候就会分配内存，可以通过类名直接访问。而非静态成员属于实例对象，只有在对象实例化之后才存在，需要通过类的实例对象去访问。</li>
+<li>在类的非静态成员不存在的时候静态方法就已经存在了，此时调用在内存中还不存在的非静态成员属于非法操作。</li>
+</ol>
+<h3 id="静态方法和实例方法有何不同">静态方法和实例方法有何不同？</h3>
+<ol>
+<li>
+<p>调用方式</p>
+<p>在外部调用静态方法时，可以使用<code>类名.方法名</code>的方式，也可以使用<code>对象.方法名</code>的方式，而实例方法只有后面这种方式。也就是说，调用静态方法可以不创建对象。</p>
+<p>不过，需要注意的是一般不建议使用<code>对象.方法名</code>的方式调用静态方法。这种方式容易造成混淆，静态方法不属于类的某个对象，而是属于这个类。</p>
+<p>因此，一般建议使用<code>类名.方法名</code>的方式来调用静态方法</p>
+<pre><code class="language-java">public class Person {
+    public void method() {
+      //......
+    }
+
+    public static void staicMethod(){
+      //......
+    }
+    public static void main(String[] args) {
+        Person person = new Person();
+        // 调用实例方法
+        person.method();
+        // 调用静态方法
+        Person.staicMethod()
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>访问类成员是否存在限制</p>
+<p>静态方法在访问本类的成员时，只允许访问静态成员（即静态成员变量和静态方法），不允许访问实例成员（即实例成员变量和实例方法），而实例方法不存在这个限制。</p>
+</li>
+</ol>
+<h3 id="重载和重写有什么区别">重载和重写有什么区别</h3>
+<blockquote>
+<p>重载是同样的一个方法能够根据输入数据的不同，做出不同的处理</p>
+<p>重写就是当子类继承来自父类的相同的方法，输入数据一样，但要做出有别于父类的响应时，你就要覆盖父类方法</p>
+</blockquote>
+<h4 id="重载">重载</h4>
+<p>发生在同一个类中（或者父类和子类之间），方法名必须相同，参数类型不同、个数不同、顺序不同，方法的返回值和访问修饰符可以不同</p>
+<blockquote>
+<p>如果多个方法（比如<code>StringBuilder</code>的构造方法）有相同的名字、不同的参数，便产生了重载</p>
+<pre><code class="language-java">StringBuilder sb = new StringBuilder();
+StringBuilder sb2 = new StringBuilder(&quot;HelloWorld&quot;);
+</code></pre>
+<p>编译器必须挑选出具体执行哪个方法，它通过用各个方法给出的参数类型与特定方法调用所使用的值类型进行匹配来挑选出相应的方法。如果编译器找不到匹配的参数，就会产生编译时错误，因为根本不存在匹配，或者没有一个比其他的更好（这个过程被称为重载解析（overloading resolution））</p>
+<p>Java允许重载任何方法，而不只是构造器方法</p>
+</blockquote>
+<p>综上：重载就是同一个类中多个同名方法根据不同的传参来执行不同的逻辑处理。</p>
+<h4 id="重写">重写</h4>
+<p>重写发生在运行期，是子类对弗雷的允许访问的方法的实现过程进行重新编写。</p>
+<ol>
+<li>方法名、参数列表必须相同，子类方法的返回值类型比父类返回值类型更小或相等，抛出的异常范围小于等于父类，访问修饰范围大于等于父类</li>
+<li>如果父类方法访问修饰符为<code>private/final/static</code>则子类不能重写该方法，但是被<code>static</code>修饰的方法能够被再次声明</li>
+<li>构造方法无法被重写</li>
+</ol>
+<p>✨关于<strong>重写的返回值类型</strong>，这里需要额外多说明一下，如果方法的返回值类型是void和基本数据类型，则返回值重写时不可修改。但是如果方法的返回值是引用类型，重写时是可以返回改引用类型的子类的</p>
+<pre><code class="language-java">public class Hero {
+    public String name() {
+        return &quot;超级英雄&quot;;
+    }
+}
+public class SuperMan extends Hero{
+    @Override
+    public String name() {
+        return &quot;超人&quot;;
+    }
+    public Hero hero() {
+        return new Hero();
+    }
+}
+
+public class SuperSuperMan extends SuperMan {
+    public String name() {
+        return &quot;超级超级英雄&quot;;
+    }
+
+    @Override
+    public SuperMan hero() {
+        return new SuperMan();
+    }
+}
+</code></pre>
+<h4 id="什么是可变长参数">什么是可变长参数？</h4>
+<p>从Java5开始，Java支持定义可变长参数，所谓可变长参数就是允许在调用方法时传入不定长度的参数。如下</p>
+<pre><code class="language-java">public static void method1(String... args) {
+   //......
+}
+// 可以接受0个或多个参数
+</code></pre>
+<p>另外，可变参数只能作为参数的最后一个参数</p>
+<pre><code class="language-java">public static void method2(String arg1, String... args) {
+   //......
+}
+</code></pre>
+<p><strong>遇到方法重载的情况怎么办呢？会优先匹配固定参数还是可变参数的方法呢？</strong></p>
+<p>会优先匹配固定参数的方法，因为固定参数的方法匹配度更高</p>
+<h2 id="基本数据类型">基本数据类型</h2>
+<h3 id="java中的集中基本数据类型了解吗">Java中的集中基本数据类型了解吗？</h3>
+<p>Java中有8中基本数据类型，分别为：</p>
+<ul>
+<li>
+<p>6种数字类型：<code>byte</code>、<code>short</code>、<code>int</code>、<code>long</code>、<code>float</code>、<code>double</code></p>
+</li>
+<li>
+<p>1种字符类型：<code>char</code></p>
+</li>
+<li>
+<p>1种布尔型：<code>boolean</code></p>
+</li>
+</ul>
+<p>这8中基本数据类型的默认值以及所占空间的大小如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">基础类型</th>
+<th>包装类型</th>
+<th>位数</th>
+<th>字节</th>
+<th>默认值</th>
+<th style="text-align:right">取值范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>byte</code></td>
+<td><code>Byte</code></td>
+<td>8</td>
+<td>1</td>
+<td>0</td>
+<td style="text-align:right">-128~127</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>short</code></td>
+<td><code>Short</code></td>
+<td>16</td>
+<td>2</td>
+<td>0</td>
+<td style="text-align:right">-32768~32767</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>int</code></td>
+<td><code>Integer</code></td>
+<td>32</td>
+<td>4</td>
+<td>0</td>
+<td style="text-align:right">-2147483648 ~ 2147483647</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>long</code></td>
+<td><code>Long</code></td>
+<td>64</td>
+<td>8</td>
+<td>0L</td>
+<td style="text-align:right">-9223372036854775808 ~ 9223372036854775807</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>char</code></td>
+<td><code>Float</code></td>
+<td>16</td>
+<td>2</td>
+<td>'u0000'</td>
+<td style="text-align:right">0 ~ 65535</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>float</code></td>
+<td><code>Double</code></td>
+<td>32</td>
+<td>4</td>
+<td>0f</td>
+<td style="text-align:right">1.4E-45 ~ 3.4028235E38</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>double</code></td>
+<td><code>Character</code></td>
+<td>64</td>
+<td>8</td>
+<td>0d</td>
+<td style="text-align:right">4.9E-324 ~ 1.7976931348623157E308</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>boolean</code></td>
+<td><code>Boolean</code></td>
+<td>1</td>
+<td></td>
+<td>false</td>
+<td style="text-align:right">true、false</td>
+</tr>
+</tbody>
+</table>
+<p>对于<code>boolean</code>，官方文档未明确定义，它依赖于JVM厂商的具体实现。逻辑上理解是占用1位，但是实际中会考虑计算机高效存储因素</p>
+<p>另外，Java的每种基本类型所占存储空间的大小不会像其他大多数语言那样随机器硬件架构的变化而变化。这种所占存储空间大小的不变性是Java程序比用其他大多数语言编写的程序更具可移植性的原因之一</p>
+<blockquote>
+<ol>
+<li>Java中使用<code>long</code>类型的数据一定要在数值后加上L，否则会作为整型解析</li>
+<li><code>char a = 'h'</code>：<code>char</code>使用单引号，<code>String a = &quot;hello&quot;：String使用双引号</code></li>
+</ol>
+</blockquote>
+<h3 id="基本类型和包装类型的区别">基本类型和包装类型的区别？</h3>
+<ul>
+<li>包装类型不赋值的时候是<code>null</code>，基本数据类型有默认值</li>
+<li>包装类型可以用于泛型，基本类型不可以</li>
+<li>基本数据类型的局部变量存放在Java虚拟机栈的局部变量表中，基本数据类型的成员变量（未被<code>static</code>修饰）存放在Java虚拟机的堆中。包装类型属于对象类型，我们知道几乎所有的对象实例都存在于堆中</li>
+<li>相比于对象类型，基本数据类型占用的控件非常小</li>
+</ul>
+<p><strong>为什么说几乎所有的对象实例呢？</strong>：这是因为HotSpot虚拟机引入了JIT优化之后，会对对象进行逃逸分析，如果发现某一个对象并没有逃逸到方法外部，那么就可能通过标量替换来实现栈上分配，而避免堆上分配内存</p>
+<p>⚠️ 注意：**基本数据类型存放在栈中是一个常见的误区！**基本数据类型的成员变量如果没有被<code>static</code>修饰的话（不建议这么使用，应该要使用基本数据类型对应的包装类型），就存放在堆中。</p>
+<pre><code class="language-java">class BasicTypeVar{
+  private int x;
+}
+</code></pre>
+<h3 id="包装类型的缓存机制了解么">包装类型的缓存机制了解么？</h3>
+<p>Java基本数据类型的包装类型大部分都用到了缓存机制来提升性能</p>
+<p><code>Byte</code>、<code>Short</code>、<code>Integer</code>、<code>Long</code>这4中包装类默认创建了数值[-128, 127]的相应类型的缓存数据，<code>Character</code>创建了数值在[0, 127]范围的缓存数据，<code>Boolean</code>直接返回<code>True</code>或<code>False</code>.</p>
+<p><strong><code>Interger</code>缓存源码：</strong></p>
+<pre><code class="language-java">public static Integer valueOf(int i) {
+    if (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)
+        return IntegerCache.cache[i + (-IntegerCache.low)];
+    return new Integer(i);
+}
+private static class IntegerCache {
+    static final int low = -128;
+    static final int high;
+    static {
+        // high value may be configured by property
+        int h = 127;
+    }
+}
+</code></pre>
+<p><strong><code>Character</code>缓存源码：</strong></p>
+<pre><code class="language-java">public static Character valueOf(char c) {
+    if (c &lt;= 127) { // must cache
+      return CharacterCache.cache[(int)c];
+    }
+    return new Character(c);
+}
+
+private static class CharacterCache {
+    private CharacterCache(){}
+    static final Character cache[] = new Character[127 + 1];
+    static {
+        for (int i = 0; i &lt; cache.length; i++)
+            cache[i] = new Character((char)i);
+    }
+}
+</code></pre>
+<p><strong><code>Boolean</code>缓存源码</strong></p>
+<pre><code class="language-java">public static Boolean valueOf(boolean b) {
+    return (b ? TRUE : FALSE);
+}
+</code></pre>
+<p>如果超出对应范围仍然会创建新的对象，缓存的范围区间的大小只是在性能和资源之间的权衡</p>
+<p>两种浮点数类型的包装类<code>Float</code>，<code>Double</code>并没有实现缓存机制</p>
+<pre><code class="language-java">Integer i1 = 33;
+Integer i2 = 33;
+System.out.println(i1 == i2);// 输出 true
+
+Float i11 = 333f;
+Float i22 = 333f;
+System.out.println(i11 == i22);// 输出 false
+
+Double i3 = 1.2;
+Double i4 = 1.2;
+System.out.println(i3 == i4);// 输出 false
+</code></pre>
+<p>下面是true还是false呢？</p>
+<pre><code class="language-java">Integer i1 = 40;
+Integer i2 = new Integer(40);
+System.out.println(i1==i2);
+</code></pre>
+<p><code>Integer i1 = 40</code>这一行代码会发生装箱，也就是说这行代码等价于<code>Integer i1 = Integer.valueOf(40)</code>。因此，<code>i1</code>直接使用的是缓存中的对象。而<code>Integer i2 = new Integer(40)</code>会直接创建新的对象。</p>
+<p>因此，答案是<code>false</code></p>
+<blockquote>
+<p>所有的整型包装包装类对象之间值的比较，全部使用equals方法比较</p>
+<p>说明：对于Integer var = ？ 在-128到127之间的数值，Integer对象是在<code>IntegerCache.cache</code>产生，会复用已有对象，这个区间内的Integer值可以直接使用<code>==</code>进行判断，但是这个区间之外的所有数据，都会在堆上产生，并不会复用已有对象，这是一个大坑，推荐使用<code>equals</code>进行判断</p>
+</blockquote>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://zorroe.github.io/post/typescript-de-mixin/">
+                  <h3 class="post-title">
+                    Typescript的Mixin
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
