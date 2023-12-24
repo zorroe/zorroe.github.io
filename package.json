@@ -10,14 +10,18 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@element-plus/nuxt": "^1.0.7",
     "@nuxt/devtools": "latest",
     "@nuxtjs/tailwindcss": "^6.10.1",
+    "@vueuse/core": "^10.7.0",
+    "@vueuse/nuxt": "^10.7.0",
     "nuxt": "^3.8.2",
     "vue": "^3.3.12",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
-    "axios": "^1.6.2"
+    "axios": "^1.6.2",
+    "element-plus": "^2.4.4"
   }
 }
