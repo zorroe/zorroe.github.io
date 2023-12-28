@@ -8,7 +8,7 @@ axios.defaults.withCredentials = true
 const instance = axios.create({
   // 超时
   timeout: 60000,
-  withCredentials: true,
+  withCredentials: false,
 })
 
 instance.interceptors.request.use(

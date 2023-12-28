@@ -115,6 +115,7 @@ const list = async () => {
     pageSize: 10,
   }
   const res = await listAll(params)
+  console.log(res)
   blogList.value = res.data.records
   pageNum.value = res.data.current
   totalPage.value = res.data.pages
