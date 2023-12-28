@@ -1,10 +1,10 @@
 <template>
-  <NuxtLink to="/blog">
+  <span class="flex-1 flex gap-4 pl-4 justify-start mt-2">
     <el-button
-      class="absolute top-4 left-16"
+      @click="$router.go(-1)"
       :icon="ArrowLeft"
       color="rgba(0, 0, 0, 0.3)" />
-  </NuxtLink>
+  </span>
 </template>
 
 <script setup lang="ts">
@@ -15,9 +15,4 @@ onMounted(() => {})
 </script>
 
 <style scoped>
-.page-wrapper {
-  width: 50%;
-  height: 100vh;
-  min-width: 800px;
-}
 </style>

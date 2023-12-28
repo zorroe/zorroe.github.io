@@ -1,31 +1,39 @@
 <template>
-  <el-button
-    class="absolute top-4 left-16"
-    :icon="ArrowLeft"
-    @click="$router.back()"
-    color="rgba(0, 0, 0, 0.3)" />
-  <div
-    class="page-wrapper"
-    v-loading.fullscreen.lock="loading"
-    element-loading-background="rgba(0, 0, 0, 0.3)">
-    <el-scrollbar>
-      <div class="blog-title">
-      {{ blog?.title }}
+  <div class="flex w-full h-full justify-between">
+    <div class="flex gap-4 pl-8 justify-start pt-4">
+      <el-button
+        @click="$router.go(-1)"
+        :icon="ArrowLeft"
+        color="rgba(0, 0, 0, 0.3)" />
     </div>
-    <div class="blog-time">
-      {{ blog?.updateTime }}
+    <div
+      class="page-wrapper py-4"
+      v-loading.fullscreen.lock="loading"
+      element-loading-background="rgba(0, 0, 0, 0.3)">
+      <el-scrollbar>
+        <div class="text-4xl font-bold">
+          {{ blog?.title }}
+        </div>
+        <div class="mt-4">
+          {{ dayjs(blog?.update_time).format('YYYY-MM-DD HH:mm:ss') }}
+        </div>
+        <div class=" mt-4 text-lg">
+          {{ blog?.content }}
+        </div>
+      </el-scrollbar>
     </div>
-    <div class="blog-content">
-      {{ blog?.content }}
+    <div class="flex gap-4 pr-8 justify-end pt-4">
+      <el-button
+        :icon="Edit"
+        color="rgba(0, 0, 0, 0.3)" />
     </div>
-    </el-scrollbar>
-    
   </div>
 </template>
 
 <script setup lang="ts">
-import { ArrowLeft } from '@element-plus/icons-vue'
+import { ArrowLeft, Edit } from '@element-plus/icons-vue'
 import { queryById } from '@/api/blog'
+import dayjs from 'dayjs'
 
 const id = ref<any>()
 const loading = ref(false)
@@ -49,10 +57,4 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
-.page-wrapper {
-  width: 50%;
-  height: 100vh;
-  min-width: 800px;
-}
-</style>
+<style scoped></style>

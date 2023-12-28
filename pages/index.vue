@@ -22,6 +22,11 @@
 import { clearPageInfo } from '@/utils/tool'
 import { ref, onMounted } from 'vue'
 
+useHead({
+  title: "zorroeblog",
+  
+})
+
 const loadFinish = ref(false)
 
 onMounted(() => {
