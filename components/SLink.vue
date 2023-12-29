@@ -49,7 +49,4 @@ const sendEamil = () => {
 </script>
 
 <style scoped>
-.link {
-  @apply w-8 h-8 rounded-full cursor-pointer p-1 hover:bg-[rgba(255,255,255,0.3)] transition-all duration-300;
-}
 </style>

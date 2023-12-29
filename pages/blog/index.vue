@@ -1,10 +1,10 @@
 <template>
   <div class="flex w-full h-full justify-between">
     <div class="flex gap-4 pl-8 justify-start pt-4">
-      <el-button
+      <img
+        class="link"
         @click="$router.push('/')"
-        :icon="ArrowLeft"
-        color="rgba(0, 0, 0, 0.3)" />
+        src="@/assets/svg/left.svg" />
     </div>
     <div
       class="page-wrapper"
@@ -55,20 +55,20 @@
           :bottom="100" />
       </el-scrollbar>
     </div>
-    <div class="flex gap-4 pr-8 justify-end pt-4">
-      <el-button
+    <div class="flex flex-col gap-4 pr-8 pt-4">
+      <img
         v-show="searchKey.length > 0"
-        :icon="Refresh"
-        color="rgba(0, 0, 0, 0.3)"
-        @click="refresh" />
-      <el-button
-        :icon="Search"
-        color="rgba(0, 0, 0, 0.3)"
-        @click="openSearch" />
-      <el-button
-        :icon="Edit"
+        class="link"
+        @click="refresh"
+        src="@/assets/svg/refresh.svg" />
+      <img
+        class="link"
+        @click="openSearch"
+        src="@/assets/svg/search.svg" />
+      <img
+        class="link"
         @click="$router.push('/addblog')"
-        color="rgba(0, 0, 0, 0.3)" />
+        src="@/assets/svg/edit.svg" />
     </div>
   </div>
   <ClientOnly>

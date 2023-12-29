@@ -1,10 +1,10 @@
 <template>
   <div class="flex w-full h-full justify-between">
     <div class="flex gap-4 pl-8 justify-start pt-4">
-      <el-button
+      <img
+        class="link"
         @click="$router.go(-1)"
-        :icon="ArrowLeft"
-        color="rgba(0, 0, 0, 0.3)" />
+        src="@/assets/svg/left.svg" />
     </div>
     <div
       class="page-wrapper py-4"
@@ -17,15 +17,16 @@
         <div class="mt-4">
           {{ dayjs(blog?.update_time).format('YYYY-MM-DD HH:mm:ss') }}
         </div>
-        <div class=" mt-4 text-lg">
+        <div class="mt-4 text-lg">
           {{ blog?.content }}
         </div>
       </el-scrollbar>
     </div>
-    <div class="flex gap-4 pr-8 justify-end pt-4">
-      <el-button
-        :icon="Edit"
-        color="rgba(0, 0, 0, 0.3)" />
+    <div class="flex flex-col gap-4 pr-8 pt-4">
+      <img
+        class="link"
+        @click="handleEdit"
+        src="@/assets/svg/edit.svg" />
     </div>
   </div>
 </template>
@@ -50,6 +51,10 @@ const loadBlog = async () => {
   const res = await queryById(params)
   blog.value = res.data
   loading.value = false
+}
+
+const handleEdit = () => {
+  console.log('handleEdit')
 }
 
 onMounted(() => {
