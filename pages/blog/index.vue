@@ -1,10 +1,12 @@
 <template>
   <div class="flex w-full h-full justify-between">
     <div class="flex gap-4 pl-8 justify-start pt-4">
-      <img
-        class="link"
-        @click="$router.push('/')"
-        src="@/assets/svg/left.svg" />
+      <el-tooltip content="返回" placement="right" effect="dark">
+        <img
+          class="link"
+          @click="$router.push('/')"
+          src="@/assets/svg/left.svg" />
+      </el-tooltip>
     </div>
     <div
       class="page-wrapper"
@@ -56,19 +58,25 @@
       </el-scrollbar>
     </div>
     <div class="flex flex-col gap-4 pr-8 pt-4">
-      <img
-        v-show="searchKey.length > 0"
-        class="link"
-        @click="refresh"
-        src="@/assets/svg/refresh.svg" />
-      <img
-        class="link"
-        @click="openSearch"
-        src="@/assets/svg/search.svg" />
-      <img
-        class="link"
-        @click="$router.push('/addblog')"
-        src="@/assets/svg/edit.svg" />
+      <el-tooltip content="刷新" placement="left" effect="dark">
+        <img
+          v-show="searchKey.length > 0"
+          class="link"
+          @click="refresh"
+          src="@/assets/svg/refresh.svg" />
+      </el-tooltip>
+      <el-tooltip content="搜索" placement="left" effect="dark">
+        <img
+          class="link"
+          @click="openSearch"
+          src="@/assets/svg/search.svg" />
+      </el-tooltip>
+      <el-tooltip content="新建Blog" placement="left" effect="dark">
+        <img
+          class="link"
+          @click="$router.push('/addblog')"
+          src="@/assets/svg/edit.svg" />
+      </el-tooltip>
     </div>
   </div>
   <ClientOnly>

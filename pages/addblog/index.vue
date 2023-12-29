@@ -1,18 +1,20 @@
 <template>
-  <span class="flex-1 flex gap-4 pl-4 justify-start mt-2">
-    <el-button
-      @click="$router.go(-1)"
-      :icon="ArrowLeft"
-      color="rgba(0, 0, 0, 0.3)" />
-  </span>
+  <div class="flex w-full h-full justify-between">
+    <div class="flex gap-4 pl-8 justify-start pt-4">
+      <el-tooltip content="返回" placement="right" effect="dark">
+        <img
+          class="link"
+          @click="$router.go(-1)"
+          src="@/assets/svg/left.svg" />
+      </el-tooltip>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { ArrowLeft } from '@element-plus/icons-vue'
 
 onMounted(() => {})
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

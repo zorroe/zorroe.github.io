@@ -1,10 +1,12 @@
 <template>
   <div class="flex w-full h-full justify-between">
     <div class="flex gap-4 pl-8 justify-start pt-4">
-      <img
-        class="link"
-        @click="$router.go(-1)"
-        src="@/assets/svg/left.svg" />
+      <el-tooltip content="返回" placement="right" effect="dark">
+        <img
+          class="link"
+          @click="$router.go(-1)"
+          src="@/assets/svg/left.svg" />
+      </el-tooltip>
     </div>
     <div
       class="page-wrapper py-4"
@@ -23,10 +25,12 @@
       </el-scrollbar>
     </div>
     <div class="flex flex-col gap-4 pr-8 pt-4">
-      <img
-        class="link"
-        @click="handleEdit"
-        src="@/assets/svg/edit.svg" />
+      <el-tooltip content="编辑" placement="left" effect="dark">
+        <img
+          class="link"
+          @click="handleEdit"
+          src="@/assets/svg/edit.svg" />
+      </el-tooltip>
     </div>
   </div>
 </template>
