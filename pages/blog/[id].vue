@@ -1,13 +1,6 @@
 <template>
   <div class="flex w-full h-full justify-between">
-    <div class="flex gap-4 pl-8 justify-start pt-4">
-      <el-tooltip content="返回" placement="right" effect="dark">
-        <img
-          class="link"
-          @click="$router.go(-1)"
-          src="@/assets/svg/left.svg" />
-      </el-tooltip>
-    </div>
+    <Aside :data="leftIcon"> </Aside>
     <div
       class="page-wrapper py-4"
       v-loading.fullscreen.lock="loading"
@@ -17,33 +10,43 @@
           {{ blog?.title }}
         </div>
         <div class="mt-4">
-          {{ dayjs(blog?.update_time).format('YYYY-MM-DD HH:mm:ss') }}
+          {{ updateTime }}
         </div>
         <div class="mt-4 text-lg">
           {{ blog?.content }}
         </div>
       </el-scrollbar>
     </div>
-    <div class="flex flex-col gap-4 pr-8 pt-4">
-      <el-tooltip content="编辑" placement="left" effect="dark">
-        <img
-          class="link"
-          @click="handleEdit"
-          src="@/assets/svg/edit.svg" />
-      </el-tooltip>
-    </div>
+    <Aside :data="[]"> </Aside>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ArrowLeft, Edit } from '@element-plus/icons-vue'
 import { queryById } from '@/api/blog'
 import dayjs from 'dayjs'
+
+const router = useRouter()
+
+const leftIcon = [
+  {
+    tooltip: '返回',
+    placement: 'right',
+    fun: () => router.go(-1),
+    icon: '/svg/left.svg',
+  },
+]
 
 const id = ref<any>()
 const loading = ref(false)
 
 const blog = ref<any>()
+
+const updateTime = computed(() => {
+  if (blog.value?.update_time) {
+    return dayjs(blog.value?.update_time).format('YYYY-MM-DD HH:mm:ss')
+  }
+  return ''
+})
 
 const loadBlog = async () => {
   loading.value = true
@@ -55,10 +58,6 @@ const loadBlog = async () => {
   const res = await queryById(params)
   blog.value = res.data
   loading.value = false
-}
-
-const handleEdit = () => {
-  console.log('handleEdit')
 }
 
 onMounted(() => {

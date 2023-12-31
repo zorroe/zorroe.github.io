@@ -1,9 +1,11 @@
 <template>
   <Transition enter-active-class="animate__animated meslideInDown">
-    <div class="w-full flex justify-center flex-col pt-16 z-10">
-      <div
-        v-show="loadFinish"
-        class="w-full flex flex-col justify-center items-center gap-4">
+    <!-- <div
+      
+      class="w-full flex justify-center flex-col pt-16 z-10">
+      
+    </div> -->
+    <div v-show="loadFinish" class="w-full flex flex-col justify-center items-center gap-4">
         <img
           class="w-24 h-24 rounded-full"
           src="@/assets/avatar.jpg" />
@@ -14,7 +16,6 @@
         <HmBtns />
         <SLink />
       </div>
-    </div>
   </Transition>
 </template>
 
@@ -23,8 +24,7 @@ import { clearPageInfo } from '@/utils/tool'
 import { ref, onMounted } from 'vue'
 
 useHead({
-  title: "zorroeblog",
-  
+  title: 'zorroeblog',
 })
 
 const loadFinish = ref(false)

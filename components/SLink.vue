@@ -6,7 +6,7 @@
       <img
         class="link"
         @click="linkToGithub"
-        src="@/assets/svg/github.svg" />
+        src="/svg/github.svg" />
     </a>
     <a
       href="https://space.bilibili.com/39139616"
@@ -14,7 +14,7 @@
       <img
         class="link"
         @click="linkToBili"
-        src="@/assets/svg/bilibili.svg" />
+        src="/svg/bilibili.svg" />
     </a>
 
     <a
@@ -23,7 +23,7 @@
       <img
         class="link"
         @click="linkToXlog"
-        src="@/assets/svg/xlog.svg" />
+        src="/svg/xlog.svg" />
     </a>
     <a
       href="mailto:1318753541@qq.com"
@@ -31,7 +31,7 @@
       <img
         class="link"
         @click="sendEamil"
-        src="@/assets/svg/mail.svg"
+        src="/svg/mail.svg"
     /></a>
   </div>
 </template>

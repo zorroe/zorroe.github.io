@@ -1,13 +1,6 @@
 <template>
   <div class="flex w-full h-full justify-between">
-    <div class="flex gap-4 pl-8 justify-start pt-4">
-      <el-tooltip content="返回" placement="right" effect="dark">
-        <img
-          class="link"
-          @click="$router.push('/')"
-          src="@/assets/svg/left.svg" />
-      </el-tooltip>
-    </div>
+    <Aside :data="leftIcon"> </Aside>
     <div
       class="page-wrapper"
       v-loading.fullscreen.lock="loading"
@@ -57,27 +50,7 @@
           :bottom="100" />
       </el-scrollbar>
     </div>
-    <div class="flex flex-col gap-4 pr-8 pt-4">
-      <el-tooltip content="刷新" placement="left" effect="dark">
-        <img
-          v-show="searchKey.length > 0"
-          class="link"
-          @click="refresh"
-          src="@/assets/svg/refresh.svg" />
-      </el-tooltip>
-      <el-tooltip content="搜索" placement="left" effect="dark">
-        <img
-          class="link"
-          @click="openSearch"
-          src="@/assets/svg/search.svg" />
-      </el-tooltip>
-      <el-tooltip content="新建Blog" placement="left" effect="dark">
-        <img
-          class="link"
-          @click="$router.push('/addblog')"
-          src="@/assets/svg/edit.svg" />
-      </el-tooltip>
-    </div>
+    <Aside :data="rightIcon"> </Aside>
   </div>
   <ClientOnly>
     <el-dialog
@@ -102,13 +75,7 @@
 import { onMounted, ref } from 'vue'
 import { listAll, listByKey } from '@/api/blog'
 import { useLocalStorage } from '@vueuse/core'
-import {
-  ArrowLeft,
-  ArrowRight,
-  Edit,
-  Search,
-  Refresh,
-} from '@element-plus/icons-vue'
+import { ArrowLeft, ArrowRight, Search } from '@element-plus/icons-vue'
 
 const loading = ref(false)
 const pageNum = useLocalStorage('pageNum', 1)
@@ -117,6 +84,31 @@ const blogList = ref<any[]>([])
 const searchDialogVisible = ref(false)
 const searchKey = ref('')
 const searchRef = ref()
+const router = useRouter()
+
+const leftIcon = [
+  {
+    tooltip: '返回',
+    placement: 'right',
+    fun: () => router.go(-1),
+    icon: '/svg/left.svg',
+  },
+]
+
+const rightIcon = [
+  {
+    tooltip: '刷新',
+    placement: 'left',
+    fun: () => refresh(),
+    icon: '/svg/refresh.svg',
+  },
+  {
+    tooltip: '搜索',
+    placement: 'left',
+    fun: () => openSearch(),
+    icon: '/svg/search.svg',
+  }
+]
 
 const list = async () => {
   loading.value = true
