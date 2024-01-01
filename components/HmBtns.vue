@@ -4,8 +4,12 @@
     <NuxtLink to="/blog">
       <div class="button">博客</div>
     </NuxtLink>
-    <div class="button">简历</div>
-    <div class="button">关于</div>
+    <NuxtLink to="/resume">
+      <div class="button">简历</div>
+    </NuxtLink>
+    <NuxtLink to="/about">
+      <div class="button">关于</div>
+    </NuxtLink>
   </div>
 </template>
 

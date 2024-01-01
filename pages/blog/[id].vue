@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full h-full justify-between">
+  <div class="flex w-full h-full justify-between bg-black bg-opacity-30">
     <Aside :data="leftIcon"> </Aside>
     <div
       class="page-wrapper py-4"
@@ -13,7 +13,7 @@
           {{ updateTime }}
         </div>
         <div class="mt-4 text-lg">
-          {{ blog?.content }}
+          <v-md-preview :text="text"></v-md-preview>
         </div>
       </el-scrollbar>
     </div>
@@ -24,6 +24,17 @@
 <script setup lang="ts">
 import { queryById } from '@/api/blog'
 import dayjs from 'dayjs'
+import VMdPreview from '@kangc/v-md-editor/lib/preview'
+import '@kangc/v-md-editor/lib/style/preview.css'
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js'
+import '@kangc/v-md-editor/lib/theme/style/github.css'
+
+// highlightjs
+import hljs from 'highlight.js'
+
+VMdPreview.use(githubTheme, {
+  Hljs: hljs,
+})
 
 const router = useRouter()
 
@@ -38,7 +49,7 @@ const leftIcon = [
 
 const id = ref<any>()
 const loading = ref(false)
-
+const text = ref<string>('')
 const blog = ref<any>()
 
 const updateTime = computed(() => {
@@ -57,6 +68,7 @@ const loadBlog = async () => {
   }
   const res = await queryById(params)
   blog.value = res.data
+  text.value = res.data.content
   loading.value = false
 }
 
