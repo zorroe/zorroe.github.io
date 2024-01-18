@@ -29,11 +29,12 @@ const { theme, page, frontmatter } = useData()
 
 <script setup>
 import { useData } from 'vitepress'
-
 const { site, theme, page, frontmatter } = useData()
 </script>
 
 ## Results
+
+![door-8453898_1280](./public/door-8453898_1280.jpg)
 
 ### Theme Data
 <pre>{{ theme }}</pre>
