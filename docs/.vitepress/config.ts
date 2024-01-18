@@ -25,8 +25,18 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' },
+      { icon: 'github', link: 'https://github.com/zorroe' },
     ],
+    search: {
+      provider: 'local',
+    },
+    lastUpdated: {
+      text: '最后更新于',
+      formatOptions: {
+        dateStyle: 'full',
+        timeStyle: 'medium'
+      }
+    }
   },
   lastUpdated: true,
 })
