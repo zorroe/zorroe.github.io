@@ -29,7 +29,7 @@ const { theme, page, frontmatter } = useData()
 
 <script setup>
 import { useData } from 'vitepress'
-const { site, theme, page, frontmatter } = useData()
+const { site, theme, page, frontmatter, lastUpdated } = useData()
 </script>
 
 ## Results
@@ -44,6 +44,9 @@ const { site, theme, page, frontmatter } = useData()
 
 ### Page Frontmatter
 <pre>{{ frontmatter }}</pre>
+
+### Last Updated
+<pre>{{ lastUpdated }}</pre>
 
 ## More
 

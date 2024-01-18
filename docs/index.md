@@ -6,6 +6,9 @@ hero:
   name: "zorroe"
   text: "zorroe's space"
   tagline: My great project tagline
+  image: 
+    src: /logo.svg
+    alt: zorroe
   actions:
     - theme: brand
       text: Markdown Examples
