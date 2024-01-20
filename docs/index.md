@@ -11,11 +11,11 @@ hero:
     alt: zorroe
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: Hello Music
+      link: /halo-music
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Hello ElementPlus
+      link: /halo-element-plus
 
 features:
   - title: Feature A

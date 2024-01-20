@@ -1,4 +1,6 @@
 import { defineConfig } from 'vitepress'
+import { halomusicSideBar } from './sidebar/haloMusic'
+import {elementplusSideBar} from './sidebar/elementPlus'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -12,22 +14,46 @@ export default defineConfig({
     // ['link', { rel: 'icon', type: 'image/png', href: '/vitepress-logo-mini.png' }],
     ['meta', { name: 'theme-color', content: '#ffa8a8' }],
   ],
+  markdown: {
+    theme: { light: 'github-light', dark: 'github-dark' },
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: 'logo.svg',
     nav: [
       { text: '首页', link: '/' },
-      { text: '案例', link: '/markdown-examples' },
-    ],
-    sidebar: [
       {
-        text: 'Examples',
+        text: '项目',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' },
+          {
+            text: 'HaloMusic',
+            link: '/project/halomusic/intro',
+            activeMatch: '/project/halomusic/',
+          },
         ],
       },
+      {
+        text: '源码',
+        items: [
+          {
+            text: 'ElementPlus源码',
+            link: '/src/elementplus/intro',
+            activeMatch: '/src/elementplus/',
+          },
+        ],
+      },
+      { text: '记录', link: '/record' },
     ],
+    sidebar: {
+      '/project/halomusic/': {
+        base: '/project/halomusic/',
+        items: halomusicSideBar(),
+      },
+      '/src/elementplus/': {
+        base: '/src/elementplus/',
+        items: elementplusSideBar()
+      }
+    },
     socialLinks: [{ icon: 'github', link: 'https://github.com/zorroe' }],
     search: {
       provider: 'algolia',
@@ -84,6 +110,7 @@ export default defineConfig({
       },
     },
     returnToTopLabel: '回到顶部',
+    darkModeSwitchLabel: '外观',
     darkModeSwitchTitle: '切换到深色模式',
     lightModeSwitchTitle: '切换到浅色模式',
     docFooter: {
