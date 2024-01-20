@@ -3,26 +3,25 @@
 layout: home
 
 hero:
-  name: "zorroe"
-  text: ""
+  name: 'zorroe'
+  text: ''
   tagline: 莫听穿林打叶声，何妨吟啸且徐行
-  image: 
+  image:
     src: /logo.svg
     alt: zorroe
   actions:
     - theme: brand
-      text: Hello Music
-      link: /halo-music
+      text: HaloMusic
+      link: /project/halomusic/intro
     - theme: alt
-      text: Hello ElementPlus
-      link: /halo-element-plus
+      text: ElementPlus
+      link: /src/elementplus/intro
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: HaloMusic
+    link: /project/halomusic/intro
+    details: 一个使用Vue3+Electron开发的网易云音乐客户端
+  - title: ElementPlus源码
+    details: 学习源码的逻辑，书写更加优质的代码
+    link: /src/elementplus/intro
 ---
-
