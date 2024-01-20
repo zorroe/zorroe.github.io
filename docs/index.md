@@ -16,6 +16,9 @@ hero:
     - theme: alt
       text: ElementPlus
       link: /src/elementplus/intro
+    - theme: alt
+      text: 在GitHub上查看
+      link: https://github.com/zorroe/zorroe.github.io
 
 features:
   - title: HaloMusic
