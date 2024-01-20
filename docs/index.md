@@ -4,8 +4,8 @@ layout: home
 
 hero:
   name: "zorroe"
-  text: "zorroe's space"
-  tagline: My great project tagline
+  text: ""
+  tagline: 莫听穿林打叶声，何妨吟啸且徐行
   image: 
     src: /logo.svg
     alt: zorroe
