@@ -75,3 +75,7 @@
 接口来自 ~~[Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)~~
 
 这个库已经不再维护，可以从[NeteaseCloudMusicApi](https://www.npmjs.com/package/NeteaseCloudMusicApi)获取
+
+## 安装包
+
+win: [v1.0.0](https://github.com/zorroe/HaloMusic/releases/download/v1.0.0/HaloMusic.exe)
