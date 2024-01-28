@@ -9,6 +9,7 @@ export default defineConfig({
   title: 'zorroe',
   description: "zorroe's space",
   lastUpdated: true,
+  ignoreDeadLinks: true,
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
     // ['link', { rel: 'icon', type: 'image/png', href: '/vitepress-logo-mini.png' }],
