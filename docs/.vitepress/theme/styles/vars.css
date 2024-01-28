@@ -533,3 +533,14 @@
   --vp-local-search-highlight-bg: var(--vp-c-brand-1);
   --vp-local-search-highlight-text: var(--vp-c-neutral-inverse);
 }
+
+
+/* .vitepress/theme/index.css */
+
+.medium-zoom-overlay {
+  z-index: 90;
+}
+
+.medium-zoom-image {
+  z-index: 91;
+}

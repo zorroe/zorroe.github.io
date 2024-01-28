@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { halomusicSideBar } from './sidebar/haloMusic'
-import {elementplusSideBar} from './sidebar/elementPlus'
+import { elementplusSideBar } from './sidebar/elementPlus'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -16,6 +16,9 @@ export default defineConfig({
   ],
   markdown: {
     theme: { light: 'github-light', dark: 'github-dark' },
+    image: {
+      lazyLoading: true,
+    },
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
@@ -51,8 +54,8 @@ export default defineConfig({
       },
       '/src/elementplus/': {
         base: '/src/elementplus/',
-        items: elementplusSideBar()
-      }
+        items: elementplusSideBar(),
+      },
     },
     socialLinks: [{ icon: 'github', link: 'https://github.com/zorroe' }],
     search: {
