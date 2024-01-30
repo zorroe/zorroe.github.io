@@ -4,7 +4,13 @@ export const elementplusSideBar: () => DefaultTheme.SidebarItem[] = () => {
   return [
     {
       text: 'Element Plus',
-      items: [{ text: '简介', link: 'intro' }],
+      items: [
+        { text: '简介', link: 'intro' },
+        {
+          text: 'Message',
+          link: 'message',
+        },
+      ],
     },
   ]
 }
