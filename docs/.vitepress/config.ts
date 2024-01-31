@@ -46,7 +46,7 @@ export default defineConfig({
           },
         ],
       },
-      { text: '记录', link: '/record' },
+      { text: '神奇CSS', link: '/css/intro' },
     ],
     sidebar: {
       '/project/halomusic/': {
