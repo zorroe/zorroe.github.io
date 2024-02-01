@@ -8,6 +8,7 @@ export const halomusicSideBar: () => DefaultTheme.SidebarItem[] = () => {
         { text: '简介', link: 'intro' },
         { text: '更新日志', link: 'change' },
         { text: '组件', link: 'component' },
+        { text: 'playerStore', link: 'playerStore' },
       ],
     },
   ]
