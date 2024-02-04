@@ -66,11 +66,11 @@
 
 ## 开发计划
 
-当前版本[v1.0.0]()
+当前版本[v1.0.0](https://github.com/zorroe/HaloMusic/releases/tag/v1.0.0)
 
 * v1.1.0
-  1. 私人FM
-  2. 重构playerStore
+  1. ~~私人FM~~
+  2. ~~重构playerStore~~
   3. ~~每日推荐修改样式~~
   4. 私人云盘
   5. 修改听歌排行分为本周和所有时间
