@@ -6,12 +6,12 @@
 
 ## 技术栈
 
->1. Electron
->2. Vue3
->3. TailwindCss
->4. Vue-Router
->5. Pinia
->6. Axios
+>1. [Electron](https://www.electronjs.org/)
+>2. [Vue3](https://cn.vuejs.org/)
+>3. [Tailwind CSS](https://tailwindcss.com/)
+>4. [Vue-Router](https://router.vuejs.org/zh/)
+>5. [Pinia](https://pinia.vuejs.org/zh/)
+>6. [Axios](https://axios-http.com/zh/docs/intro)
 
 ## 功能
 
