@@ -110,110 +110,110 @@ export const messageProps = buildProps({
 } as const)
 ```
 
-## 方法
+## normalizeOptions
 
-1. `normalizeOptions`：根据传入的params返回message的配置项
+> 根据传入的 params 返回 message 的配置项
 
-   ```typescript
-   const normalizeOptions = (params?: MessageParams) => {
-     const options: MessageOptions =
-       !params || isString(params) || isVNode(params) || isFunction(params)
-         ? { message: params }
-         : params
-     
-     const normalized = {
-       ...messageDefaults,
-       ...options,
-     }
-   
-     if (!normalized.appendTo) {
-       normalized.appendTo = document.body
-     } else if (isString(normalized.appendTo)) {
-       let appendTo = document.querySelector<HTMLElement>(normalized.appendTo)
-   
-       // should fallback to default value with a warning
-       if (!isElement(appendTo)) {
-         debugWarn(
-           'ElMessage',
-           'the appendTo option is not an HTMLElement. Falling back to document.body.'
-         )
-         appendTo = document.body
-       }
-   
-       normalized.appendTo = appendTo
-     }
-   
-     return normalized as MessageParamsNormalized
-   }
-   ```
+```typescript
+const normalizeOptions = (params?: MessageParams) => {
+  const options: MessageOptions =
+    !params || isString(params) || isVNode(params) || isFunction(params)
+      ? { message: params }
+      : params
 
-2. `createMessage`
+  const normalized = {
+    ...messageDefaults,
+    ...options,
+  }
 
-   ```typescript
-   const createMessage = (
-     { appendTo, ...options }: MessageParamsNormalized,
-     context?: AppContext | null
-   ): MessageContext => {
-     const id = `message_${seed++}`  // 前面定义 let seed = 1
-     const userOnClose = options.onClose
-   
-     const container = document.createElement('div')
-   
-     const props = {
-       ...options,
-       // now the zIndex will be used inside the message.vue component instead of here.
-       // zIndex: nextIndex() + options.zIndex
-       id,
-       onClose: () => {
-         userOnClose?.()
-         closeMessage(instance)
-       },
-   
-       // clean message element preventing mem leak
-       onDestroy: () => {
-         // since the element is destroy, then the VNode should be collected by GC as well
-         // we do not want cause any mem leak because we have returned vm as a reference to users
-         // so that we manually set it to false.
-         render(null, container)
-       },
-     }
-     const vnode = createVNode(
-       MessageConstructor,
-       props,
-       isFunction(props.message) || isVNode(props.message)
-         ? {
-             default: isFunction(props.message)
-               ? props.message
-               : () => props.message,
-           }
-         : null
-     )
-     vnode.appContext = context || message._context
-   
-     render(vnode, container)
-     // instances will remove this item when close function gets called. So we do not need to worry about it.
-     appendTo.appendChild(container.firstElementChild!)
-   
-     const vm = vnode.component!
-   
-     const handler: MessageHandler = {
-       // instead of calling the onClose function directly, setting this value so that we can have the full lifecycle
-       // for out component, so that all closing steps will not be skipped.
-       close: () => {
-         vm.exposed!.visible.value = false
-       },
-     }
-   
-     const instance: MessageContext = {
-       id,
-       vnode,
-       vm,
-       handler,
-       props: (vnode.component as any).props,
-     }
-   
-     return instance
-   }
-   ```
+  if (!normalized.appendTo) {
+    normalized.appendTo = document.body
+  } else if (isString(normalized.appendTo)) {
+    let appendTo = document.querySelector<HTMLElement>(normalized.appendTo)
 
-   
+    // should fallback to default value with a warning
+    if (!isElement(appendTo)) {
+      debugWarn(
+        'ElMessage',
+        'the appendTo option is not an HTMLElement. Falling back to document.body.'
+      )
+      appendTo = document.body
+    }
+
+    normalized.appendTo = appendTo
+  }
+
+  return normalized as MessageParamsNormalized
+}
+```
+
+## `createMessage`
+
+> 创建 message 实例
+
+```typescript
+const createMessage = (
+  { appendTo, ...options }: MessageParamsNormalized,
+  context?: AppContext | null
+): MessageContext => {
+  const id = `message_${seed++}` // 前面定义 let seed = 1
+  const userOnClose = options.onClose
+
+  const container = document.createElement('div')
+
+  const props = {
+    ...options,
+    // now the zIndex will be used inside the message.vue component instead of here.
+    // zIndex: nextIndex() + options.zIndex
+    id,
+    onClose: () => {
+      userOnClose?.()
+      closeMessage(instance)
+    },
+
+    // clean message element preventing mem leak
+    onDestroy: () => {
+      // since the element is destroy, then the VNode should be collected by GC as well
+      // we do not want cause any mem leak because we have returned vm as a reference to users
+      // so that we manually set it to false.
+      render(null, container)
+    },
+  }
+  const vnode = createVNode(
+    MessageConstructor,
+    props,
+    isFunction(props.message) || isVNode(props.message)
+      ? {
+          default: isFunction(props.message)
+            ? props.message
+            : () => props.message,
+        }
+      : null
+  )
+  vnode.appContext = context || message._context
+
+  render(vnode, container)
+  // instances will remove this item when close function gets called. So we do not need to worry about it.
+  appendTo.appendChild(container.firstElementChild!)
+
+  const vm = vnode.component!
+
+  const handler: MessageHandler = {
+    // instead of calling the onClose function directly, setting this value so that we can have the full lifecycle
+    // for out component, so that all closing steps will not be skipped.
+    close: () => {
+      vm.exposed!.visible.value = false
+    },
+  }
+
+  const instance: MessageContext = {
+    id,
+    vnode,
+    vm,
+    handler,
+    props: (vnode.component as any).props,
+  }
+
+  return instance
+}
+```
