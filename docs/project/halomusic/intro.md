@@ -87,4 +87,4 @@
 
 ## 安装包
 
-win: [v1.0.0](https://github.com/zorroe/HaloMusic/releases/download/v1.0.0/HaloMusic.exe)
+win: [v1.0.0](https://github.com/zorroe/HaloMusic/releases/download/v1.0.0/HaloMusic.exe)，[v1.1.0](https://github.com/zorroe/HaloMusic/releases/download/v1.1.0/HaloMusic.Setup.1.1.0.exe)
