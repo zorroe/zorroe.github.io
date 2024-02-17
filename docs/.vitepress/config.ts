@@ -1,7 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { halomusicSideBar } from './sidebar/haloMusic'
 import { elementplusSideBar } from './sidebar/elementPlus'
-import { awesomeCssSideBar } from './sidebar/awesomeCss'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -47,7 +46,6 @@ export default defineConfig({
           },
         ],
       },
-      { text: '神奇CSS', link: '/css/intro' },
     ],
     sidebar: {
       '/project/halomusic/': {
@@ -57,10 +55,6 @@ export default defineConfig({
       '/src/elementplus/': {
         base: '/src/elementplus/',
         items: elementplusSideBar(),
-      },
-      '/css/': {
-        base: '/css/',
-        items: awesomeCssSideBar(),
       },
     },
     socialLinks: [{ icon: 'github', link: 'https://github.com/zorroe' }],
