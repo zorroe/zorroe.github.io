@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 import { halomusicSideBar } from './sidebar/haloMusic'
 import { elementplusSideBar } from './sidebar/elementPlus'
+import { otherSideBar } from './sidebar/other'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -46,6 +47,10 @@ export default defineConfig({
           },
         ],
       },
+      {
+        text: '记',
+        link: '/other/',
+      },
     ],
     sidebar: {
       '/project/halomusic/': {
@@ -55,6 +60,10 @@ export default defineConfig({
       '/src/elementplus/': {
         base: '/src/elementplus/',
         items: elementplusSideBar(),
+      },
+      '/other/': {
+        base: '/other/',
+        items: otherSideBar(),
       },
     },
     socialLinks: [{ icon: 'github', link: 'https://github.com/zorroe' }],
