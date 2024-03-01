@@ -1,10 +1,10 @@
 # 将 MySQL 的数据同步到 ElasticSearch
 
->最近从github上看到一个[中国古诗词库](https://github.com/chinese-poetry/chinese-poetry)，觉得可以用来做一个项目。将数据存储到MySQL之后，后面如果需要使用模糊搜索，需要用到ES，所以需要将MySQL的古诗数据存储到ES中，Canal可以用来实现这个操作。
+>最近从github上看到一个~~[中国古诗词库](https://github.com/chinese-poetry/chinese-poetry)~~[简体古诗词库](https://github.com/Werneror/Poetry)，觉得可以用来做一个项目。将数据存储到MySQL之后，后面如果需要使用模糊搜索，需要用到ES，所以需要将MySQL的古诗数据存储到ES中，Canal可以用来实现这个操作。
 
-## 数据库结构
+## 表结构
 
-![image-20240229210948070](public/image-20240229210948070.png)
+![image-20240301111204929](public/image-20240301111204929.png)
 
 ## Canal是什么？
 
@@ -196,7 +196,7 @@ canal.conf:
 
   srcDataSources:
     defaultDS:
-      url: jdbc:mysql://192.168.10.101:3306/chinese-poetry-collection?useSSL=false&useUnicode=true
+      url: jdbc:mysql://192.168.10.101:3306/poetry?useSSL=false&useUnicode=true
       username: canal
       password: root
   canalAdapters:
@@ -221,13 +221,13 @@ destination: example    # canal的instance或者MQ的topic
 groupId: g1   # 对应MQ模式下的groupId, 只会同步对应groupId的数据
 esMapping:
   _index: poetry  # es 的索引名称
-  _id: p_id  # es 的_id, 如果不配置该项必须配置下面的pk项_id则会由es自动分配
+  _id: id  # es 的_id, 如果不配置该项必须配置下面的pk项_id则会由es自动分配
   #  upsert: true
   #  pk: id
-  sql: "SELECT p.p_id AS p_id, p.p_title AS p_title, p.p_author_id AS p_author_id, p.p_rhythmic_id AS p_rhythmic, p.p_paragraph AS p_paragraph,p.p_note AS p_note,p.p_collection_id AS p_collection_id,p.p_other AS p_other,p.p_img_path AS p_img_path FROM poetry p"
+  sql: "SELECT p.id AS id, p.title AS title, p.dynasty AS dynasty, p.author AS author, p.content AS content FROM poetry p"
   #  objFields:
   #    _labels: array:;
-  etlCondition: "where p.p_id>={}"
+  etlCondition: "where p.id>={}"
   commitBatch: 3000
 ```
 
@@ -294,39 +294,36 @@ canal:
 
 浏览器访问`192.168.10.101:5601`，用户：elastic，密码：changeme
 
-创建索引
+创建索引（指定中文IK分词器）
 
 ```shell
 PUT poetry
 {
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "ik_analyzer": { 
+          "tokenizer": "ik_max_word"
+        }
+      }
+    }
+  },
   "mappings": {
     "properties": {
-      "p_id": {
+      "id": {
         "type": "integer"
       },
-      "p_title": {
+      "title": {
         "type": "text"
       },
-      "p_author_id": {
-        "type": "integer"
+      "dynasty": {
+      	"type": "text"
       },
-      "p_rhythmic_id":{
-        "type": "integer"
-      },
-      "p_paragraph":{
+      "author": {
         "type": "text"
       },
-      "p_note":{
-        "type": "text"
-      },
-      "p_collection_id":{
-        "type": "integer"
-      },
-      "p_other":{
-        "type": "text"
-      },
-      "p_img_path":{
-        "type": "text"
+      "content": {
+      	"type": "text"
       }
     }
   }
@@ -339,8 +336,55 @@ PUT poetry
 
 ## 查看同步情况
 
-![image-20240229214841199](public/image-20240229214841199.png)
+![image-20240301133805716](public/image-20240301133805716.png)
 
-![image-20240229214915570](public/image-20240229214915570.png)
+![image-20240301133833062](public/image-20240301133833062.png)
+
+![image-20240301133926700](public/image-20240301133926700.png)
 
 同步成功🎉
+
+
+
+## 添加中文分词器
+
+[下载地址](https://github.com/infinilabs/analysis-ik)
+
+下载对应版本的IK分词器，elasticsearch的plugins目录创建IK文件夹，上传到IK文件夹，解压到当前文件夹
+
+创建索引的时候配置
+
+```shell
+PUT poetry
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "ik_analyzer": { 
+          "tokenizer": "ik_max_word"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "title": {
+        "type": "text"
+      },
+      "dynasty": {
+      	"type": "text"
+      },
+      "author": {
+        "type": "text"
+      },
+      "content": {
+      	"type": "text"
+      }
+    }
+  }
+}
+```
+
