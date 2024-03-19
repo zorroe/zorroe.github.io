@@ -35,6 +35,11 @@ export default defineConfig({
             link: '/project/halomusic/intro',
             activeMatch: '/project/halomusic/',
           },
+          {
+            text: '古诗',
+            link: '/project/poetry/intro',
+            activeMatch: '/project/poetry/',
+          },
         ],
       },
       {
