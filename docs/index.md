@@ -27,4 +27,7 @@ features:
   - title: ElementPlus源码
     details: 学习源码的逻辑，书写更加优质的代码
     link: /src/elementplus/intro
+  - title: 古诗网站
+    details: 使用SpringBoot+Nuxt3，ES开发的一个古诗网站
+    link: /project/poetry/intro
 ---
