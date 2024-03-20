@@ -1,6 +1,11 @@
 # 将 MySQL 的数据同步到 ElasticSearch
 
->最近从github上看到一个~~[中国古诗词库](https://github.com/chinese-poetry/chinese-poetry)~~[简体古诗词库](https://github.com/Werneror/Poetry)，觉得可以用来做一个项目。将数据存储到MySQL之后，后面如果需要使用模糊搜索，需要用到ES，所以需要将MySQL的古诗数据存储到ES中，Canal可以用来实现这个操作。
+>最近从github上看到一个[~~中国古诗词库~~](https://github.com/chinese-poetry/chinese-poetry)，[简体古诗词库](https://github.com/Werneror/Poetry)，觉得可以用来做一个项目。将数据存储到MySQL之后，后面如果需要使用模糊搜索，需要用到ES，所以需要将MySQL的古诗数据存储到ES中，Canal可以用来实现这个操作。
+
+## 相关项目
+
+* 前端：[https://github.com/zorroe/ancient-poetry](https://github.com/zorroe/ancient-poetry)
+* 后端：[https://github.com/zorroe/poetry-backend](https://github.com/zorroe/poetry-backend)
 
 ## 表结构
 
@@ -388,3 +393,4 @@ PUT poetry
 }
 ```
 
+​	
