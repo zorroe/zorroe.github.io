@@ -1,14 +1,10 @@
-import DefaultTheme from "vitepress/theme"
-import { onMounted } from "vue"
-import mediumZoom from "medium-zoom"
-
-import "./styles/vars.css"
+import Theme from 'vitepress/theme'
+import MyLayout from './components/MyLayout.vue'
+import './styles/vars.css'
 
 export default {
-  ...DefaultTheme,
-  setup() {
-    onMounted(() => {
-        mediumZoom(".main img", { background: "var(--vp-c-bg)" })
-    })
+  extends: Theme,
+  Layout: MyLayout,
+  enhanceApp({ app }) {
   },
 }

@@ -1,7 +1,4 @@
 import { defineConfig } from 'vitepress'
-import { halomusicSideBar } from './sidebar/haloMusic'
-import { elementplusSideBar } from './sidebar/elementPlus'
-import { otherSideBar } from './sidebar/other'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -27,50 +24,8 @@ export default defineConfig({
     logo: 'logo.svg',
     nav: [
       { text: '首页', link: '/' },
-      {
-        text: '项目',
-        items: [
-          {
-            text: 'HaloMusic',
-            link: '/project/halomusic/intro',
-            activeMatch: '/project/halomusic/',
-          },
-          {
-            text: '古诗',
-            link: '/project/poetry/intro',
-            activeMatch: '/project/poetry/',
-          },
-        ],
-      },
-      {
-        text: '源码',
-        items: [
-          {
-            text: 'ElementPlus源码',
-            link: '/src/elementplus/intro',
-            activeMatch: '/src/elementplus/',
-          },
-        ],
-      },
-      {
-        text: '记',
-        link: '/other/',
-      },
+      
     ],
-    sidebar: {
-      '/project/halomusic/': {
-        base: '/project/halomusic/',
-        items: halomusicSideBar(),
-      },
-      '/src/elementplus/': {
-        base: '/src/elementplus/',
-        items: elementplusSideBar(),
-      },
-      '/other/': {
-        base: '/other/',
-        items: otherSideBar(),
-      },
-    },
     socialLinks: [{ icon: 'github', link: 'https://github.com/zorroe' }],
     search: {
       provider: 'algolia',

@@ -1,37 +1,37 @@
 {
-  "hash": "6b4136fb",
-  "configHash": "f1810b3c",
-  "lockfileHash": "905e2397",
-  "browserHash": "6cf38938",
+  "hash": "e6164c6c",
+  "configHash": "f3dfc614",
+  "lockfileHash": "199ac20f",
+  "browserHash": "8a8815dc",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "676f7ad9",
+      "fileHash": "60b675e6",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/@vue/devtools-api/dist/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "5347c952",
+      "fileHash": "f8cd1f5d",
       "needsInterop": false
     },
     "vitepress > @vueuse/core": {
-      "src": "../../../../node_modules/vitepress/node_modules/@vueuse/core/index.mjs",
+      "src": "../../../../node_modules/@vueuse/core/index.mjs",
       "file": "vitepress___@vueuse_core.js",
-      "fileHash": "2f92415d",
+      "fileHash": "be7e5b25",
       "needsInterop": false
     },
     "medium-zoom": {
       "src": "../../../../node_modules/medium-zoom/dist/medium-zoom.esm.js",
       "file": "medium-zoom.js",
-      "fileHash": "dc36fa55",
+      "fileHash": "04e3918c",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-XJZ34XUT": {
-      "file": "chunk-XJZ34XUT.js"
+    "chunk-CKQ4TNQ3": {
+      "file": "chunk-CKQ4TNQ3.js"
     }
   }
 }
