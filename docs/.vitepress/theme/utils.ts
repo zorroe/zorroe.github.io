@@ -13,7 +13,6 @@ export function initTags(post: PostInfo[]) {
         })
       }
     }
-    console.log('🚀🚀🚀 / data:', data)
     return data
   }
   

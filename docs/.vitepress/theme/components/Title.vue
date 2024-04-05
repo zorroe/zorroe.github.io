@@ -14,7 +14,6 @@
   dayjs.extend(relativeTime)
   onContentUpdated(() => {
     const { frontmatter } = pageData
-    console.log(frontmatter)
     publishDate.value = dayjs().to(dayjs(frontmatter.date || Date.now()))
   })
   </script>

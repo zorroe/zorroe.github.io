@@ -16,7 +16,6 @@ export async function getPosts() {
       return postInfo
     }),
   )
-  console.log(posts)
   posts.sort(_compareDate)
   return posts
 }
@@ -34,7 +33,6 @@ async function getPostMDFilePaths() {
   let paths = await globby(['**.md'], {
     ignore: ['node_modules', 'README.md'],
   })
-  console.log("yfiguhliyutdfyguhliuiyfiguhl",paths)
   return paths.filter((item) => item.includes('posts/'))
 }
 
