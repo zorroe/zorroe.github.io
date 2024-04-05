@@ -27,7 +27,7 @@ date: 2024-03-22
 
 ## MySQL同步数据到ES
 
-地址：[https://zorroe.github.io/other/mysql2es.html](https://zorroe.github.io/other/mysql2es.html)
+地址：[https://zorroe.github.io/posts/mysql2es.html](https://zorroe.github.io/posts/mysql2es.html)
 
 ## 功能
 
