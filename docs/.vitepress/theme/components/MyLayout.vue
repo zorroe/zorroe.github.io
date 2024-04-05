@@ -11,7 +11,7 @@
       <Comments />
     </template>
     <!-- Home slot-->
-    <!-- <template #home-hero-before><HomeHero /></template> -->
+    <template #home-hero-before><Hero /></template>
     <template #home-features-after><PostList /></template>
     <!-- footer -->
     <template #layout-bottom><CopyWright /></template>
@@ -24,6 +24,7 @@ import PostList from './Posts.vue'
 import Title from './Title.vue'
 import Category from './Category.vue'
 import CopyWright from './CopyRight.vue'
+import Hero from './Hero.vue'
 
 const { Layout } = DefaultTheme
 const { page } = useData()

@@ -10,7 +10,7 @@
   --vp-home-hero-image-background-image: linear-gradient(-45deg, #bd34fe 50%, #49cbfe 50%);
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #bd34fe 30%, #49cbfe);
-  --vp-avator-border: #ffffff;
+  --vp-avatar-border: #ffffff;
 
   --vp-c-hover: #212121;
   --vp-c-bg: #faf6f1;
@@ -31,7 +31,7 @@
   --vp-c-bg: #2c3639;
   --vp-c-text: white;
   --vp-c-hover: #ffffff;
-  --vp-avator-border: #3f4e4f;
+  --vp-avatar-border: #3f4e4f;
   --vp-c-bg-alpha-with-backdrop: #3f4e4fbb;
   --vp-c-brand-dim: #1f2b2c;
 

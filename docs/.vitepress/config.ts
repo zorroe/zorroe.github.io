@@ -27,7 +27,7 @@ export default async function () {
       // https://vitepress.dev/reference/default-theme-config
       logo: '/logo.svg',
       // @ts-ignore
-      avator: '/avatar.png',
+      avatar: '/logo.svg',
       posts: await getPosts(),
       pageSize: 5,
       postLength: await getPostLength(),
