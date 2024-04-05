@@ -1,3 +1,13 @@
+---
+title: 同步MySQL数据到ElasticSearch
+tags:
+  - MySQL
+  - ElasticSearch
+categories:
+  - 数据库
+date: 2024-03-20
+---
+
 # 将 MySQL 的数据同步到 ElasticSearch
 
 >最近从github上看到一个[~~中国古诗词库~~](https://github.com/chinese-poetry/chinese-poetry)，[简体古诗词库](https://github.com/Werneror/Poetry)，觉得可以用来做一个项目。将数据存储到MySQL之后，后面如果需要使用模糊搜索，需要用到ES，所以需要将MySQL的古诗数据存储到ES中，Canal可以用来实现这个操作。

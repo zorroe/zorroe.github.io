@@ -1,0 +1,148 @@
+@import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.6.0/style.min.css');
+@import url(./vars.css);
+@import url(./tailwind.postcss);
+
+#app {
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--vp-c-bg-alpha-with-backdrop);
+  // filter 基于当前元素会生成一个新的包含块，其位置大小和当前元素一样，然后子元素的 fixed 就会根据这个包含块进行定位，所以设置滤镜后可能会导致 fixed 元素样式出问题的现象；
+  // backdrop-filter: blur(10px);
+  z-index: 2;
+}
+
+.VPImage {
+  &.logo {
+    height: 25px;
+    border-radius: 50%;
+  }
+  &.image-src {
+    max-width: 500px;
+  }
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  transform: translate(0px, 0px) !important;
+}
+.image-bg {
+  width: 500px !important;
+}
+
+// 首页底部
+.VPContent.is-home {
+  .VPHome {
+    padding-bottom: 20px !important;
+  }
+}
+
+// 首页底部copyright
+.VPFooter {
+  user-select: none;
+  .copyright {
+    a {
+      text-decoration: underline;
+      color: var(--vp-c-brand);
+    }
+  }
+}
+
+// 首页
+.VPHome {
+  h1 {
+    font-weight: 700;
+    user-select: none;
+    line-height: inherit;
+    background: -webkit-linear-gradient(120deg, #bd34fe 0%, #49cbfe 100%);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+  }
+}
+
+.VPHome h2 {
+  color: var(--vp-c-brand-dark);
+}
+
+.DocSearch-Button {
+  border-color: var(--vp-c-brand-dark);
+}
+
+// 文档
+.VPDoc {
+  .vp-doc {
+    h1 {
+      display: none;
+    }
+    h2 {
+      margin-top: 0;
+      border-top: none;
+    }
+    p {
+      text-align: justify;
+    }
+    :not(pre) > code {
+      color: var(--vp-c-text);
+      background-color: #d6d6d6;
+    }
+    a {
+      text-decoration: underline;
+      color: var(--vp-c-brand-dark);
+    }
+    .header-anchor {
+      color: var(--vp-c-brand-dark);
+    }
+  }
+}
+.dark {
+  .VPNavBarMenuLink {
+    &.active {
+      color: var(--vp-c-brand-lighter);
+    }
+    &:hover {
+      color: var(--vp-c-brand-lighter);
+    }
+  }
+
+  .DocSearch-Button,
+  .search-bar {
+    border-color: var(--vp-c-brand-lighter) !important;
+  }
+  .VPDoc .vp-doc {
+    h2 {
+      color: var(--vp-c-brand-lighter);
+    }
+    .header-anchor {
+      color: var(--vp-c-brand-lighter);
+    }
+    a {
+      color: var(--vp-c-brand-lighter);
+    }
+    :not(pre) > code {
+      color: var(--vp-c-text);
+      background-color: #727283;
+      // background-color: #d6d6d6;
+    }
+  }
+  .copyright {
+    a {
+      color: var(--vp-c-brand-lighter);
+    }
+  }
+}
+
+.theme {
+  background-color: var(--vp-c-bg);
+}
+
+// 头部目录
+.VPDocOutlineDropdown {
+  display: none !important;
+}

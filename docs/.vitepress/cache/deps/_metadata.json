@@ -1,44 +1,56 @@
 {
-  "hash": "b264341b",
+  "hash": "99d75a8c",
   "configHash": "795d691b",
-  "lockfileHash": "199ac20f",
-  "browserHash": "3fb4e630",
+  "lockfileHash": "b2b48711",
+  "browserHash": "3eda3718",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "56c13041",
+      "fileHash": "fe97cbfc",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/@vue/devtools-api/dist/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "718c449e",
+      "fileHash": "09624895",
       "needsInterop": false
     },
     "vitepress > @vueuse/core": {
       "src": "../../../../node_modules/@vueuse/core/index.mjs",
       "file": "vitepress___@vueuse_core.js",
-      "fileHash": "67b29afa",
+      "fileHash": "ce541d71",
       "needsInterop": false
     },
     "vitepress > @vueuse/integrations/useFocusTrap": {
       "src": "../../../../node_modules/@vueuse/integrations/useFocusTrap.mjs",
       "file": "vitepress___@vueuse_integrations_useFocusTrap.js",
-      "fileHash": "95edf772",
+      "fileHash": "73b2e87c",
       "needsInterop": false
     },
     "vitepress > mark.js/src/vanilla.js": {
       "src": "../../../../node_modules/mark.js/src/vanilla.js",
       "file": "vitepress___mark__js_src_vanilla__js.js",
-      "fileHash": "f9802fa0",
+      "fileHash": "0fc6d6bb",
       "needsInterop": false
     },
     "vitepress > minisearch": {
       "src": "../../../../node_modules/minisearch/dist/es/index.js",
       "file": "vitepress___minisearch.js",
-      "fileHash": "a8a16e40",
+      "fileHash": "d4d8f8b9",
       "needsInterop": false
+    },
+    "dayjs": {
+      "src": "../../../../node_modules/dayjs/dayjs.min.js",
+      "file": "dayjs.js",
+      "fileHash": "eaa93274",
+      "needsInterop": true
+    },
+    "dayjs/plugin/relativeTime": {
+      "src": "../../../../node_modules/dayjs/plugin/relativeTime.js",
+      "file": "dayjs_plugin_relativeTime.js",
+      "fileHash": "d9b99bc5",
+      "needsInterop": true
     }
   },
   "chunks": {
@@ -47,6 +59,9 @@
     },
     "chunk-CKQ4TNQ3": {
       "file": "chunk-CKQ4TNQ3.js"
+    },
+    "chunk-Y2F7D3TJ": {
+      "file": "chunk-Y2F7D3TJ.js"
     }
   }
 }

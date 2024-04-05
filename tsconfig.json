@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "esnext",
+      "moduleResolution": "Node",
+      "allowJs": true,
+      "strict": true, // 开启所有严格类型检查选项
+      "noImplicitAny": true, // 在表达式和声明上有隐含的 any类型时报错
+      "strictNullChecks": true, // 启用严格的 null 检查
+      "esModuleInterop": true, // 为ESM提供对CommonJS模块的默认导入导出语义的支持
+      "skipLibCheck": true, // 跳过声明文件的类型检查
+      "forceConsistentCasingInFileNames": true, // 不允许对同一个文件使用不一致的文件名
+      "allowSyntheticDefaultImports": true // 允许从没有设置默认导出的模块中默认导入
+    },
+    // 包含的文件
+    "include": [
+      "./docs/.vitepress/**/*.ts",
+      "./docs/.vitepress/**/*.d.ts",
+      "./docs/.vitepress/**/*.tsx",
+      "./docs/.vitepress/**/*.vue",
+      "./docs/types/**/*.d.ts"
+    ],
+    "exclude": ["node_modules", "dist", "**/*.js"] // 排除的文件
+  }
+  

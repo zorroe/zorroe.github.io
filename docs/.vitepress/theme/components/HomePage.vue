@@ -1,10 +1,10 @@
 <template>
-  <div class="home-page">{{ data }}</div>
+  <Posts />
 </template>
 
 <script setup lang="ts">
-// @ts-ignore
-import { data } from '../posts.data'
+
+import Posts from './Posts.vue'
 </script>
 
 <style scoped></style>

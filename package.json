@@ -7,10 +7,30 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
+  "lint-staged": {
+    "*.{js,ts,tsx,css,scss,vue,md}": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "autoprefixer": "^10.4.19",
+    "fs-extra": "^11.1.1",
+    "globby": "11.0.4",
+    "gray-matter": "^4.0.3",
+    "lint-staged": "^13.2.3",
+    "postcss": "^8.4.38",
+    "sass": "^1.74.1",
+    "tailwindcss": "^3.4.3",
     "vitepress": "^1.0.2"
   },
+  "postcss": {
+    "plugins": {
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
+  },
   "dependencies": {
-    "medium-zoom": "^1.1.0"
+    "dayjs": "^1.11.10"
   }
 }

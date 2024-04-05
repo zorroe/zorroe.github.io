@@ -1,10 +1,11 @@
 ---
-title: HaloMusic
-titleTemplate: 一个使用Electron + Vue3开发的桌面端音乐软件
-description: VitePress
-navbar: true
-sidebar: true
-aside: left
+title: 使用Electron + Vue3开发的桌面端音乐软件
+tags:
+  - Vue3
+  - Electron
+categories:
+  - 前端
+date: 2024-02-10
 ---
 
 
