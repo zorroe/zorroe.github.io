@@ -8,9 +8,9 @@
     </a>
   </div>
   <div class="pagination select-none">
-    <button class="absolute left-0" v-if="pageCurrent > 1" @click="go(pageCurrent - 1)">Previous page</button>
+    <button class="absolute left-0" v-if="pageCurrent > 1" @click="go(pageCurrent - 1)">上一页</button>
     <div v-if="pagesNum > 1">{{ `${pageCurrent}/${pagesNum}` }}</div>
-    <button class="absolute right-0" v-if="pageCurrent < pagesNum" @click="go(pageCurrent + 1)">Next page</button>
+    <button class="absolute right-0" v-if="pageCurrent < pagesNum" @click="go(pageCurrent + 1)">下一页</button>
   </div>
 </template>
 <script lang="ts" setup>
