@@ -36,6 +36,7 @@ export default async function () {
         { text: '🏡 首页', link: '/' },
         { text: '🔖 Tags', link: '/page/tags' },
         { text: '📃 Archive', link: '/page/archive' },
+        { text: '🥗 真的是菜单', link: '/page/menu' },
       ],
       socialLinks: [
         { icon: 'github', link: 'https://github.com/zorroe/zorroe.github.io' },
