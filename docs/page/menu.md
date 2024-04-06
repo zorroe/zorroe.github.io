@@ -1,5 +1,6 @@
 ---
 title: 菜单
+titleTemplate: 这是一个菜单
 categories:
   - 菜单
 date: 2024-04-06
