@@ -9,6 +9,7 @@ interface FrontMatter {
   date: string
   tags: string[]
   categories: string[]
+  hidden : boolean
 }
 
 interface PostInfo {

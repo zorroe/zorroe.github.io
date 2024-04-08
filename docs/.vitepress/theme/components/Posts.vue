@@ -33,6 +33,9 @@ pagesNum = parseInt(pagesNum.toString())
 //pageCurrent
 let pageCurrent = ref(1)
 // filter index PostInfo
+postsAll = postsAll.filter((item: PostInfo) =>{
+  return !item.frontMatter.hidden
+})
 postsAll = postsAll.filter((item: PostInfo) => {
   return item.regularPath.indexOf('index') < 0
 })
