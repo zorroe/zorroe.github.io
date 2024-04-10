@@ -1,11 +1,16 @@
-
 <template>
   <div class="main">
-    <div v-for="yearList in data" class="yearItem">
+    <div
+      v-for="yearList in data"
+      class="yearItem">
       <div class="year">
         {{ yearList[0].frontMatter.date.split('-')[0] }}
       </div>
-      <a :href="withBase(article.regularPath)" v-for="(article, index) in yearList" :key="index" class="article">
+      <a
+        :href="withBase(article.regularPath)"
+        v-for="(article, index) in yearList"
+        :key="index"
+        class="article">
         <div class="title">
           <div class="title-o"></div>
           {{ article.frontMatter.title }}
@@ -22,7 +27,10 @@ import { computed } from 'vue'
 import { useYearSort } from '../utils'
 
 const { theme } = useData()
-const data = computed(() => useYearSort(theme.value.posts))
+const data = computed(() => {
+  const posts = useYearSort(theme.value.posts)
+  return posts
+})
 </script>
 
 <style scoped lang="scss">

@@ -8,7 +8,6 @@
       <div>
         <button @click="back">返回</button>
       </div>
-      <Comments />
     </template>
     <!-- Home slot-->
     <template #home-hero-before><Hero /></template>
