@@ -10,10 +10,16 @@
       </div>
     </template>
     <!-- Home slot-->
-    <template #home-hero-before><Hero /></template>
-    <template #home-features-after><PostList /></template>
+    <template #home-hero-before>
+      <Hero />
+    </template>
+    <template #home-features-after>
+      <PostList />
+    </template>
     <!-- footer -->
-    <template #layout-bottom><CopyWright /></template>
+    <template #layout-bottom>
+      <CopyWright />
+    </template>
   </Layout>
 </template>
 <script lang="ts" setup>
@@ -24,10 +30,36 @@ import Title from './Title.vue'
 import Category from './Category.vue'
 import CopyWright from './CopyRight.vue'
 import Hero from './Hero.vue'
+import { provide, nextTick } from "vue"
 
 const { Layout } = DefaultTheme
-const { page } = useData()
-const filePath = page.value.filePath
+const { isDark } = useData()
+
+function enableTransitions() {
+  return 'startViewTransition' in document
+    && window.matchMedia('(prefers-reduced-motion: no-preference)').matches
+}
+
+provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
+  if (!enableTransitions()) {
+    isDark.value = !isDark.value
+    return
+  }
+
+  // @ts-ignore
+  await document.startViewTransition(async () => {
+    isDark.value = !isDark.value
+    await nextTick()
+  }).ready
+
+  document.documentElement.animate(
+    {
+      duration: 300,
+      easing: 'ease-in',
+      pseudoElement: `::view-transition-${isDark.value ? 'old' : 'new'}(root)`,
+    },
+  )
+})
 const back = () => {
   history.back()
 }
@@ -59,6 +91,7 @@ button::after {
   button {
     color: var(--vp-c-brand-light);
   }
+
   button::after {
     background-color: var(--vp-c-brand-light);
   }
