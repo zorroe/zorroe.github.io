@@ -6,12 +6,15 @@ tags:
 categories:
   - 前端
 date: 2024-06-11
-hidden: false
 ---
 
->Nuxt3项目地址为[🔗](https://github.com/zorroe/NuoYi)
+# 使用Docker部署Nuxt3前端项目
 
-# Dockerfile文件
+
+> 项目地址|[NuoYi](https://github.com/zorroe/NuoYi)
+
+
+## Dockerfile文件
 
 ```dockerfile
 # syntax = docker/dockerfile:experimental
@@ -49,7 +52,7 @@ COPY --from=build /src/.output /src/.output
 CMD [ "node", ".output/server/index.mjs" ]
 ```
 
-# 命令
+## 命令
 
 ```shell
 # 打包
@@ -58,6 +61,6 @@ docker build -t NuoYi:0.0.1 .
 docker run -d -p 3000:3000 NuoYi:0.0.1
 ```
 
-# 测试访问
+## 测试访问
 
 ![image-20240621170302397](public/image-20240621170302397.png)
