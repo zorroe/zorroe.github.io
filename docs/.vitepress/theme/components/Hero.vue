@@ -3,15 +3,26 @@
       <img :src="avatar" width="135" height="135" class="avatar" />
     </div>
     <div class="shareCard">
-      <h1 class="title">👋 Hi there! I'm zorroe~</h1>
+      <div class="title blog-title">
+        <span id="hello" class="hello">👋</span>
+        <span> Hi there! I'm zorroe~</span>
+      </div>
       <p class="description">A passionate web developer based in SuZhou.</p>
       <h2 class="blog-title text-center text-lg font-bold">路漫漫其修远兮，吾将上下而求索。</h2>
     </div>
   </template>
   <script lang="ts" setup>
   import { useData } from 'vitepress'
+  import {ref, onMounted} from "vue"
   const { theme } = useData<{ avatar: string }>()
   const avatar = theme.value.avatar
+
+  onMounted(()=>{
+    setTimeout(()=>{
+      const hello = document.getElementById("hello") as HTMLElement
+      hello.classList.remove("hello")
+    }, 5000)
+  })
   </script>
   <style scoped lang="scss">
   .content {
@@ -33,8 +44,28 @@
       transform: rotate(360deg);
     }
   }
+
+  @keyframes hello-tranform {
+    0% {
+      transform: rotate(0);
+    }
+
+    50%{
+      transform: rotate(10deg);
+      transform-origin: 80% 80% 0
+    }
+
+    100%{
+      transform: rotate(0);
+    }
+  }
+  
   .avatar:hover {
     animation: 5s linear 0s infinite avatar-transform;
+  }
+
+  .hello {
+    animation: 1s linear 0s infinite hello-tranform;
   }
   
   .shareCard {
