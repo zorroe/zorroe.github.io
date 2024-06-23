@@ -1,22 +1,6 @@
-<template>
-  <div class="blogList my-8 flex flex-col items-center justify-center">
-    <a class="blog flex flex-col md:flex-row md:items-center md:justify-between transition-all" v-for="item in posts" :href="withBase(item.regularPath)">
-      <div class="title text-xl font-bold md:max-w-[600px] md:overflow-hidden md:text-ellipsis md:whitespace-nowrap">
-        {{ item.frontMatter.title }}
-      </div>
-      <div class="min-w-[130px]">{{ transDate(item.frontMatter.date) }}</div>
-    </a>
-  </div>
-  <div class="pagination select-none">
-    <button class="absolute left-0" v-if="pageCurrent > 1" @click="go(pageCurrent - 1)">上一页</button>
-    <div v-if="pagesNum > 1">{{ `${pageCurrent}/${pagesNum}` }}</div>
-    <button class="absolute right-0" v-if="pageCurrent < pagesNum" @click="go(pageCurrent + 1)">下一页</button>
-  </div>
-</template>
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useData, withBase } from 'vitepress'
-// @ts-ignore
 import dayjs from 'dayjs'
 
 const { theme } = useData()
@@ -24,23 +8,23 @@ const { theme } = useData()
 // get posts
 let postsAll: PostInfo[] = theme.value.posts || []
 // get postLength
-let postLength = theme.value.postLength
+const postLength = theme.value.postLength
 // get pageSize
-let pageSize = theme.value.pageSize
+const pageSize = theme.value.pageSize
 //  pagesNum
 let pagesNum = postLength % pageSize === 0 ? postLength / pageSize : postLength / pageSize + 1
-pagesNum = parseInt(pagesNum.toString())
-//pageCurrent
-let pageCurrent = ref(1)
+pagesNum = Number.parseInt(pagesNum.toString())
+// pageCurrent
+const pageCurrent = ref(1)
 // filter index PostInfo
-postsAll = postsAll.filter((item: PostInfo) =>{
+postsAll = postsAll.filter((item: PostInfo) => {
   return !item.frontMatter.hidden
 })
 postsAll = postsAll.filter((item: PostInfo) => {
-  return item.regularPath.indexOf('index') < 0
+  return !item.regularPath.includes('index')
 })
 // pagination
-let allMap: { [k: string]: PostInfo[] } = {}
+const allMap: { [k: string]: PostInfo[] } = {}
 for (let i = 0; i < pagesNum; i++) {
   allMap[i] = []
 }
@@ -52,20 +36,42 @@ for (let i = 0; i < postsAll.length; i++) {
   allMap[index].push(postsAll[i])
 }
 // set posts
-let posts = ref<PostInfo[]>([])
+const posts = ref<PostInfo[]>([])
 posts.value = allMap[pageCurrent.value - 1]
 
 // click pagination
-const go = (i: number) => {
+function go(i: number) {
   pageCurrent.value = i
   posts.value = allMap[pageCurrent.value - 1]
 }
 // timestamp transform
-const transDate = (date: string) => {
+function transDate(date: string) {
   return dayjs(date).format('YYYY年MM月DD日')
   // return dayjs(date).format('YYYY-MM-DD')
 }
 </script>
+
+<template>
+  <div class="blogList my-8 flex flex-col items-center justify-center">
+    <a v-for="(item, idx) in posts" :key="idx" class="blog flex flex-col md:flex-row md:items-center md:justify-between transition-all" :href="withBase(item.regularPath)">
+      <div class="title text-xl font-bold md:max-w-[600px] md:overflow-hidden md:text-ellipsis md:whitespace-nowrap">
+        {{ item.frontMatter.title }}
+      </div>
+      <div class="min-w-[130px]">{{ transDate(item.frontMatter.date) }}</div>
+    </a>
+  </div>
+  <div class="pagination select-none">
+    <button v-if="pageCurrent > 1" class="absolute left-0" @click="go(pageCurrent - 1)">
+      上一页
+    </button>
+    <div v-if="pagesNum > 1">
+      {{ `${pageCurrent}/${pagesNum}` }}
+    </div>
+    <button v-if="pageCurrent < pagesNum" class="absolute right-0" @click="go(pageCurrent + 1)">
+      下一页
+    </button>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .blog {

@@ -8,7 +8,7 @@ export function initTags(post: PostInfo[]) {
     const tags = element.frontMatter.tags
     // tags是数组，需要tags按照数组语法的格式书写
     if (Array.isArray(tags)) {
-      tags.forEach(item => {
+      tags.forEach((item) => {
         if (!data[item]) {
           data[item] = []
         }
@@ -29,7 +29,8 @@ export function useYearSort(post: PostInfo[]) {
       const y = element.frontMatter.date.split('-')[0]
       if (y === year) {
         data[num].push(element)
-      } else {
+      }
+      else {
         num++
         data[num] = [] as any
         data[num].push(element)
@@ -43,11 +44,11 @@ export function useYearSort(post: PostInfo[]) {
 export function getHeaders(range: any): Header[] {
   const headers = [...document.querySelectorAll('.VPDoc h2,h3,h4,h5,h6')]
     .filter(el => el.id && el.hasChildNodes())
-    .map(el => {
+    .map((el) => {
       const level = Number(el.tagName[1])
       return {
         title: serializeHeader(el),
-        link: '#' + el.id,
+        link: `#${el.id}`,
         level,
       }
     })
@@ -59,13 +60,14 @@ function serializeHeader(h: Element): string {
   for (const node of h.childNodes) {
     if (node.nodeType === 1) {
       if (
-        (node as Element).classList.contains('VPBadge') ||
-        (node as Element).classList.contains('header-anchor')
+        (node as Element).classList.contains('VPBadge')
+        || (node as Element).classList.contains('header-anchor')
       ) {
         continue
       }
       ret += node.textContent
-    } else if (node.nodeType === 3) {
+    }
+    else if (node.nodeType === 3) {
       ret += node.textContent
     }
   }

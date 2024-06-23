@@ -9,7 +9,6 @@ date: 2024-02-10
 hidden: true
 ---
 
-
 # HaloMusic
 
 > 使用`Electron + Vue3`开发的一个桌面端音乐软件
@@ -18,12 +17,12 @@ hidden: true
 
 ## 技术栈
 
->1. [Electron](https://www.electronjs.org/)
->2. [Vue3](https://cn.vuejs.org/)
->3. [Tailwind CSS](https://tailwindcss.com/)
->4. [Vue-Router](https://router.vuejs.org/zh/)
->5. [Pinia](https://pinia.vuejs.org/zh/)
->6. [Axios](https://axios-http.com/zh/docs/intro)
+> 1.  [Electron](https://www.electronjs.org/)
+> 2.  [Vue3](https://cn.vuejs.org/)
+> 3.  [Tailwind CSS](https://tailwindcss.com/)
+> 4.  [Vue-Router](https://router.vuejs.org/zh/)
+> 5.  [Pinia](https://pinia.vuejs.org/zh/)
+> 6.  [Axios](https://axios-http.com/zh/docs/intro)
 
 ## 功能
 
@@ -69,18 +68,18 @@ hidden: true
 
 ## 从代码启动
 
->1. `git clone git@github.com:zorroe/HaloMusic.git`
->2. `cd HaloMusic`
->3. `npm i`
->4. `npm run dev`
+> 1.  `git clone git@github.com:zorroe/HaloMusic.git`
+> 2.  `cd HaloMusic`
+> 3.  `npm i`
+> 4.  `npm run dev`
 >
->electron镜像 `npm config set electron_mirror=https://registry.npmmirror.com/-/binary/electron/`
+> electron镜像 `npm config set electron_mirror=https://registry.npmmirror.com/-/binary/electron/`
 
 ## 开发计划
 
 当前版本[v1.1.0](https://github.com/zorroe/HaloMusic/releases/tag/v1.1.0)
 
-* v1.1.0
+- v1.1.0
   1. ~~私人FM~~
   2. ~~重构playerStore~~
   3. ~~每日推荐修改样式~~

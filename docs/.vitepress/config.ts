@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress'
-import { getPosts, getPostLength } from './theme/serverUtils'
+import { getPostLength, getPosts } from './theme/serverUtils'
 
 // https://vitepress.dev/reference/site-config
 export default async function () {
@@ -26,7 +26,7 @@ export default async function () {
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
       logo: '/logo.svg',
-      // @ts-ignore
+      // @ts-expect-error
       avatar: '/logo.svg',
       posts: await getPosts(),
       pageSize: 5,

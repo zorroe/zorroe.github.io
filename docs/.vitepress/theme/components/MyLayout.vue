@@ -1,36 +1,12 @@
-<template>
-  <Layout>
-    <template #doc-before>
-      <Title />
-      <Category />
-    </template>
-    <template #doc-after>
-      <div>
-        <button @click="back">返回</button>
-      </div>
-    </template>
-    <!-- Home slot-->
-    <template #home-hero-before>
-      <Hero />
-    </template>
-    <template #home-features-after>
-      <PostList />
-    </template>
-    <!-- footer -->
-    <template #layout-bottom>
-      <CopyWright />
-    </template>
-  </Layout>
-</template>
 <script lang="ts" setup>
 import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
+import { nextTick, provide } from 'vue'
 import PostList from './Posts.vue'
 import Title from './Title.vue'
 import Category from './Category.vue'
 import CopyWright from './CopyRight.vue'
 import Hero from './Hero.vue'
-import { provide, nextTick } from "vue"
 
 const { Layout } = DefaultTheme
 const { isDark } = useData()
@@ -46,7 +22,7 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
     return
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   await document.startViewTransition(async () => {
     isDark.value = !isDark.value
     await nextTick()
@@ -60,10 +36,38 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
     },
   )
 })
-const back = () => {
+function back() {
   history.back()
 }
 </script>
+
+<template>
+  <Layout>
+    <template #doc-before>
+      <Title />
+      <Category />
+    </template>
+    <template #doc-after>
+      <div>
+        <button @click="back">
+          返回
+        </button>
+      </div>
+    </template>
+    <!-- Home slot -->
+    <template #home-hero-before>
+      <Hero />
+    </template>
+    <template #home-features-after>
+      <PostList />
+    </template>
+    <!-- footer -->
+    <template #layout-bottom>
+      <CopyWright />
+    </template>
+  </Layout>
+</template>
+
 <style scoped lang="scss">
 button {
   display: inline-block;

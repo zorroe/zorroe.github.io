@@ -3,15 +3,15 @@ import matter from 'gray-matter'
 import fs from 'fs-extra'
 
 export async function getPosts() {
-  let paths = await getPostMDFilePaths()
-  let posts = await Promise.all(
+  const paths = await getPostMDFilePaths()
+  const posts = await Promise.all(
     paths.map(async (item) => {
       const content = await fs.readFile(item, 'utf-8')
       const { data } = matter(content)
       data.date = _convertDate(data.date)
       const postInfo: PostInfo = {
         frontMatter: data as FrontMatter,
-        regularPath: item.replace(/docs\/(.*).md/, "/$1.html"),
+        regularPath: item.replace(/docs\/(.*).md/, '/$1.html'),
       }
       return postInfo
     }),
@@ -30,10 +30,10 @@ function _compareDate(obj1: PostInfo, obj2: PostInfo) {
 }
 
 async function getPostMDFilePaths() {
-  let paths = await globby(['**.md'], {
+  const paths = await globby(['**.md'], {
     ignore: ['node_modules', 'README.md'],
   })
-  return paths.filter((item) => item.includes('posts/'))
+  return paths.filter(item => item.includes('posts/'))
 }
 
 export async function getPostLength() {

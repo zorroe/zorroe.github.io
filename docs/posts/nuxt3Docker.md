@@ -10,9 +10,7 @@ date: 2024-06-11
 
 # 使用Docker部署Nuxt3前端项目
 
-
 > 项目地址|[NuoYi](https://github.com/zorroe/NuoYi)
-
 
 ## Dockerfile文件
 

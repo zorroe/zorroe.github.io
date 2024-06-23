@@ -1,26 +1,3 @@
-<template>
-  <div class="main">
-    <div
-      v-for="yearList in data"
-      class="yearItem">
-      <div class="year">
-        {{ yearList[0].frontMatter.date.split('-')[0] }}
-      </div>
-      <a
-        :href="withBase(article.regularPath)"
-        v-for="(article, index) in yearList"
-        :key="index"
-        class="article">
-        <div class="title">
-          <div class="title-o"></div>
-          {{ article.frontMatter.title }}
-        </div>
-        <div class="date">{{ article.frontMatter.date.slice(5) }}</div>
-      </a>
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
@@ -32,6 +9,32 @@ const data = computed(() => {
   return posts
 })
 </script>
+
+<template>
+  <div class="main">
+    <div
+      v-for="(yearList, idx) in data"
+      :key="idx"
+      class="yearItem"
+    >
+      <div class="year">
+        {{ yearList[0].frontMatter.date.split('-')[0] }}
+      </div>
+      <a
+        v-for="(article, index) in yearList"
+        :key="index"
+        :href="withBase(article.regularPath)"
+        class="article"
+      >
+        <div class="title">
+          <div class="title-o" />
+          {{ article.frontMatter.title }}
+        </div>
+        <div class="date">{{ article.frontMatter.date.slice(5) }}</div>
+      </a>
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .main {
@@ -58,7 +61,9 @@ const data = computed(() => {
   gap: 20px;
   padding: 10px;
   color: var(--vp-c-text-2);
-  transition: border 0.3s ease, color 0.3s ease;
+  transition:
+    border 0.3s ease,
+    color 0.3s ease;
 }
 .article:hover {
   text-decoration: none;

@@ -10,12 +10,12 @@ date: 2024-03-20
 
 # 将 MySQL 的数据同步到 ElasticSearch
 
->最近从github上看到一个[~~中国古诗词库~~](https://github.com/chinese-poetry/chinese-poetry)，[简体古诗词库](https://github.com/Werneror/Poetry)，觉得可以用来做一个项目。将数据存储到MySQL之后，后面如果需要使用模糊搜索，需要用到ES，所以需要将MySQL的古诗数据存储到ES中，Canal可以用来实现这个操作。
+> 最近从github上看到一个[~~中国古诗词库~~](https://github.com/chinese-poetry/chinese-poetry)，[简体古诗词库](https://github.com/Werneror/Poetry)，觉得可以用来做一个项目。将数据存储到MySQL之后，后面如果需要使用模糊搜索，需要用到ES，所以需要将MySQL的古诗数据存储到ES中，Canal可以用来实现这个操作。
 
 ## 相关项目
 
-* 前端：[https://github.com/zorroe/ancient-poetry](https://github.com/zorroe/ancient-poetry)
-* 后端：[https://github.com/zorroe/poetry-backend](https://github.com/zorroe/poetry-backend)
+- 前端：[https://github.com/zorroe/ancient-poetry](https://github.com/zorroe/ancient-poetry)
+- 后端：[https://github.com/zorroe/poetry-backend](https://github.com/zorroe/poetry-backend)
 
 ## 表结构
 
@@ -53,21 +53,21 @@ date: 2024-03-20
 
 默认打开的端口如下
 
-* 5044: Logstash Beats input
-* 50000: Logstash TCP input
-* 9600: Logstash monitoring API
-* 9200: Elasticsearch HTTP
-* 9300: Elasticsearch TCP transport
-* 5601: Kibana
+- 5044: Logstash Beats input
+- 50000: Logstash TCP input
+- 9600: Logstash monitoring API
+- 9200: Elasticsearch HTTP
+- 9300: Elasticsearch TCP transport
+- 5601: Kibana
 
 用户名密码如下
 
-* user：elastic
-* password：changeme
+- user：elastic
+- password：changeme
 
 集群名（elasticsearch/config/elasticsearch.yml>cluster.name）
 
-* docker-cluster
+- docker-cluster
 
 ## 下载安装Canal
 
@@ -86,9 +86,9 @@ date: 2024-03-20
 #设置serveri_id
 server_id=1
 #开启二进制日志功能
-log-bin=mall-mysql-bin 
+log-bin=mall-mysql-bin
 #设置使用的二进制日志格式（mixed,statement,row）
-binlog_format=row 
+binlog_format=row
 ```
 
 配置成功后重启MySQL
@@ -193,7 +193,7 @@ spring:
     default-property-inclusion: non_null
 
 canal.conf:
-  mode: tcp #tcp kafka rocketMQ rabbitMQ
+  mode: tcp # tcp kafka rocketMQ rabbitMQ
   flatMessage: true
   zookeeperHosts:
   syncBatchSize: 1000
@@ -215,17 +215,17 @@ canal.conf:
       username: canal
       password: root
   canalAdapters:
-  - instance: example # canal instance Name or mq topic name
-    groups:
-    - groupId: g1
-      outerAdapters:
-      - name: logger
-      - name: es8
-        hosts: http://192.168.10.101:9200
-        properties: 
-          mode: rest
-          security.auth: elastic:changeme
-          cluster.name: docker-cluster
+    - instance: example # canal instance Name or mq topic name
+      groups:
+        - groupId: g1
+          outerAdapters:
+            - name: logger
+            - name: es8
+              hosts: http://192.168.10.101:9200
+              properties:
+                mode: rest
+                security.auth: elastic:changeme
+                cluster.name: docker-cluster
 ```
 
 进入`canal-adapter/conf/es8`目录，修改`mytest_user.yml`文件，用于配置MySQL中的表与ES索引的映射关系
@@ -317,7 +317,7 @@ PUT poetry
   "settings": {
     "analysis": {
       "analyzer": {
-        "ik_analyzer": { 
+        "ik_analyzer": {
           "tokenizer": "ik_max_word"
         }
       }
@@ -332,13 +332,13 @@ PUT poetry
         "type": "text"
       },
       "dynasty": {
-      	"type": "text"
+        "type": "text"
       },
       "author": {
         "type": "text"
       },
       "content": {
-      	"type": "text"
+        "type": "text"
       }
     }
   }
@@ -359,8 +359,6 @@ PUT poetry
 
 同步成功🎉
 
-
-
 ## 添加中文分词器
 
 [下载地址](https://github.com/infinilabs/analysis-ik)
@@ -375,7 +373,7 @@ PUT poetry
   "settings": {
     "analysis": {
       "analyzer": {
-        "ik_analyzer": { 
+        "ik_analyzer": {
           "tokenizer": "ik_max_word"
         }
       }
@@ -390,17 +388,15 @@ PUT poetry
         "type": "text"
       },
       "dynasty": {
-      	"type": "text"
+        "type": "text"
       },
       "author": {
         "type": "text"
       },
       "content": {
-      	"type": "text"
+        "type": "text"
       }
     }
   }
 }
 ```
-
-​	
