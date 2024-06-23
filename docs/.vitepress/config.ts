@@ -29,7 +29,7 @@ export default async function () {
       // @ts-expect-error
       avatar: '/logo.svg',
       posts: await getPosts(),
-      pageSize: 5,
+      pageSize: 10,
       postLength: await getPostLength(),
       aside: false,
       nav: [
