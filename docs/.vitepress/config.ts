@@ -22,6 +22,7 @@ export default async function () {
       image: {
         lazyLoading: true,
       },
+      codeCopyButtonTitle: '复制',
     },
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
