@@ -1,11 +1,11 @@
-import globby from 'globby'
+import { globby } from 'globby'
 import matter from 'gray-matter'
 import fs from 'fs-extra'
 
 export async function getPosts() {
   const paths = await getPostMDFilePaths()
   const posts = await Promise.all(
-    paths.map(async (item) => {
+    paths.map(async (item: any) => {
       const content = await fs.readFile(item, 'utf-8')
       const { data } = matter(content)
       data.date = _convertDate(data.date)
