@@ -13,7 +13,7 @@ const pageData: PageData = useData().page.value
 const publishDate = ref('')
 onContentUpdated(() => {
   const { frontmatter } = pageData
-  publishDate.value = dayjs().to(dayjs(frontmatter.date || Date.now()))
+  publishDate.value = dayjs(frontmatter.date || Date.now()).format('YYYY年MM月DD日')
 })
 </script>
 
