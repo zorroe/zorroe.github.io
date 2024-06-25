@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import type { App } from 'vue'
 import './styles/index.scss'
+import 'shiki-magic-move/style.css'
 import { onMounted } from 'vue'
 import dynamicBackground from './background'
 import MyLayout from './components/MyLayout.vue'

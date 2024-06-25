@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "Node",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "allowJs": true,
     "strict": true, // 在表达式和声明上有隐含的 any类型时报错
     "strictNullChecks": true, // 开启所有严格类型检查选项

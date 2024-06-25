@@ -1,9 +1,10 @@
 import { defineConfig } from 'vitepress'
-import { getPostLength, getPosts } from './theme/serverUtils'
+import { withMagicMove } from 'vitepress-plugin-magic-move'
+import { getPostLength, getPosts } from './theme/serverUtils.js'
 
-// https://vitepress.dev/reference/site-config
 export default async function () {
-  return defineConfig({
+  // @ts-expect-error
+  return withMagicMove(defineConfig({
     base: '/',
     lang: 'en-US',
     title: 'zorroe的博客',
@@ -18,7 +19,10 @@ export default async function () {
       ['meta', { name: 'theme-color', content: '#ffa8a8' }],
     ],
     markdown: {
-      theme: { light: 'github-light', dark: 'github-dark' },
+      theme: {
+        light: 'vitesse-light',
+        dark: 'vitesse-dark',
+      },
       image: {
         lazyLoading: true,
       },
@@ -85,5 +89,5 @@ export default async function () {
         text: '在Github上编辑此页',
       },
     },
-  })
+  }))
 }
