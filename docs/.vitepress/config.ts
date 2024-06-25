@@ -1,11 +1,9 @@
 import { defineConfig } from 'vitepress'
-import { withMagicMove } from 'vitepress-plugin-magic-move'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import { getPostLength, getPosts } from './theme/serverUtils.js'
 
 export default async function () {
-  // @ts-expect-error
-  return withMagicMove(defineConfig({
+  return defineConfig({
     base: '/',
     lang: 'en-US',
     title: 'zorroe的博客',
@@ -93,5 +91,5 @@ export default async function () {
         text: '在Github上编辑此页',
       },
     },
-  }))
+  })
 }
