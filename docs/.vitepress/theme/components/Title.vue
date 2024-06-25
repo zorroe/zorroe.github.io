@@ -2,13 +2,15 @@
 import { onContentUpdated, useData } from 'vitepress'
 import { ref } from 'vue'
 import type { PageData } from 'vitepress'
-
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/zh-cn'
+
+dayjs.extend(relativeTime)
+dayjs.locale('zh-cn')
 
 const pageData: PageData = useData().page.value
 const publishDate = ref('')
-dayjs.extend(relativeTime)
 onContentUpdated(() => {
   const { frontmatter } = pageData
   publishDate.value = dayjs().to(dayjs(frontmatter.date || Date.now()))
@@ -20,7 +22,7 @@ onContentUpdated(() => {
     {{ pageData.title }}
   </h1>
   <div class="date">
-    🕒 Published at: {{ publishDate }}
+    🕒 发布于 {{ publishDate }}
   </div>
 </template>
 
