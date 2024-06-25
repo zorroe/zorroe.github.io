@@ -12,58 +12,67 @@ hidden: false
 
 ## Demo
 
-:::magic-move
+```ts twoslash
+// .vitepress/config.ts
+import { defineConfig } from 'vitepress'
+import { transformerTwoslash } from '@shikijs/vitepress-twoslash' // [!code hl]
 
-```vue [Options.vue]
-<script>
-import { defineComponent } from 'vue'
+export default defineConfig({
+  markdown: {
+    codeTransformers: [
+      transformerTwoslash() // [!code hl]
+    ]
+  }
+})
+```
 
-export default defineComponent({
-  data: () => ({
-    count: 1
-  }),
-  computed: {
-    double() {
-      return this.count * 2
-    }
-  },
+```vue twoslash
+<script setup>
+import { onMounted, ref } from 'vue'
+
+// reactive state
+const count = ref(0)
+//             ^?
+
+// functions that mutate state and trigger updates
+function increment() {
+  count.value++
+}
+
+// lifecycle hooks
+onMounted(() => {
+  console.log(`The initial count is ${count.value}.`)
 })
 </script>
 
 <template>
-  <p class="greeting">
-    {{ count }} * 2 = {{ doubled }}
-  </p>
+  <button @click="increment">
+    Count is: {{ count }}
+  </button>
 </template>
-
-<style>
-.greeting {
-  color: red;
-  font-weight: bold;
-}
-</style>
 ```
 
-```vue [Composition.ts]
-<script setup>
-import { computed, ref } from 'vue'
+::: code-group
 
-const count = ref(1)
-const double = computed(() => count.value * 2)
-</script>
-
-<template>
-  <p class="greeting">
-    {{ count }} = {{ doubled / 2 }}
-  </p>
-</template>
-
-<style>
-.greeting {
-  color: red;
-  font-weight: bold;
+```js twoslash [config.js]
+/**
+ * @type {import('vitepress').UserConfig}
+ */
+const config = {
+  // ...
 }
-</style>
+
+export default config
+```
+
+```ts twoslash [config.ts]
+import type { UserConfig } from 'vitepress'
+
+const config: UserConfig = {
+  // ...
+}
+
+export default config
 ```
 
 :::

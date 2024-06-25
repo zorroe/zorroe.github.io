@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { withMagicMove } from 'vitepress-plugin-magic-move'
+import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import { getPostLength, getPosts } from './theme/serverUtils.js'
 
 export default async function () {
@@ -26,6 +27,9 @@ export default async function () {
       image: {
         lazyLoading: true,
       },
+      codeTransformers: [
+        transformerTwoslash(),
+      ],
       codeCopyButtonTitle: '复制',
     },
     themeConfig: {
