@@ -1,9 +1,9 @@
 ---
-title: 使用Nuxt3和Springboot开发的前后端分离古诗网站
+title: 使用Nuxt3和SpringBoot开发的前后端分离古诗网站
 tags:
   - Vue3
   - Nuxt3
-  - Springboot
+  - SpringBoot
 categories:
   - 前端
   - 后端
@@ -12,7 +12,7 @@ date: 2024-03-22
 
 # 一个古诗网站
 
-> 一个使用Nuxt3和Springboot开发的前后端分离古诗网站。
+> 一个使用Nuxt3和SpringBoot开发的前后端分离古诗网站。
 >
 > 前端项目地址：[https://github.com/zorroe/ancient-poetry](https://github.com/zorroe/ancient-poetry)
 >
