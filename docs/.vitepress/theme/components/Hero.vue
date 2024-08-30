@@ -26,7 +26,7 @@ onMounted(() => {
       A passionate web developer based in SuZhou.
     </p>
     <h2 class="blog-title text-center text-lg font-bold">
-      路漫漫其修远兮，吾将上下而求索。
+      流水不腐，户枢不蠹。
     </h2>
   </div>
 </template>
