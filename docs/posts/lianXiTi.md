@@ -43,3 +43,31 @@ console.log(`从2024-08-01到2024-08-31的工作日数量是: ${weekdaysCount}`)
 
 // 从2024-08-01到2024-08-31的工作日数量是: 22
 ```
+
+## 统计字符串最长不重复字串的长度
+
+```js twoslash
+function lengthOfLongestSubstring(s) {
+    const hashSet = new Set()
+
+    let start = 0
+    let end = 0
+    let result = 0
+    while (end < s.length) {
+        if (!hashSet.has(s[end])) {
+            hashSet.add(s[end]);
+            end++;
+            result = Math.max(result, end - start);
+        } else {
+            hashSet.delete(s[start]);
+            start++;
+        }
+    }
+    return result
+}
+// 测试用例
+var result = lengthOfLongestSubstring("dvdf")
+console.log(result)
+
+// 3
+```js
