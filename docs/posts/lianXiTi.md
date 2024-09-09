@@ -70,4 +70,44 @@ var result = lengthOfLongestSubstring("dvdf")
 console.log(result)
 
 // 3
+```
+
+## 反转字符串
+
+> reverseWords(“Hello World”);  // 输出: “World Hello”
 ```js
+function reverseWords(sentence) {
+    const words = sentence.split(" ")
+    for (let i = 0; i < words.length / 2; i++) {
+        const temp = words[i]
+        words[i] = words[words.length - i - 1]
+        words[words.length - i - 1] = temp
+    }
+    return words.join(" ")
+}
+```
+
+## 检查括号是否匹配
+
+```js
+function isValidBrackets(s) {
+    const map = {
+        ")": "(",
+        "}": "{",
+        "]": "["
+    }
+
+    const stack = []
+    for (let i = 0; i < s.length; i++) {
+        if (['(', '{', '['].includes(s[i])) {
+            stack.push(s[i])
+        } else {
+            if (stack.pop() !== map[s[i]]) {
+                return false
+            }
+        }
+    }
+    return stack.length === 0
+}
+
+```
