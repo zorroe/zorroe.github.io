@@ -14,7 +14,7 @@ hidden: false
 
 > 统计两个日期之间的周一到周五的天数
 
-```js twoslash
+```js
 function countWeekdays(startDateStr, endDateStr) {
   const startDate = new Date(startDateStr)
   const endDate = new Date(endDateStr)
@@ -46,7 +46,7 @@ console.log(`从2024-08-01到2024-08-31的工作日数量是: ${weekdaysCount}`)
 
 ## 统计字符串最长不重复字串的长度
 
-```js twoslash
+```js
 function lengthOfLongestSubstring(s) {
     const hashSet = new Set()
 
