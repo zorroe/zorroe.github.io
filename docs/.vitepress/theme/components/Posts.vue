@@ -7,10 +7,13 @@ const { theme } = useData()
 
 // get posts
 let postsAll: PostInfo[] = theme.value.posts || []
+console.log(postsAll)
+postsAll = postsAll.filter(post => !post.frontMatter.hidden)
 // get postLength
-const postLength = theme.value.postLength
+const postLength = postsAll.length
 // get pageSize
 const pageSize = theme.value.pageSize
+console.log("pageSize: ", pageSize, "postLength: ", postLength)
 //  pagesNum
 let pagesNum = postLength % pageSize === 0 ? postLength / pageSize : postLength / pageSize + 1
 pagesNum = Number.parseInt(pagesNum.toString())
