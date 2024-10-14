@@ -6,15 +6,15 @@ export default async function () {
   return defineConfig({
     base: '/',
     lang: 'en-US',
-    title: 'zorroe的博客',
-    description: 'zorroe的博客',
+    title: 'zorroe',
+    description: 'zorroe',
     lastUpdated: true,
     ignoreDeadLinks: true,
     head: [
       ['link', { rel: 'icon', href: '/logo.svg' }],
       ['meta', { name: 'author', content: 'zorroe' }],
       ['meta', { property: 'og:title', content: 'zorroe' }],
-      ['meta', { property: 'og:description', content: 'zorroe的博客' }],
+      ['meta', { property: 'og:description', content: 'zorroe' }],
       ['meta', { name: 'theme-color', content: '#ffa8a8' }],
     ],
     markdown: {

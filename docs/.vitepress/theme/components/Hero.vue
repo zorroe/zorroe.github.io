@@ -20,10 +20,10 @@ onMounted(() => {
   <div class="shareCard">
     <div class="title blog-title">
       <span id="hello" class="hello">👋</span>
-      <span> Hi there! I'm zorroe~</span>
+      <span> Hello! I'm zorroe~</span>
     </div>
     <p class="description">
-      A passionate web developer based in SuZhou.
+      
     </p>
     <h2 class="blog-title text-center text-lg font-bold">
       流水不腐，户枢不蠹。
