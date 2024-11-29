@@ -25,3 +25,11 @@ git reset --hard commit_sha # 回滚到指定commit的sha码，推荐使用这�
 ```shell
 git push origin HEAD --force
 ```
+
+
+## 在A分支上，拉取B分支的某次提交(仅拉取这次提交的代码)
+
+```shell
+git checkout A
+git cherry-pick <commit-hash>
+```
