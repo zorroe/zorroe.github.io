@@ -53,6 +53,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.10
         version: 3.4.10
+      twoslash:
+        specifier: ^0.2.12
+        version: 0.2.12(typescript@5.5.3)
       twoslash-vue:
         specifier: ^0.2.9
         version: 0.2.9(typescript@5.5.3)
@@ -720,6 +723,11 @@ packages:
 
   '@typescript/vfs@1.5.0':
     resolution: {integrity: sha512-AJS307bPgbsZZ9ggCT3wwpg3VbTKMFNHfaY/uF0ahSkYYrPF2dSSKDNIDIQAHm9qJqbLvCsSJH7yN4Vs/CsMMg==}
+
+  '@typescript/vfs@1.6.0':
+    resolution: {integrity: sha512-hvJUjNVeBMp77qPINuUvYXj4FyWeeMMKZkxEATEU3hqBAQ7qdTBCUFT7Sp0Zu0faeEtFf+ldXxMEDr/bk73ISg==}
+    peerDependencies:
+      typescript: '*'
 
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
@@ -2479,11 +2487,19 @@ packages:
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
+  twoslash-protocol@0.2.12:
+    resolution: {integrity: sha512-5qZLXVYfZ9ABdjqbvPc4RWMr7PrpPaaDSeaYY55vl/w1j6H6kzsWK/urAEIXlzYlyrFmyz1UbwIt+AA0ck+wbg==}
+
   twoslash-protocol@0.2.9:
     resolution: {integrity: sha512-uKQl8UboT6JU4VAtYaSI3DbNtgaNhFaTpCSMy/n3tRl5lMlMhrjiuNKdqx15xjcviconuGJ9oObkz1h9zJFrJg==}
 
   twoslash-vue@0.2.9:
     resolution: {integrity: sha512-1f/AMB7jvifOMWjG2xdqnEywmkt+U2xef2TBfXugZasNDkqeTwdHCRGafi37Kk6smyzYYj2JLemMECfdSjWwoQ==}
+    peerDependencies:
+      typescript: '*'
+
+  twoslash@0.2.12:
+    resolution: {integrity: sha512-tEHPASMqi7kqwfJbkk7hc/4EhlrKCSLcur+TcvYki3vhIfaRMXnXjaYFgXpoZRbT6GdprD4tGuVBEmTpUgLBsw==}
     peerDependencies:
       typescript: '*'
 
@@ -3171,7 +3187,7 @@ snapshots:
   '@shikijs/twoslash@1.14.1(typescript@5.5.3)':
     dependencies:
       '@shikijs/core': 1.14.1
-      twoslash: 0.2.9(typescript@5.5.3)
+      twoslash: 0.2.12(typescript@5.5.3)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -3184,7 +3200,7 @@ snapshots:
       mdast-util-gfm: 3.0.0
       mdast-util-to-hast: 13.2.0
       shiki: 1.14.1
-      twoslash: 0.2.9(typescript@5.5.3)
+      twoslash: 0.2.12(typescript@5.5.3)
       twoslash-vue: 0.2.9(typescript@5.5.3)
       vue: 3.4.38(typescript@5.5.3)
     transitivePeerDependencies:
@@ -3355,6 +3371,13 @@ snapshots:
   '@typescript/vfs@1.5.0':
     dependencies:
       debug: 4.3.5
+    transitivePeerDependencies:
+      - supports-color
+
+  '@typescript/vfs@1.6.0(typescript@5.5.3)':
+    dependencies:
+      debug: 4.3.6
+      typescript: 5.5.3
     transitivePeerDependencies:
       - supports-color
 
@@ -5306,6 +5329,8 @@ snapshots:
 
   tslib@2.6.3: {}
 
+  twoslash-protocol@0.2.12: {}
+
   twoslash-protocol@0.2.9: {}
 
   twoslash-vue@0.2.9(typescript@5.5.3):
@@ -5313,6 +5338,14 @@ snapshots:
       '@vue/language-core': 2.0.26(typescript@5.5.3)
       twoslash: 0.2.9(typescript@5.5.3)
       twoslash-protocol: 0.2.9
+      typescript: 5.5.3
+    transitivePeerDependencies:
+      - supports-color
+
+  twoslash@0.2.12(typescript@5.5.3):
+    dependencies:
+      '@typescript/vfs': 1.6.0(typescript@5.5.3)
+      twoslash-protocol: 0.2.12
       typescript: 5.5.3
     transitivePeerDependencies:
       - supports-color
