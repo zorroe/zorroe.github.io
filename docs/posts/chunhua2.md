@@ -170,6 +170,8 @@ def minPathSum(grid_str):
 * 输出结果仅输出求和结果即可，不需要添加额外的修饰或符号
 
 ```js
+// 极值求和
+
 function sumOfMaxAndMin(listString) {
   /***** 编码区 ******/
   const numbers = listString.split(',').map(Number);
