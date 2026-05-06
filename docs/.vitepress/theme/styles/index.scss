@@ -99,6 +99,23 @@
     .header-anchor {
       color: var(--vp-c-brand-dark);
     }
+    .mermaid-wrapper {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      overflow-x: auto;
+      border: 1px solid var(--vp-c-divider);
+      border-radius: 1rem;
+      background: var(--vp-c-bg-soft);
+    }
+    .mermaid {
+      min-width: max-content;
+    }
+    .mermaid svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
   }
 }
 .dark {

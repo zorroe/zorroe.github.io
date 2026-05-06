@@ -22,6 +22,26 @@ export default async function () {
         light: 'vitesse-light',
         dark: 'vitesse-dark',
       },
+      config(md) {
+        const defaultFenceRenderer = md.renderer.rules.fence
+        md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+          const token = tokens[idx]
+          const info = token.info.trim().split(/\s+/u)[0]
+
+          if (info === 'mermaid') {
+            const source = token.content.trim()
+            const encodedSource = md.utils
+              .escapeHtml(source)
+              .replace(/\r?\n/gu, '&#10;')
+
+            return `<div class="mermaid-wrapper"><div class="mermaid" data-mermaid-source="${encodedSource}">${source}</div></div>`
+          }
+
+          return defaultFenceRenderer
+            ? defaultFenceRenderer(tokens, idx, options, env, self)
+            : self.renderToken(tokens, idx, options)
+        }
+      },
       image: {
         lazyLoading: true,
       },
