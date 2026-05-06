@@ -1,3 +1,14 @@
+---
+title: Halo-Job 后端手册
+tags:
+  - SpringBoot
+categories:
+  - SpringBoot
+date: 2026-05-06
+hidden: false
+---
+
+
 # Halo-Job 后端手册
 
 > https://github.com/zorroe/halo-job
