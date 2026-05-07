@@ -10,6 +10,8 @@ interface FrontMatter {
   tags: string[]
   categories: string[]
   hidden: boolean
+  description?: string
+  cover?: string
 }
 
 interface PostInfo {

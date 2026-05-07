@@ -1,48 +1,45 @@
-export function initTags(post: PostInfo[]) {
-  const data: { [k: string]: any[] } = {}
-  for (let i = 0; i < post.length; i++) {
-    const element = post[i]
-    if (element.frontMatter.hidden) {
+export function initTags(posts: PostInfo[]) {
+  const data: Record<string, PostInfo[]> = {}
+
+  for (const post of posts) {
+    const tags = post.frontMatter.tags
+
+    if (Array.isArray(tags)) {
+      for (const tag of tags) {
+        if (!data[tag]) {
+          data[tag] = []
+        }
+        data[tag].push(post)
+      }
+    }
+  }
+
+  return data
+}
+
+export function useYearSort(posts: PostInfo[]) {
+  const data: PostInfo[][] = []
+  let year = ''
+
+  for (const post of posts) {
+    if (!post.frontMatter.date) {
       continue
     }
-    const tags = element.frontMatter.tags
-    // tags是数组，需要tags按照数组语法的格式书写
-    if (Array.isArray(tags)) {
-      tags.forEach((item) => {
-        if (!data[item]) {
-          data[item] = []
-        }
-        data[item].push(element)
-      })
+
+    const currentYear = post.frontMatter.date.split('-')[0]
+    if (currentYear !== year) {
+      data.push([])
+      year = currentYear
     }
+
+    data[data.length - 1].push(post)
   }
+
   return data
 }
 
-export function useYearSort(post: PostInfo[]) {
-  const data = []
-  let year = '0'
-  let num = -1
-  for (let index = 0; index < post.length; index++) {
-    const element = post[index]
-    if (element.frontMatter.date && !element.frontMatter.hidden) {
-      const y = element.frontMatter.date.split('-')[0]
-      if (y === year) {
-        data[num].push(element)
-      }
-      else {
-        num++
-        data[num] = [] as any
-        data[num].push(element)
-        year = y
-      }
-    }
-  }
-  return data
-}
-
-export function getHeaders(range: any): Header[] {
-  const headers = [...document.querySelectorAll('.VPDoc h2,h3,h4,h5,h6')]
+export function getHeaders(_range: any): Header[] {
+  return [...document.querySelectorAll('.VPDoc h2,.VPDoc h3,.VPDoc h4,.VPDoc h5,.VPDoc h6')]
     .filter(el => el.id && el.hasChildNodes())
     .map((el) => {
       const level = Number(el.tagName[1])
@@ -52,7 +49,6 @@ export function getHeaders(range: any): Header[] {
         level,
       }
     })
-  return headers
 }
 
 function serializeHeader(h: Element): string {

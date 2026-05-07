@@ -4,14 +4,14 @@ import { computed } from 'vue'
 import { useYearSort } from '../utils'
 
 const { theme } = useData()
-const data = computed(() => {
-  const posts = useYearSort(theme.value.posts)
-  return posts
-})
+const data = computed(() => useYearSort(theme.value.posts || []))
 </script>
 
 <template>
   <div class="main">
+    <p v-if="data.length === 0" class="empty">
+      暂无归档
+    </p>
     <div
       v-for="(yearList, idx) in data"
       :key="idx"
@@ -41,6 +41,9 @@ const data = computed(() => {
   margin: 0 auto;
   padding: 0.5rem 1.5rem 4rem;
   max-width: 48rem;
+}
+.empty {
+  color: var(--vp-c-text-2);
 }
 .yearItem {
   border-bottom: 1px dashed #c7c7c7;

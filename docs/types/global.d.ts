@@ -1,9 +1,12 @@
-declare interface ResData<T> {
-  // 接口返回的状态码
-  code: number
-  // 接口返回的提示信息
-  message: string
-  // 接口返回的数据
-  data: T
+import 'vitepress'
+
+declare module 'vitepress' {
+  namespace DefaultTheme {
+    interface Config {
+      avatar?: string
+      posts?: PostInfo[]
+      pageSize?: number
+      postLength?: number
+    }
+  }
 }
-declare type Nullable<T> = T | null

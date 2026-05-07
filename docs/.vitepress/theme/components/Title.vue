@@ -11,9 +11,11 @@ dayjs.locale('zh-cn')
 
 const pageData: PageData = useData().page.value
 const publishDate = ref('')
+const description = ref('')
 onContentUpdated(() => {
   const { frontmatter } = pageData
   publishDate.value = dayjs(frontmatter.date || Date.now()).format('YYYY年MM月DD日')
+  description.value = typeof frontmatter.description === 'string' ? frontmatter.description : ''
 })
 </script>
 
@@ -21,6 +23,9 @@ onContentUpdated(() => {
   <h1 class="title">
     {{ pageData.title }}
   </h1>
+  <p v-if="description" class="description">
+    {{ description }}
+  </p>
   <div class="date">
     🕒 发布于 {{ publishDate }}
   </div>
@@ -53,6 +58,11 @@ onContentUpdated(() => {
 }
 .dark .title {
   color: var(--vp-c-brand-lighter);
+}
+.description {
+  margin: 0 0 0.75rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.7;
 }
 .date {
   font-size: 0.875rem;

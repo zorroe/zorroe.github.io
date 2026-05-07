@@ -1,42 +1,72 @@
+import fs from 'fs-extra'
 import { globby } from 'globby'
 import matter from 'gray-matter'
-import fs from 'fs-extra'
 
 export async function getPosts() {
   const paths = await getPostMDFilePaths()
   const posts = await Promise.all(
-    paths.map(async (item: any) => {
+    paths.map(async (item) => {
       const content = await fs.readFile(item, 'utf-8')
       const { data } = matter(content)
-      data.date = _convertDate(data.date)
+      const frontMatter = normalizeFrontMatter(data)
+
       const postInfo: PostInfo = {
-        frontMatter: data as FrontMatter,
-        regularPath: item.replace(/docs\/(.*).md/, '/$1.html'),
+        frontMatter,
+        regularPath: item.replace(/^docs\/(.*)\.md$/u, '/$1.html'),
       }
+
       return postInfo
     }),
   )
-  posts.sort(_compareDate)
+
   return posts
+    .filter(post => !post.frontMatter.hidden)
+    .filter(post => !post.regularPath.includes('/index.html'))
+    .sort(compareDateDesc)
 }
 
-function _convertDate(date = new Date().toString()) {
-  const json_date = new Date(date).toJSON()
-  return json_date.split('T')[0]
+export function getPostLength(posts: PostInfo[]) {
+  return posts.length
 }
 
-function _compareDate(obj1: PostInfo, obj2: PostInfo) {
-  return obj1.frontMatter.date < obj2.frontMatter.date ? 1 : -1
+function normalizeFrontMatter(data: Record<string, unknown>): FrontMatter {
+  return {
+    ...data,
+    title: normalizeString(data.title, '未命名文章'),
+    date: normalizeDate(data.date),
+    tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
+    categories: Array.isArray(data.categories) ? data.categories.map(String) : [],
+    hidden: typeof data.hidden === 'boolean' ? data.hidden : false,
+    description: normalizeOptionalString(data.description),
+    cover: normalizeOptionalString(data.cover),
+  }
+}
+
+function normalizeString(value: unknown, fallback: string) {
+  return typeof value === 'string' && value.trim() ? value.trim() : fallback
+}
+
+function normalizeOptionalString(value: unknown) {
+  return typeof value === 'string' && value.trim() ? value.trim() : undefined
+}
+
+function normalizeDate(date: unknown) {
+  const value = date || new Date().toString()
+  const parsedDate = new Date(value as string)
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return new Date().toJSON().split('T')[0]
+  }
+
+  return parsedDate.toJSON().split('T')[0]
+}
+
+function compareDateDesc(postA: PostInfo, postB: PostInfo) {
+  return postA.frontMatter.date < postB.frontMatter.date ? 1 : -1
 }
 
 async function getPostMDFilePaths() {
-  const paths = await globby(['**.md'], {
-    ignore: ['node_modules', 'README.md'],
+  return globby(['docs/posts/**/*.md'], {
+    ignore: ['node_modules'],
   })
-  return paths.filter(item => item.includes('posts/'))
-}
-
-export async function getPostLength() {
-  // getPostMDFilePath return type is object not array
-  return [...(await getPostMDFilePaths())].length
 }

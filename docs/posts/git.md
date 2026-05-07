@@ -1,7 +1,7 @@
 ---
 title: git的一些操作
 tags:
-    git
+  - git
 categories:
   - git
 date: 2024-06-22

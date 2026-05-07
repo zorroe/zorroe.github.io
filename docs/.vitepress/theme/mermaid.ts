@@ -37,7 +37,7 @@ export async function renderMermaidDiagrams(isDark: boolean) {
   const mermaid = await loadMermaid()
   const config: MermaidConfig = {
     startOnLoad: false,
-    securityLevel: 'loose',
+    securityLevel: 'strict',
     theme: isDark ? 'dark' : 'default',
   }
 

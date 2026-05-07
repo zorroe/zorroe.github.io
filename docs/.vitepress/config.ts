@@ -1,22 +1,55 @@
-import { defineConfig } from 'vitepress'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
+import { defineConfig } from 'vitepress'
+import type { HeadConfig, PageData } from 'vitepress'
 import { getPostLength, getPosts } from './theme/serverUtils.js'
 
+const siteDescription = 'zorroe 的个人博客与知识库，记录编程实践、部署经验和日常思考。'
+
 export default async function () {
+  const posts = await getPosts()
+
   return defineConfig({
     base: '/',
-    lang: 'en-US',
-    title: 'zorroe',
-    description: 'zorroe',
+    lang: 'zh-CN',
+    title: 'GiGi空间',
+    description: siteDescription,
     lastUpdated: true,
-    ignoreDeadLinks: true,
+    ignoreDeadLinks: [
+      './BACKEND-API',
+      './INTEGRATION-GUIDE',
+      './TECHNICAL-DESIGN',
+      './DESIGN-PATTERNS',
+      './USER-MANUAL',
+      './../sql/halo-job-full.sql',
+    ],
     head: [
       ['link', { rel: 'icon', href: '/logo.svg' }],
       ['meta', { name: 'author', content: 'zorroe' }],
-      ['meta', { property: 'og:title', content: 'zorroe' }],
-      ['meta', { property: 'og:description', content: 'zorroe' }],
+      ['meta', { property: 'og:title', content: 'GiGi空间' }],
+      ['meta', { property: 'og:description', content: siteDescription }],
+      ['meta', { property: 'og:type', content: 'website' }],
       ['meta', { name: 'theme-color', content: '#ffa8a8' }],
     ],
+    transformHead({ pageData }) {
+      return getPostHead(pageData, posts)
+    },
+    vite: {
+      build: {
+        chunkSizeWarningLimit: 700,
+        rollupOptions: {
+          output: {
+            manualChunks(id) {
+              if (id.includes('@shikijs') || id.includes('shiki') || id.includes('twoslash')) {
+                return 'vendor-code'
+              }
+              if (id.includes('node_modules/vitepress')) {
+                return 'vendor-vitepress'
+              }
+            },
+          },
+        },
+      },
+    },
     markdown: {
       theme: {
         light: 'vitesse-light',
@@ -53,17 +86,16 @@ export default async function () {
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
       logo: '/logo.svg',
-      // @ts-expect-error
       avatar: '/logo.svg',
-      posts: await getPosts(),
+      posts,
       pageSize: 10,
-      postLength: await getPostLength(),
+      postLength: getPostLength(posts),
       aside: false,
       nav: [
         { text: '🏡 首页', link: '/' },
-        { text: '🔖 Tags', link: '/page/tags' },
-        { text: '📃 Archive', link: '/page/archive' },
-        { text: '🥗 真的是菜单', link: '/page/menu' },
+        { text: '🔖 标签', link: '/page/tags' },
+        { text: '📃 归档', link: '/page/archive' },
+        { text: '🥗 菜单', link: '/page/menu' },
       ],
       socialLinks: [
         { icon: 'github', link: 'https://github.com/zorroe/zorroe.github.io' },
@@ -112,4 +144,31 @@ export default async function () {
       },
     },
   })
+}
+
+function getPostHead(pageData: PageData, posts: PostInfo[]): HeadConfig[] {
+  if (!pageData.relativePath.startsWith('posts/')) {
+    return []
+  }
+
+  const regularPath = `/${pageData.relativePath.replace(/\.md$/u, '.html')}`
+  const post = posts.find(item => item.regularPath === regularPath)
+  const frontmatter = post?.frontMatter
+  const title = frontmatter?.title || pageData.title || 'GiGi空间'
+  const description = frontmatter?.description || siteDescription
+  const head: HeadConfig[] = [
+    ['meta', { property: 'og:title', content: `${title} | GiGi空间` }],
+    ['meta', { property: 'og:description', content: description }],
+    ['meta', { name: 'description', content: description }],
+  ]
+
+  if (frontmatter?.date) {
+    head.push(['meta', { property: 'article:published_time', content: frontmatter.date }])
+  }
+
+  if (frontmatter?.cover) {
+    head.push(['meta', { property: 'og:image', content: frontmatter.cover }])
+  }
+
+  return head
 }

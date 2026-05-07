@@ -1,79 +1,63 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useData, withBase } from 'vitepress'
 import dayjs from 'dayjs'
 
 const { theme } = useData()
 
-// get posts
-let postsAll: PostInfo[] = theme.value.posts || []
-console.log(postsAll)
-postsAll = postsAll.filter(post => !post.frontMatter.hidden)
-// get postLength
-const postLength = postsAll.length
-// get pageSize
-const pageSize = theme.value.pageSize
-console.log("pageSize: ", pageSize, "postLength: ", postLength)
-//  pagesNum
-let pagesNum = postLength % pageSize === 0 ? postLength / pageSize : postLength / pageSize + 1
-pagesNum = Number.parseInt(pagesNum.toString())
-// pageCurrent
 const pageCurrent = ref(1)
-// filter index PostInfo
-postsAll = postsAll.filter((item: PostInfo) => {
-  return !item.frontMatter.hidden
-})
-postsAll = postsAll.filter((item: PostInfo) => {
-  return !item.regularPath.includes('index')
-})
-// pagination
-const allMap: { [k: string]: PostInfo[] } = {}
-for (let i = 0; i < pagesNum; i++) {
-  allMap[i] = []
-}
-let index = 0
-for (let i = 0; i < postsAll.length; i++) {
-  if (allMap[index].length > pageSize - 1) {
-    index += 1
-  }
-  allMap[index].push(postsAll[i])
-}
-// set posts
-const posts = ref<PostInfo[]>([])
-posts.value = allMap[pageCurrent.value - 1]
+const postsAll = computed<PostInfo[]>(() => theme.value.posts || [])
+const pageSize = computed(() => Math.max(Number(theme.value.pageSize) || 10, 1))
+const pagesNum = computed(() => Math.max(Math.ceil(postsAll.value.length / pageSize.value), 1))
+const posts = computed(() => {
+  const start = (pageCurrent.value - 1) * pageSize.value
 
-// click pagination
-function go(i: number) {
-  pageCurrent.value = i
-  posts.value = allMap[pageCurrent.value - 1]
+  return postsAll.value.slice(start, start + pageSize.value)
+})
+
+watch(pagesNum, (total) => {
+  if (pageCurrent.value > total) {
+    pageCurrent.value = total
+  }
+})
+
+function go(page: number) {
+  pageCurrent.value = Math.min(Math.max(page, 1), pagesNum.value)
 }
-// timestamp transform
+
 function transDate(date: string) {
   return dayjs(date).format('YYYY年MM月DD日')
-  // return dayjs(date).format('YYYY-MM-DD')
 }
 </script>
 
 <template>
   <div class="blogList my-8 flex flex-col items-center justify-center">
-    <a v-for="(item, idx) in posts" :key="idx" class="blog flex flex-col md:flex-row md:items-center md:justify-between transition-all" :href="withBase(item.regularPath)">
-      <div class="title text-xl font-bold md:max-w-[600px] md:overflow-hidden md:text-ellipsis md:whitespace-nowrap">
-        {{ item.frontMatter.title }}
+    <p v-if="posts.length === 0" class="empty">
+      暂无文章
+    </p>
+    <a v-for="item in posts" :key="item.regularPath" class="blog flex flex-col md:flex-row md:items-center md:justify-between transition-all" :href="withBase(item.regularPath)">
+      <div class="content">
+        <div class="title text-xl font-bold md:max-w-[600px] md:overflow-hidden md:text-ellipsis md:whitespace-nowrap">
+          {{ item.frontMatter.title }}
+        </div>
+        <p v-if="item.frontMatter.description" class="description">
+          {{ item.frontMatter.description }}
+        </p>
       </div>
-      <div class="min-w-[130px]">{{ transDate(item.frontMatter.date) }}</div>
+      <div class="date min-w-[130px]">{{ transDate(item.frontMatter.date) }}</div>
     </a>
   </div>
-  <div class="pagination select-none">
-    <button v-if="pageCurrent > 1" class="absolute left-0" @click="go(pageCurrent - 1)">
+  <nav v-if="postsAll.length > pageSize" class="pagination select-none" aria-label="文章分页">
+    <button v-if="pageCurrent > 1" class="absolute left-0" type="button" aria-label="上一页文章" @click="go(pageCurrent - 1)">
       上一页
     </button>
-    <div v-if="pagesNum > 1">
+    <div>
       {{ `${pageCurrent}/${pagesNum}` }}
     </div>
-    <button v-if="pageCurrent < pagesNum" class="absolute right-0" @click="go(pageCurrent + 1)">
+    <button v-if="pageCurrent < pagesNum" class="absolute right-0" type="button" aria-label="下一页文章" @click="go(pageCurrent + 1)">
       下一页
     </button>
-  </div>
+  </nav>
 </template>
 
 <style scoped lang="scss">
@@ -93,8 +77,23 @@ function transDate(date: string) {
   transform: translate(-2px, -2px);
   box-shadow: 10px 10px var(--vp-c-brand);
 }
+.content {
+  min-width: 0;
+}
 .title {
   color: var(--vp-c-brand-dark);
+}
+.description {
+  margin-top: 6px;
+  color: var(--vp-c-text-2);
+  line-height: 1.6;
+}
+.date {
+  color: var(--vp-c-text-2);
+}
+
+.empty {
+  color: var(--vp-c-text-2);
 }
 
 .pagination {

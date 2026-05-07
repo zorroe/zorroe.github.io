@@ -22,9 +22,6 @@ onMounted(() => {
       <span id="hello" class="hello">👋</span>
       <span> Hello! I'm zorroe~</span>
     </div>
-    <p class="description">
-      
-    </p>
     <h2 class="blog-title text-center text-lg font-bold">
       流水不腐，户枢不蠹。
     </h2>

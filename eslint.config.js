@@ -2,7 +2,8 @@ import antfu from '@antfu/eslint-config'
 import format from 'eslint-plugin-format'
 
 export default antfu({
-  files: ['**/*.vue', '**/*.js', '**/*.ts'],
+  typescript: true,
+  vue: true,
   ignores: ['**/*.md'],
   rules: {
     'unused-imports/no-unused-vars': 0,

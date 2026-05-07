@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import DefaultTheme from 'vitepress/theme'
-import { useData } from 'vitepress'
+import { useData, withBase } from 'vitepress'
 import { nextTick, provide } from 'vue'
 import PostList from './Posts.vue'
 import Title from './Title.vue'
@@ -11,8 +11,12 @@ import Hero from './Hero.vue'
 const { Layout } = DefaultTheme
 const { isDark } = useData()
 
+interface ViewTransitionDocument extends Document {
+  startViewTransition?: (callback: () => Promise<void> | void) => { ready: Promise<void> }
+}
+
 function enableTransitions() {
-  return 'startViewTransition' in document
+  return !!(document as ViewTransitionDocument).startViewTransition
     && window.matchMedia('(prefers-reduced-motion: no-preference)').matches
 }
 
@@ -22,13 +26,25 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
     return
   }
 
-  // @ts-expect-error
-  await document.startViewTransition(async () => {
+  const transition = (document as ViewTransitionDocument).startViewTransition?.(async () => {
     isDark.value = !isDark.value
     await nextTick()
-  }).ready
+  })
+
+  await transition?.ready
+
+  const radius = Math.hypot(
+    Math.max(x, window.innerWidth - x),
+    Math.max(y, window.innerHeight - y),
+  )
 
   document.documentElement.animate(
+    {
+      clipPath: [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${radius}px at ${x}px ${y}px)`,
+      ],
+    },
     {
       duration: 300,
       easing: 'ease-in',
@@ -37,7 +53,16 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
   )
 })
 function back() {
-  history.back()
+  const isSameOriginReferrer = document.referrer
+    ? new URL(document.referrer).origin === window.location.origin
+    : false
+
+  if (window.history.length > 1 && isSameOriginReferrer) {
+    history.back()
+    return
+  }
+
+  window.location.href = withBase('/')
 }
 </script>
 
@@ -49,7 +74,7 @@ function back() {
     </template>
     <template #doc-after>
       <div>
-        <button @click="back">
+        <button type="button" @click="back">
           返回
         </button>
       </div>

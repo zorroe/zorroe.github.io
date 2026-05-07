@@ -1,7 +1,7 @@
 ---
 title: 给windows添加快捷指令
 tags:
-    shell
+  - shell
 categories:
   - shell
 date: 2024-06-25
