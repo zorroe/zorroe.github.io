@@ -71,3 +71,15 @@ date: 2024-04-06
 
 ## 烤鸭
 
+
+## Twoslash 示例
+
+```ts twoslash
+const meal = {
+  name: '番茄清炖牛肉汤',
+  servings: 2,
+}
+
+meal.name
+//   ^?
+```

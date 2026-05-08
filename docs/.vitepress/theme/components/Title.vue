@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { onContentUpdated, useData } from 'vitepress'
-import { ref } from 'vue'
 import type { PageData } from 'vitepress'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { onContentUpdated, useData } from 'vitepress'
+import { ref } from 'vue'
 import 'dayjs/locale/zh-cn'
 
 dayjs.extend(relativeTime)

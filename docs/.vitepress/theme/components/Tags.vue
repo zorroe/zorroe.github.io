@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
 import { useData, withBase } from 'vitepress'
+import { computed, ref, watch } from 'vue'
 import { initTags } from '../utils'
 
 const { theme } = useData()

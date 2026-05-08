@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import DefaultTheme from 'vitepress/theme'
 import { useData, withBase } from 'vitepress'
+import DefaultTheme from 'vitepress/theme'
 import { nextTick, provide } from 'vue'
-import PostList from './Posts.vue'
-import Title from './Title.vue'
 import Category from './Category.vue'
 import CopyWright from './CopyRight.vue'
 import Hero from './Hero.vue'
+import PostList from './Posts.vue'
+import Title from './Title.vue'
 
 const { Layout } = DefaultTheme
 const { isDark } = useData()

@@ -1,16 +1,15 @@
-import DefaultTheme from 'vitepress/theme'
-import { onContentUpdated, useData } from 'vitepress'
 import type { App } from 'vue'
-import './styles/index.scss'
-import 'shiki-magic-move/style.css'
-import '@shikijs/vitepress-twoslash/style.css'
-import { nextTick, onMounted, watch } from 'vue'
 import TwoslashFloatingVue from '@shikijs/vitepress-twoslash/client'
+import { onContentUpdated, useData } from 'vitepress'
+import DefaultTheme from 'vitepress/theme'
+import { nextTick, onMounted, watch } from 'vue'
 import dynamicBackground from './background'
-import { renderMermaidDiagrams } from './mermaid'
+import Archive from './components/Archive.vue'
 import MyLayout from './components/MyLayout.vue'
 import Tags from './components/Tags.vue'
-import Archive from './components/Archive.vue'
+import { renderMermaidDiagrams } from './mermaid'
+import '@shikijs/vitepress-twoslash/style.css'
+import './styles/index.scss'
 
 export default {
   extends: DefaultTheme,

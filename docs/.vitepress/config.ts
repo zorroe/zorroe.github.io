@@ -1,6 +1,6 @@
+import type { HeadConfig, PageData } from 'vitepress'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import { defineConfig } from 'vitepress'
-import type { HeadConfig, PageData } from 'vitepress'
 import { getPostLength, getPosts } from './theme/serverUtils.js'
 
 const siteDescription = 'zorroe 的个人博客与知识库，记录编程实践、部署经验和日常思考。'
@@ -79,7 +79,7 @@ export default async function () {
         lazyLoading: true,
       },
       codeTransformers: [
-        transformerTwoslash(),
+        transformerTwoslash() as never,
       ],
       codeCopyButtonTitle: '复制',
     },
